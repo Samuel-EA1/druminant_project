@@ -15,7 +15,7 @@ export default function Login(){
             <input placeholder="Password" type="password"></input>
         </div>
         <div className="login-btn">
-            <Link href={"#"} className="login-btn"><p>LOG IN</p></Link>
+        <button ><p>Login</p></button>
         </div>
         <div className="signup">
             <p>Don't have an account yet? <Link href={"/signup"} className="signup-link">Sign up</Link></p>

@@ -16,12 +16,20 @@ export default function Login() {
                 <input placeholder="Username" type="text"></input><br />
                 <input placeholder="Farmland Name" type="text"></input><br />
                 <input placeholder="Email Address" type="gmail"></input><br />
+                <select className="signup-role">
+                    <option>Select role</option>
+                    <option>Admin</option>
+                    <option>Staff</option>
+                </select>
                 <input placeholder="Password" type="password"></input><br />
                 <input placeholder="Password Confirmation" type="password"></input><br />
-                <input placeholder="Role" type="text"></input>
+                
+    
             </div>
+            <link>
+            </link>
             <div className="login-btn">
-                <Link href={"#"} className="login-btn"><p>SIGN UP</p></Link>
+               <p><Link href={"dashboard"}>Sign up</Link></p>
             </div>
             <div className="signup2">
                 <p>Have an account already? <Link href={"/login"} className="signup-link">Log In</Link></p>
