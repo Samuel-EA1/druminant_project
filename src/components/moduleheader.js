@@ -37,7 +37,7 @@ function ModuleHeader() {
 
             <div>
                 
-           <p><Link href={"/"}><IoIosLogOut className="log-out" title="Log out" /></Link></p>
+           <p><Link href={"/login"}><IoIosLogOut className="log-out" title="Log out" /></Link></p>
             </div>
 
         </div>

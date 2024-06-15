@@ -285,7 +285,7 @@ color: white;
 }
 
 .login-btn {
-  background-color: green;
+  background-color: #00c40d;
   width: 17%;
   border-radius: 9px;
   text-align: center;
@@ -924,6 +924,11 @@ background-color: #008009;
   /* background-color: blue; */
   text-align: right;
 }
+.form-btns2{
+  /* background-color: yellow; */
+  margin-top: -78px;
+  text-align: right;
+}
 .input-label{
   /* background-color: red; */
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -946,9 +951,16 @@ background-color: #008009;
 }
 .btn-div{
   /* background-color: yellow; */
-  width: auto;
+  width: 100%;
   text-align: right;
+  margin-top: 30px;
 
+}
+.btn-div2{
+  /* background-color: yellow; */
+  width: 100%;
+  text-align: right;
+  margin-right: 30px;
   margin-top: 30px;
 }
 
@@ -1086,8 +1098,9 @@ background-color: #005a06;
   display: none;
 
 }
+
 .form-header2{
-  margin-top: -10px;
+  margin-top: -20px;
   text-align: center;
   color: green;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -1426,8 +1439,13 @@ position: relative;
   }
   .signup-fields input {
     font-size: 14px;
+  }
+  .signup-role{
+
+    font-size: 14px;
 
   }
+  
   .signup-fields {
     width: 45%;
   }
@@ -1682,8 +1700,16 @@ position: relative;
   .form-header{
     margin-top: -30px;
   }
+  .form-btns2{
+    /* background-color: yellow; */
+    margin-top: 0px;
+    text-align: right;
+  }
 
- 
+.desc {
+text-align: right;            /* Ensure it doesn't overflow its container */
+}
+
   
 }
 
@@ -1774,6 +1800,12 @@ position: relative;
     height: 38px;
     font-size: 12px;
   }
+  .signup-role{
+ 
+    font-size: 12px;
+
+  }
+  
   .livestock-select{
     display: block;
     width: 100%;

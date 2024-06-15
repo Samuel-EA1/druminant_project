@@ -42,7 +42,7 @@ export default function Staff() {
                     <p>Pregnancy Checker</p></Link>
                 </div>
                 <div className="img11">
-                <Link href={"#"} className="link2"><img src="image/task.jpg" className="task"/>
+                <Link href={"/lactationselection"} className="link2"><img src="image/task.jpg" className="task"/>
                     <p>Lactation tracking</p></Link>
                 </div>
                 <div className="img11">

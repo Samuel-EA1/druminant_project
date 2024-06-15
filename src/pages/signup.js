@@ -14,8 +14,8 @@ export default function Login() {
             <div className="signup-fields">
                 {/* field 1 */}
                 <input placeholder="Username" type="text"></input><br />
-                <input placeholder="Farmland Name" type="text"></input><br />
-                <input placeholder="Email Address" type="gmail"></input><br />
+                <input placeholder="Farm Name"  type="text"></input><br />
+                <input placeholder="Email Address" style={{color:"green", backgroundColor:"red"}} type="gmail"></input><br />
                 <select className="signup-role">
                     <option>Select role</option>
                     <option>Admin</option>
