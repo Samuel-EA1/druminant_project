@@ -15,7 +15,7 @@ export default function Login() {
                 {/* field 1 */}
                 <input placeholder="Username" type="text"></input><br />
                 <input placeholder="Farm Name"  type="text"></input><br />
-                <input placeholder="Email Address" style={{color:"green", backgroundColor:"red"}} type="gmail"></input><br />
+                <input placeholder="Email Address"  type="gmail"></input><br />
                 <select className="signup-role">
                     <option>Select role</option>
                     <option>Admin</option>
@@ -29,7 +29,7 @@ export default function Login() {
             <link>
             </link>
             <div className="login-btn">
-               <p><Link href={"dashboard"}>Sign up</Link></p>
+               <p><Link href={"/dashboard"}>Sign up</Link></p>
             </div>
             <div className="signup2">
                 <p>Have an account already? <Link href={"/login"} className="signup-link">Log In</Link></p>

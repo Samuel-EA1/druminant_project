@@ -109,23 +109,22 @@ export default function Livestock() {
     setEditFormModal(true);
   };
 
-  // const [editFormInput, seteditFormInput] = useState({})
-
-
-
-
   const [livestockData, setLivestockData] = useState([]);
+  const [idCounter, setIdCounter] = useState(1);
 
-
-
-
-
-  const deleteRecord = (tagId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this record?");
-    if(confirmDelete){
-      setLivestockData(livestockData.filter(record => record.tagId !== tagId));
+  
+  const deleteRecord = (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this profile?");
+    if (confirmDelete) {
+      const updatedLivestockData = livestockData.filter(record => record.id !== id);
+      // Reassign IDs to the remaining records
+      const reassignedLivestockData = updatedLivestockData.map((record, index) => ({
+        ...record,
+        id: index + 1
+      }));
+      setLivestockData(reassignedLivestockData);
+      setIdCounter(reassignedLivestockData.length + 1);
     }
-    
   };
 
   function closeFormModal() {
@@ -142,27 +141,24 @@ export default function Livestock() {
     }
   }
 
-  function handleViewLivestock(tagId) {
-    const selectedRecord = livestockData.filter((record) => record.tagId === tagId)
-    setSelected(selectedRecord[0])
-    setviewLivestock(true)
+   function handleViewLivestock(id) {
+    const selectedRecord = livestockData.find(record => record.id === id);
+    if (!selectedRecord) {
+      console.error("Record not found for id:", id);
+      return;
+    }
+    setSelected(selectedRecord);
+    setviewLivestock(true);
   }
-  function handleViewLivestock2(tagId) {
-    const selectedRecord = livestockData.filter((record) => record.tagId === tagId)
-    setSelected(selectedRecord[0])
-    setviewLivestock2(true)
-  }
 
-
-
-
-
-  const dummy = { breed: "Bosss", tagId: "EE11  ", sex: "Male", birthDate: "July 30th 2022" }
-
-  console.log(tagIdError)
-  function addRecord() {
-    setLivestockData(num => [...num, dummy])
-
+  function handleViewLivestock2(id) {
+    const selectedRecord = livestockData.find(record => record.id === id);
+    if (!selectedRecord) {
+      console.error("Record not found for id:", id);
+      return;
+    }
+    setSelected(selectedRecord);
+    setviewLivestock2(true);
   }
 
   const handleChange = (e) => {
@@ -183,10 +179,10 @@ export default function Livestock() {
     
 
 
-  function editBtnFn(tagId) {
-    setEditId(tagId);
+  function editBtnFn(id) {
+    setEditId(id);
     setEditFormModal(true);
-    const selectedRecord = livestockData.find((record) => record.tagId === tagId);
+    const selectedRecord = livestockData.find((record) => record.id === id);
     setEditFormInput({
       milkYield: selectedRecord.milkYield,
       tagId: selectedRecord.tagId,
@@ -203,7 +199,12 @@ export default function Livestock() {
       staff: selectedRecord.staff
     });
   }
-  
+  const getCurrentDateTime = () => {
+    const now = new Date();
+    const offset = now.getTimezoneOffset() * 60000; // offset in milliseconds
+    const localISOTime = new Date(now - offset).toISOString().slice(0, 19).replace('T', ' ');
+    return localISOTime;
+  };
 
   const handleFormSubmit = (e) => {
 []
@@ -224,14 +225,19 @@ export default function Livestock() {
       alert(`Tag ID '${tagId}' is already used. Please choose a different Tag ID.`);
       return;
     }
-  
-    // Proceed with form submission
-    console.log('Form submitted:', formInput);
-  
-    // Add form submission logic here (e.g., API call)
-    setLivestockData([...livestockData, formInput]);
-  
-    // Reset form input and close modal
+    const entryRecord = {
+      ...formInput,
+      id: 1,
+      entryDate: getCurrentDateTime()
+    };
+
+    const updatedLivestockData = [entryRecord, ...livestockData.map(record => ({
+      ...record,
+      id: record.id + 1
+    }))];
+
+    setLivestockData(updatedLivestockData);
+
     setFormModal(false);
     setformInput({
       milkYield: "",
@@ -265,12 +271,11 @@ export default function Livestock() {
   }
     // Update livestock data with the edited form input
     const newLivestockData = livestockData.map((row) => {
-      if (row.tagId === editId) {
+      if (row.id === editId) {
         return { ...row, ...editformInput };
       }
       return row;
     });
-
     // Set the updated livestock data
     setLivestockData(newLivestockData);
 
@@ -325,15 +330,16 @@ export default function Livestock() {
       <table className="w-full mt-0">
         <thead>
           <tr>
+          <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)"}}>
+              id
+            </th>
             <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)"}}>
               MILK YIELD (Kg)
             </th>
             <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)"}}>
               Tag ID
             </th>
-             <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)"}}>
-              STAFF-IN-CHARGE
-            </th>
+
             <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)"}}>
               DELIVERY DATE
             </th>
@@ -353,6 +359,15 @@ export default function Livestock() {
             >
               <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
               <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
+                Id
+                </span>
+                <div style={{ fontSize: "14px" }} >
+                {row.id}
+                </div>
+                
+              </td>
+              <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+              <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
                   Milk Yield
                 </span>
                 <div style={{ fontSize: "14px" }} >
@@ -370,15 +385,7 @@ export default function Livestock() {
                   <p>{row.tagId}</p>
                 </div>
               </td>
-              <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-              <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
-                  Staff-In-Charge
-                </span>
-                <div style={{ fontSize: "14px" }} >
-                {row.staff}
-                </div>
-              
-              </td>
+
               <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
               <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
                   Delivery Date
@@ -404,21 +411,21 @@ export default function Livestock() {
 
 
                 <div className="">
-                  <button title="Edit" onClick={() => editBtnFn(row.tagId)} className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md">
+                  <button title="Edit" onClick={() => editBtnFn(row.id)} className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md">
                     {/* Edit */}
                     <FaRegEdit style={{ fontSize: "14px" }}  />
                   </button>
 
-                  <button title="More info"  onClick={() => handleViewLivestock(row.tagId)} className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md">
+                  <button title="More info"  onClick={() => handleViewLivestock(row.id)} className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md">
                     <MdRemoveRedEye style={{ fontSize: "14px" }} />
                   </button>
 
-                  <button title="Delete" className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md" onClick={() => deleteRecord(row.tagId)}>
+                  <button title="Delete" className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md" onClick={() => deleteRecord(row.id)}>
                     {/* Delete */}
                     <RiDeleteBin6Line style={{ fontSize: "14px" }}  />
                   </button>
 
-                  <button title="Milk Composition" onClick={() => handleViewLivestock2(row.tagId)} className=" px-2  hover:bg-blue-600 text-white bg-blue-500 rounded-md"  style={{ fontSize: "14px", paddingTop:"2px", paddingBottom:"2px"}}>
+                  <button title="Milk Composition" onClick={() => handleViewLivestock2(row.id)} className=" px-2  hover:bg-blue-600 text-white bg-blue-500 rounded-md"  style={{ fontSize: "14px", paddingTop:"2px", paddingBottom:"2px"}}>
                     {/* <PiHouseLineLight title="Quarantine" /> */}
                     Milk details
                   </button>
@@ -447,7 +454,7 @@ export default function Livestock() {
                    
                     
                     <label className="input-label" htmlFor="tag Id" >Tag ID</label>
-                    <input  maxLength={10} required value={formInput.tagId} onChange={handleChange} id="tagId" name="tagId" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                    <input  maxLength={20} required value={formInput.tagId} onChange={handleChange} id="tagId" name="tagId" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
             
                     <label className="input-label" for="name">Delivery Date</label>
                     <input type="Date" id="deliveryDate" value={formInput.deliveryDate} onChange={handleChange} name="deliveryDate" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
@@ -682,12 +689,12 @@ editFormModal && <div className="form-backdrop" class=" py-12 bg-white transitio
 
               <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p class="text-sm text-gray-600">Observation</p>
-                <p class="text-base font-medium text-navy-700  dark:text-green-700" style={{width:"170%", overflow:"scroll"}} >
+                <p class="text-base font-medium text-navy-700  dark:text-green-700" style={{width:"170%", overflow:"auto"}} >
                   {selected.observation}
                 </p>
               </div>
 
-              <div className="btn-div">
+              <div className="btn-div" style={{width:"100%"}}>
                 <button className="close-btn" onClick={() => setviewLivestock(false)}>Close</button>
               </div>
             </div>

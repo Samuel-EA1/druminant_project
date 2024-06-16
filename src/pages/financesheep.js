@@ -193,9 +193,9 @@ function FinanceRecord() {
         setincomeInput({});
 
         // Show success message after returning to the table page
-        setTimeout(() => {
-            alert("Your income was successfully recorded");
-        }, 100); // Using setTimeout to ensure it runs after the state updates
+            setTimeout(() => {
+                alert("Your income was successfully recorded");
+            }, 100); // Using setTimeout to ensure it runs after the state updates
 
     };
 
@@ -815,8 +815,8 @@ function FinanceRecord() {
                         </div>
 
 
-                        <div className="btn-div">
-                            <button className="close-btn" onClick={() => setviewIncomeDetails(false)}>Close</button>
+                        <div className="btn-div" style={{width:"100%"}}>
+                            <button className="close-btn"  onClick={() => setviewIncomeDetails(false)}>Close</button>
                         </div>
                     </div>
                 </div>
@@ -878,14 +878,14 @@ function FinanceRecord() {
 
                         <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                             <p class="text-sm text-gray-600">Remark</p>
-                            <p class="text-base font-medium text-navy-700 dark:text-green-700" style={{ overflow: "scroll", width: "150%" }}>
+                            <p class="text-base font-medium text-navy-700 dark:text-green-700" style={{ overflow: "auto", width: "150%" }}>
                                 {selected2.remark}
                             </p>
                         </div>
 
 
-                        <div className="btn-div">
-                            <button className="close-btn" onClick={() => setviewExpenseDetails(false)}>Close</button>
+                        <div className="btn-div" style={{width:"100%"}}>
+                            <button className="close-btn"  onClick={() => setviewExpenseDetails(false)}>Close</button>
                         </div>
                     </div>
                 </div>

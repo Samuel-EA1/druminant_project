@@ -34,14 +34,10 @@ export default function Livestock() {
   const [errors, setErrors] = useState({});
   const [editFormModal, setEditFormModal] = useState(false);
   const [editformInput, setEditFormInput] = useState({
-    breed: '',
     tagId: '',
-    tagLocation: '',
+    eventType: '',
     sex: '',
-    birthDate: '',
-    weight: '',
-    status: '',
-    origin: '',
+    eventDate: '',
     remark: '',
     staff: ''
   });
@@ -52,67 +48,55 @@ export default function Livestock() {
   const [viewLivestock, setviewLivestock] = useState(false)
   const [tagIdError, setTagIdError] = useState("")
   const [selected, setSelected] = useState({
-    breed: "",
-    tagId: "",
-    tagLocation: "",
-    sex: "",
-    birthDate: "",
-    weight: "",
-    status: "",
-    origin: "",
-    remark: "",
-    staff:""
+    tagId: '',
+    eventType: '',
+    sex: '',
+    eventDate: '',
+    remark: '',
+    staff: ''
   })
 
   const [formInput, setformInput] = useState({
-    breed: "",
-    tagId: "",
-    tagLocation: "",
-    sex: "",
-    birthDate: "",
-    weight: "",
-    status: "",
-    origin: "",
-    remark: "",
-    staff:""
+    tagId: '',
+    eventType: '',
+    sex: '',
+    eventDate: '',
+    remark: '',
+    staff: ''
   })
 
-  const handleEdit = (tagId) => {
+  const [livestockData, setLivestockData] = useState([]);
+  const [idCounter, setIdCounter] = useState(1);
+
+  const handleEdit = (id) => {
     // Fetch the record with `id` from your data source
     const selectedRecord = // Logic to fetch the record based on `id`
     setEditFormInput({
-      breed: selectedRecord.breed,
       tagId: selectedRecord.tagId,
-      tagLocation: selectedRecord.tagLocation,
+      eventType: selectedRecord.eventType,
       sex: selectedRecord.sex,
-      birthDate: selectedRecord.birthDate,
-      weight: selectedRecord.weight,
-      status: selectedRecord.status,
-      origin: selectedRecord.origin,
+      eventDate: selectedRecord.eventDate,
       remark: selectedRecord.remark,
       staff: selectedRecord.staff
     });
-    setEditId(tagId);
+    setEditId(id);
     setEditFormModal(true);
   };
 
-  // const [editFormInput, seteditFormInput] = useState({})
 
 
-
-
-  const [livestockData, setLivestockData] = useState([]);
-
-
-
-
-
-  const deleteRecord = (tagId) => {
+  const deleteRecord = (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this profile?");
-    if(confirmDelete){
-      setLivestockData(livestockData.filter(record => record.tagId !== tagId));
+    if (confirmDelete) {
+      const updatedLivestockData = livestockData.filter(record => record.id !== id);
+      // Reassign IDs to the remaining records
+      const reassignedLivestockData = updatedLivestockData.map((record, index) => ({
+        ...record,
+        id: index + 1
+      }));
+      setLivestockData(reassignedLivestockData);
+      setIdCounter(reassignedLivestockData.length + 1);
     }
-    
   };
 
   function closeFormModal() {
@@ -129,181 +113,121 @@ export default function Livestock() {
     }
   }
 
-  function handleViewLivestock(tagId) {
-
-    // and then return the details
-    // of the livestock selected
-    const selectedRecord = livestockData.filter((record) => record.tagId === tagId)
-
-
-    setSelected(selectedRecord[0])
-
-    setviewLivestock(true)
-
-
-
-  }
-
-
-
-
-  const dummy = { breed: "Bosss", tagId: "EE11  ", sex: "Male", birthDate: "July 30th 2022" }
-
-  console.log(tagIdError)
-  function addRecord() {
-    setLivestockData(num => [...num, dummy])
-
+  function handleViewLivestock(id) {
+    const selectedRecord = livestockData.find(record => record.id === id);
+    if (!selectedRecord) {
+      console.error("Record not found for id:", id);
+      return;
+    }
+    setSelected(selectedRecord);
+    setviewLivestock(true);
   }
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-
+    const { name, value } = e.target;
     
     if (formModal) {
       setformInput((prevData) => ({ ...prevData, [name]: value }));
     } else if (editFormModal) {
       setEditFormInput((prevData) => ({ ...prevData, [name]: value }));
     }
-  }
+  };
+
+
+
     
-    // 
-
-  // useEffect(() => {
-  //   if ( formInput.tagId?.trim() === "" || formInput.tagId === undefined) {
-  //     setTagIdError("Please, provide the tag id")
-
-  //   }
-  //   // setTagIdError("")
-  // }, [editFormInput.tagId, editFormModal, formInput.tagId, formModal])
-
-
   
-
-  function editBtnFn(tagId) {
-    setEditId(tagId);
+  function editBtnFn(id) {
+    
+    setEditId(id);
     setEditFormModal(true);
-    const selectedRecord = livestockData.find((record) => record.tagId === tagId);
+    const selectedRecord = livestockData.find((record) => record.id === id);
     setEditFormInput({
-      breed: selectedRecord.breed,
       tagId: selectedRecord.tagId,
-      tagLocation: selectedRecord.tagLocation,
+      eventType: selectedRecord.eventType,
       sex: selectedRecord.sex,
-      birthDate: selectedRecord.birthDate,
-      weight: selectedRecord.weight,
-      status: selectedRecord.status,
-      origin: selectedRecord.origin,
+      eventDate: selectedRecord.eventDate,
       remark: selectedRecord.remark,
-      staff: selectedRecord.staff,
-    });
+      staff: selectedRecord.staff
+    })
+    
+    
   }
   
+  const getCurrentDateTime = () => {
+    const now = new Date();
+    const offset = now.getTimezoneOffset() * 60000; // offset in milliseconds
+    const localISOTime = new Date(now - offset).toISOString().slice(0, 19).replace('T', ' ');
+    return localISOTime;
+  };
+
 
   const handleFormSubmit = (e) => {
-[]
     e.preventDefault();
    
-    const { breed, tagId, sex, birthDate, weight, status, origin, remark, staff } = formInput;
+    const { tagId, eventType, sex, eventDate, remark, staff } = formInput;
 
-    if (!breed || !tagId || !sex || !birthDate || !weight || !status || !origin ||!remark || !staff) {
+    if (!tagId || !eventType || !sex || !eventDate || !remark || !staff) {
       alert('Please, ensure you fill in all fields.');
       return;
     }
-    const isTagIdUsed = livestockData.some(record => record.tagId === tagId);
+   
+    const entryRecord = {
+      ...formInput,
+      id: 1,
+      entryDate: getCurrentDateTime()
+    };
 
-    if (isTagIdUsed) {
-      alert(`Tag ID '${tagId}' is already used. Please choose a different Tag ID.`);
-      return;
-    }
+    const updatedLivestockData = [entryRecord, ...livestockData.map(record => ({
+      ...record,
+      id: record.id + 1
+    }))];
+
+    setLivestockData(updatedLivestockData);
   
-    // Proceed with form submission
-    console.log('Form submitted:', formInput);
-  
-    // Add form submission logic here (e.g., API call)
-    setLivestockData([...livestockData, formInput]);
-  
-    // Reset form input and close modal
     setFormModal(false);
     setformInput({
-      breed: "",
-      tagId: "",
-      tagLocation: "",
-      sex: "",
-      birthDate: "",
-      weight: "",
-      status: "",
-      origin: "",
-      remark: "",
-      staff: ""
+      tagId: '',
+      eventType: '',
+      sex: '',
+      eventDate: '',
+      entryDate: '',
+      remark: '',
+      staff: ''
     });
   };
 
   const handleEditFormSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-  
-    // Destructure the editformInput object for validation
-    const { breed, tagId, tagLocation, sex, birthDate, weight, status, origin, remark, staff } = editformInput;
-  
-  
-    // Validate required fields
-    if (!breed || !tagId || !tagLocation || !sex || !birthDate || !weight || !status || !origin || !remark || !staff) {
+    e.preventDefault();
+    
+
+    const { tagId, eventType, sex, eventDate, remark, staff } = editformInput;
+
+    if (!tagId || !eventType || !sex || !eventDate || !remark || !staff) {
       alert('Please, ensure you fill in all fields.');
       return;
     }
-  
-    // Update livestock data with the edited form input
+
     const newLivestockData = livestockData.map((row) => {
-      if (row.tagId === tagId) {
+      if (row.id === editId) {
         return { ...row, ...editformInput };
       }
       return row;
     });
-  
-    console.log('Updated livestock data:', newLivestockData);
-  
-    // Set the updated livestock data
-    setLivestockData(newLivestockData);
-  
-    // Close the edit form modal and reset the form input
-    setEditFormModal(false);
-    setEditFormInput({
-      breed: '',
-      tagId: '',
-      tagLocation: '',
-      sex: '',
-      birthDate: '',
-      weight: '',
-      status: '',
-      origin: '',
-      remark: '',
-      staff: ''
-    });
 
-  
-  
-  
-    // Check for tagIdError before setting new livestock data
-    if (tagIdError) {
-      return;
-    }
-  
-    // Set the updated livestock data
     setLivestockData(newLivestockData);
-  
-    // Close the edit form modal and reset the form input
     setEditFormModal(false);
     setEditFormInput({
-      breed: '',
       tagId: '',
-      tagLocation: '',
+      eventType: '',
       sex: '',
-      birthDate: '',
-      weight: '',
-      status: '',
-      origin: '',
+      eventDate: '',
+      entryDate: '',
       remark: '',
       staff: ''
     });
   };
+
 
   
 
@@ -316,8 +240,8 @@ export default function Livestock() {
       <div>
         <div className="up">
           <div>
-          <h1 className="module-header">Livestock Profile (Cattle)</h1>
-          <p>Keep track of your livestock profile</p>
+          <h1 className="module-header">Event Tracker (Pig)</h1>
+          <p>Monitor and keep track of events in the lifetime of your livestock</p>
           </div>
           <div>
           <MdOutlineHelp className="help-icon" title="help"/>
@@ -326,7 +250,7 @@ export default function Livestock() {
       
       <div className="add-search-div">
         <div className="cursor">
-          <p className="add-btn" onClick={() => setFormModal(!formModal)}><span>+ </span> Add Profile</p>
+          <p className="add-btn" onClick={() => setFormModal(!formModal)}><span>+ </span> Add Event</p>
         </div>
         <input type="text" className="search-input"  maxLength={15} placeholder="Search here (Tag id)" />
         <GoSearch className="search-icon" style={{cursor:"pointer"}}/>
@@ -336,20 +260,20 @@ export default function Livestock() {
       <table className="w-full mt-0">
         <thead>
           <tr>
-            <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)"}}>
-              BREED
+          <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)"}}>
+              id
             </th>
             <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)"}}>
               Tag ID
             </th>
-             <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)"}}>
-              SEX
+            <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)"}}>
+              Event Type
             </th>
             <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)"}}>
-              BIRTH Date
+              Event Date
             </th>
             <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)"}}>
-              Weight
+              Entry Date
             </th>
              <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)"}}>
               Actions
@@ -362,15 +286,18 @@ export default function Livestock() {
               key={key}
               className="bg-white md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap mb-10 md:mb-0 shadow-sm shadow-gray-800 md:shadow-none"
             >
-              <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+
+              <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
               <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
-                  Breed
+                  id
                 </span>
                 <div style={{ fontSize: "14px" }} >
-                {row.breed}
+
+                  {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
+                  <p>{row.id}</p>
                 </div>
-                
               </td>
+
               <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
               <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
                   Tag ID
@@ -383,31 +310,34 @@ export default function Livestock() {
               </td>
               <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
               <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
-                  Sex
-                </span>
-                <div style={{ fontSize: "14px" }} >
-                {row.sex}
-                </div>
-              
-              </td>
-              <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-              <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
-                  Birth Date
+                  Event Type
                 </span>
                 <span style={{ fontSize: "14px" }}>
                   
-                  {row.birthDate}
+                  {row.eventType}
                 </span>
               </td>
+
               <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
               <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
-                  Weight
+                  Event Date
                 </span>
                 <span style={{ fontSize: "14px" }}>
                   
-                  {row.weight}
+                  {row.eventDate}
                 </span>
               </td>
+
+              <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+              <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
+                  Entry Date
+                </span>
+                <span style={{ fontSize: "14px" }}>
+                  
+                  {row.entryDate}
+                </span>
+              </td>
+             
               <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
               <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
                   Actions
@@ -415,24 +345,20 @@ export default function Livestock() {
 
 
                 <div className="">
-                  <button title="Edit" onClick={() => editBtnFn(row.tagId)} className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md">
+                  <button title="Edit" onClick={() => editBtnFn(row.id)} className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md">
                     {/* Edit */}
                     <FaRegEdit style={{ fontSize: "14px" }}  />
                   </button>
 
-                  <button title="More info"  onClick={() => handleViewLivestock(row.tagId)} className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md">
+                  <button title="More info"  onClick={() => handleViewLivestock(row.id)} className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md">
                     <MdRemoveRedEye style={{ fontSize: "14px" }} />
                   </button>
 
-                  <button title="Delete" className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md" onClick={() => deleteRecord(row.tagId)}>
+                  <button title="Delete" className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md" onClick={() => deleteRecord(row.id)}>
                     {/* Delete */}
                     <RiDeleteBin6Line style={{ fontSize: "14px" }}  />
                   </button>
 
-                  <button title="Quarantine" className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md">
-                    {/* <PiHouseLineLight title="Quarantine" /> */}
-                    <PiHouseBold style={{ fontSize: "14px" }} />
-                  </button>
                 </div>
 
 
@@ -446,22 +372,17 @@ export default function Livestock() {
       {//Livestock input form
 
         formModal && <div className="form-backdrop"  class=" py-12 bg-white transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
-          <p className="form-header">Livestock Profile Details</p>
+          <p className="form-header">Event Details</p>
 
           <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-xl">
             <div class="w-[auto] relative mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
               <form >
-                <div className="general-form">
+                <div>
                   <div>
-                    <label className="input-label" htmlFor="breed" >Breed</label>
-                    <input title="Enter the breed of the livestock (e.g., Angus, Holstein) here."  maxLength={20} required value={formInput.breed} onChange={handleChange} name="breed" id="breed" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-                   
 
                     <label className="input-label" htmlFor="tag Id" >Tag ID</label>
                     <input title="Input the unique identification number assigned to the livestock tag." maxLength={10} required value={formInput.tagId} onChange={handleChange} id="name" name="tagId" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
                     {tagIdError && <span>{tagIdError}</span>}
-                    <label className="input-label" for="name" >Tag Location</label>
-                    <input title="Specify where the livestock tag is located on the animal (e.g., ear, leg)." maxLength={10} value={formInput.tagLocation} onChange={handleChange} id="taglocation" name="tagLocation" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
 
                     <label className="input-label" for="name" >Sex</label>
                     <select id="name" value={formInput.sex} name="sex" onChange={handleChange} class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border">
@@ -470,35 +391,19 @@ export default function Livestock() {
                       <option value={"Female"}>Female</option>
                     </select>
 
-                    <label className="input-label" for="name">Birth Date</label>
-                    <input type="Date" id="name" value={formInput.birthDate} onChange={handleChange} name="birthDate" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                    <label className="input-label" for="name">Event Type</label>
+                    <input type="text" id="eventType" value={formInput.eventType} placeholder="E.g. Vaccination, death, etc." onChange={handleChange} name="eventType" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                 
+                   
                   </div>
                   <div>
-                    <label className="input-label" for="name" >Weight</label>
-                    <input title="Enter the weight of the livestock in kilograms (kg)."maxLength={10} value={formInput.weight} onChange={handleChange} type="number" name="weight" id="name" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-
-                    <label className="input-label" for="name" >Status</label>
-                    <select id="name" value={formInput.status} onChange={handleChange} name="status" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border">
-                      <option value={""}>Select a status</option>
-                      <option>Sick</option>
-                      <option>Healthy</option>
-                      <option>Deceased</option>
-                      <option>Pregnant</option>
-                      <option>Injured</option>
-                    </select>
-
-                    <label className="input-label" for="name" >Origin</label>
-                    <select id="name" value={formInput.origin} onChange={handleChange} name="origin" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border">
-                      <option value={""}>Select origin</option>
-                      <option>Purchased</option>
-                      <option>Born on farm</option>
-                      <option>Donated</option>
-                      <option>Inherited</option>
-                      <option>Adopted</option>
-                    </select>
-                    
+                   
+                   
+                  <label className="input-label" for="name">Event Date</label>
+                    <input type="Date" id="name" value={formInput.eventDate} onChange={handleChange} name="eventDate" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                 
                     <label className="input-label" for="name" >Staff in charge</label>
-                    <input title="Name of staff creating this livestock profile" placeholder="e.g Mr. Ibharalu" id="name" value={formInput.staff} onChange={handleChange} type="text" name="staff" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                    <input title="Name of staff creating this event record" id="name" value={formInput.staff} onChange={handleChange} type="text" name="staff" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
                     <label className="input-label" for="name" >Remark</label>
                     <input title="Add additional remarks about the livestock here. Make it brief for easy readablility."  id="name" value={formInput.remark} onChange={handleChange} type="text" name="remark" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
                    
@@ -527,6 +432,7 @@ export default function Livestock() {
 
                 </div>
                 {/* <input id="cvc" class="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
+             
               </div>
               <div className="form-btns" >
                 <button className="btn" onClick={(e) => handleFormSubmit(e)}>Submit</button>
@@ -548,86 +454,46 @@ export default function Livestock() {
         {//Livestock EDIT form
 
 editFormModal && <div className="form-backdrop" class=" py-12 bg-white transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
-<p className="form-header">Edit livestock profile</p>
+<p className="form-header">Edit Event Details</p>
 
 <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-xl">
   <div class="w-[auto] relative mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
     <form >
-      <div className="general-form">
-        <div>
-          <label className="input-label" for="name" >Breed</label>
-          <input title="Enter the breed of the livestock (e.g., Angus, Holstein) here." maxLength={20} value={editformInput.breed} onChange={handleChange} name="breed" id="breed" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+    <div>
+                  <div>
 
-          <label className="input-label" for="name" >Tag ID</label>
-          <input title="Input the unique identification number assigned to the livestock tag." maxLength={15} value={editformInput.tagId} onChange={handleChange} id="name" name="tagId" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-          {tagIdError && <span className="error-msg">{tagIdError}</span>}
-          <label className="input-label" for="name" >Tag Location</label>
-          <input title="Specify where the livestock tag is located on the animal (e.g., ear, leg)." maxLength={10} value={editformInput.tagLocation} onChange={handleChange} id="taglocation" name="tagLocation" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                    <label className="input-label" htmlFor="tag Id" >Tag ID</label>
+                    <input title="Input the unique identification number assigned to the livestock tag." maxLength={10} required value={editformInput.tagId} onChange={handleChange} id="name" name="tagId" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                    {tagIdError && <span>{tagIdError}</span>}
 
-          <label className="input-label" for="name" >Sex</label>
-          <select id="name" value={editformInput.sex} name="sex" onChange={handleChange} class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border">
-            <option value={""}>Select a sex</option>
-            <option value={"Male"}>Male</option>
-            <option value={"Female"}>Female</option>
-          </select>
+                    <label className="input-label" for="name" >Sex</label>
+                    <select id="name" value={editformInput.sex} name="sex" onChange={handleChange} class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border">
+                      <option value={""}>Select a sex</option>
+                      <option value={"Male"}>Male</option>
+                      <option value={"Female"}>Female</option>
+                    </select>
 
-          <label className="input-label" for="name">Birth Date</label>
-          <input type="Date" id="name" value={editformInput.birthDate} onChange={handleChange} name="birthDate" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-        </div>
-        <div>
-          <label className="input-label" for="name" >Weight</label>
-          <input title="Enter the weight of the livestock in kilograms (kg)." maxLength={10} value={editformInput.weight} onChange={handleChange} type="number" name="weight" id="name" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-
-          <label className="input-label" for="name" >Status</label>
-          <select id="name" value={editformInput.status} onChange={handleChange} name="status" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border">
-            <option value={""}>Select a status</option>
-            <option>Sick</option>
-            <option>Healthy</option>
-            <option>Deceased</option>
-            <option>Pregnant</option>
-            <option>Injured</option>
-          </select>
-
-          <label className="input-label" for="name" >Origin</label>
-          <select id="name" value={editformInput.origin} onChange={handleChange} name="origin" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border">
-            <option value={""}>Select origin</option>
-            <option>Purchased</option>
-            <option>Born on farm</option>
-            <option>Donated</option>
-            <option>Inherited</option>
-            <option>Adopted</option>
-          </select>
-          <label className="input-label" for="name" >Staff in charge</label>
-                    <input title="Add any additional notes and remarks about the livestock here." placeholder="e.g Mr. Ibharalu" id="name" value={editformInput.staff} onChange={handleChange} type="text" name="staff" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-                    <label className="input-label" for="name" >Remark</label>
-                    <input title="Add any additional notes and remarks about the livestock here."  id="name" value={editformInput.remark} onChange={handleChange} type="text" name="remark" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                    <label className="input-label" for="name">Event Type</label>
+                    <input type="text" id="eventType" value={editformInput.eventType} placeholder="E.g. Vaccination, death, etc." onChange={handleChange} name="eventType" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                 
                    
-        </div>
-      </div>
+                  </div>
+                  <div>
+                   
+                   
+                  <label className="input-label" for="name">Event Date</label>
+                    <input type="Date" id="name" value={editformInput.eventDate} onChange={handleChange} name="eventDate" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                 
+                    <label className="input-label" for="name" >Staff in charge</label>
+                    <input title="Name of staff creating this event record" id="name" value={editformInput.staff} onChange={handleChange} type="text" name="staff" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                    <label className="input-label" for="name" >Remark</label>
+                    <input title="Add additional remarks about the livestock here. Make it brief for easy readablility."  id="name" value={editformInput.remark} onChange={handleChange} type="text" name="remark" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                   
+                  </div>
+                </div>
     </form>
 
   
-
-    <div class="relative mb-5 mt-2">
-      <div class="absolute text-gray-600 flex items-center px-4 border-r h-full">
-
-      </div>
-
-    </div>
-    {/* <label for="expiry" class="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
-    <div class="relative mb-5 mt-2">
-      <div class="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer">
-
-      </div>
-
-    </div>
-    {/* <label for="cvc" class="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
-    <div class="relative mb-5 mt-2">
-      <div class="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer">
-
-      </div>
-      {/* <input id="cvc" class="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
-    </div>
     <div className="form-btns" >
       <button className="btn" onClick={(e) => handleEditFormSubmit(e, editId )} style={{width:"80px"}}>Save</button>
       <button className="btn2" onClick={closeEditFormModal} >Cancel</button>
@@ -637,41 +503,24 @@ editFormModal && <div className="form-backdrop" class=" py-12 bg-white transitio
       <IoMdClose />
     </button>
   </div>
-  {/* <button className="close-btn" onClick={show()}>hsh</button> */}
 </div>
 </div>
 }
-
-
       {
-        viewLivestock && <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-          <div class="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3">
+        viewLivestock && <div class="fixed inset-0 flex  items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+          <div class="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3" style={{marginTop:"30px"}}>
             <div class="mt-2 mb-8 w-full">
               <h4  class="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
-                Livestock Profile
+                Event Details
               </h4>
             </div>
             <div class="grid grid-cols-2 gap-4 px-1 w-full">
               <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Breed</p>
-                <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.breed}
-                </p>
-
-              </div>
-
-              <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Tag ID</p>
+                <p class="text-sm text-gray-600">tag ID</p>
                 <p class="text-base font-medium text-navy-700 dark:text-green-700">
                   {selected.tagId}
                 </p>
-              </div>
 
-              <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Tag Location</p>
-                <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.tagLocation}
-                </p>
               </div>
 
               <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
@@ -682,33 +531,27 @@ editFormModal && <div className="form-backdrop" class=" py-12 bg-white transitio
               </div>
 
               <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Birth Date</p>
+                <p class="text-sm text-gray-600">Event Type</p>
                 <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.birthDate}
+                  {selected.eventType}
                 </p>
               </div>
+
+              <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p class="text-sm text-gray-600">Event Date</p>
+                <p class="text-base font-medium text-navy-700 dark:text-green-700">
+                  {selected.eventDate}
+                </p>
+              </div>
+
+            
 
               <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Weight</p>
+                <p class="text-sm text-gray-600">Entry Date</p>
                 <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.weight}
+                  {selected.entryDate}
                 </p>
               </div>
-
-              <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Status</p>
-                <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.status}
-                </p>
-              </div>
-
-              <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Origin</p>
-                <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.origin}
-                </p>
-              </div>
-
               
               <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p class="text-sm text-gray-600">Staff in charge</p>
@@ -719,12 +562,12 @@ editFormModal && <div className="form-backdrop" class=" py-12 bg-white transitio
 
               <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p class="text-sm text-gray-600">Remark</p>
-                <p class="text-base font-medium text-navy-700  dark:text-green-700" style={{width:"100%", overflow:"scroll"}} >
+                <p class="text-base font-medium text-navy-700  dark:text-green-700" style={{width:"100%", overflow:"auto"}} >
                   {selected.remark}
                 </p>
               </div>
 
-              <div className="btn-div">
+              <div className="btn-div" style={{width:"100%"}}>
                 <button className="close-btn" onClick={() => setviewLivestock(false)}>Close</button>
               </div>
             </div>

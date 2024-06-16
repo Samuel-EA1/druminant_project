@@ -96,23 +96,31 @@ export default function Livestock() {
     setEditFormModal(true);
   };
 
-  // const [editFormInput, seteditFormInput] = useState({})
-
-
-
-
   const [livestockData, setLivestockData] = useState([]);
+  const [idCounter, setIdCounter] = useState(1);
+
+  const getCurrentDateTime = () => {
+    const now = new Date();
+    const offset = now.getTimezoneOffset() * 60000; // offset in milliseconds
+    const localISOTime = new Date(now - offset).toISOString().slice(0, 19).replace('T', ' ');
+    return localISOTime;
+  };
 
 
 
 
-
-  const deleteRecord = (tagId) => {
+  const deleteRecord = (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this profile?");
-    if(confirmDelete){
-      setLivestockData(livestockData.filter(record => record.tagId !== tagId));
+    if (confirmDelete) {
+      const updatedLivestockData = livestockData.filter(record => record.id !== id);
+      // Reassign IDs to the remaining records
+      const reassignedLivestockData = updatedLivestockData.map((record, index) => ({
+        ...record,
+        id: index + 1
+      }));
+      setLivestockData(reassignedLivestockData);
+      setIdCounter(reassignedLivestockData.length + 1);
     }
-    
   };
 
   function closeFormModal() {
@@ -129,19 +137,14 @@ export default function Livestock() {
     }
   }
 
-  function handleViewLivestock(tagId) {
-
-    // and then return the details
-    // of the livestock selected
-    const selectedRecord = livestockData.filter((record) => record.tagId === tagId)
-
-
-    setSelected(selectedRecord[0])
-
-    setviewLivestock(true)
-
-
-
+  function handleViewLivestock(id) {
+    const selectedRecord = livestockData.find(record => record.id === id);
+    if (!selectedRecord) {
+      console.error("Record not found for id:", id);
+      return;
+    }
+    setSelected(selectedRecord);
+    setviewLivestock(true);
   }
 
 
@@ -168,10 +171,10 @@ export default function Livestock() {
     
 
 
-  function editBtnFn(tagId) {
-    setEditId(tagId);
+  function editBtnFn(id) {
+    setEditId(id);
     setEditFormModal(true);
-    const selectedRecord = livestockData.find((record) => record.tagId === tagId);
+    const selectedRecord = livestockData.find((record) => record.id === id);
     setEditFormInput({
       breed: selectedRecord.breed,
       tagId: selectedRecord.tagId,
@@ -203,14 +206,19 @@ export default function Livestock() {
       alert(`Tag ID '${tagId}' is already used. Please choose a different Tag ID.`);
       return;
     }
+    const entryRecord = {
+      ...formInput,
+      id: 1,
+      entryDate: getCurrentDateTime()
+    };
+
+    const updatedLivestockData = [entryRecord, ...livestockData.map(record => ({
+      ...record,
+      id: record.id + 1
+    }))];
+
+    setLivestockData(updatedLivestockData);
   
-    // Proceed with form submission
-    console.log('Form submitted:', formInput);
-  
-    // Add form submission logic here (e.g., API call)
-    setLivestockData([...livestockData, formInput]);
-  
-    // Reset form input and close modal
     setFormModal(false);
     setformInput({
       breed: "",
@@ -240,16 +248,13 @@ export default function Livestock() {
 
     // Update livestock data with the edited form input
     const newLivestockData = livestockData.map((row) => {
-      if (row.tagId === editId) {
+      if (row.id === editId) {
         return { ...row, ...editformInput };
       }
       return row;
     });
 
-    // Set the updated livestock data
     setLivestockData(newLivestockData);
-
-    // Close the edit form modal and reset the form input
     setEditFormModal(false);
     setEditFormInput({
       breed: '',
@@ -297,6 +302,9 @@ export default function Livestock() {
       <table className="w-full mt-0">
         <thead>
           <tr>
+          <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)"}}>
+              id
+            </th>
             <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)"}}>
               BREED
             </th>
@@ -323,6 +331,15 @@ export default function Livestock() {
               key={key}
               className="bg-white md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap mb-10 md:mb-0 shadow-sm shadow-gray-800 md:shadow-none"
             >
+              <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+              <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
+                  ID
+                </span>
+                <div style={{ fontSize: "14px" }} >
+                {row.id}
+                </div>
+                
+              </td>
               <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
               <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
                   Breed
@@ -376,16 +393,16 @@ export default function Livestock() {
 
 
                 <div className="">
-                  <button title="Edit" onClick={() => editBtnFn(row.tagId)} className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md">
+                  <button title="Edit" onClick={() => editBtnFn(row.id)} className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md">
                     {/* Edit */}
                     <FaRegEdit style={{ fontSize: "14px" }}  />
                   </button>
 
-                  <button title="More info"  onClick={() => handleViewLivestock(row.tagId)} className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md">
+                  <button title="More info"  onClick={() => handleViewLivestock(row.id)} className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md">
                     <MdRemoveRedEye style={{ fontSize: "14px" }} />
                   </button>
 
-                  <button title="Delete" className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md" onClick={() => deleteRecord(row.tagId)}>
+                  <button title="Delete" className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md" onClick={() => deleteRecord(row.id)}>
                     {/* Delete */}
                     <RiDeleteBin6Line style={{ fontSize: "14px" }}  />
                   </button>
@@ -415,7 +432,7 @@ export default function Livestock() {
                 <div className="general-form">
                   <div>
                     <label className="input-label" htmlFor="breed" >Breed</label>
-                    <input title="Enter the breed of the livestock (e.g., Angus, Holstein) here."  maxLength={20} required value={formInput.breed} onChange={handleChange} name="breed" id="breed" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                    <input title="Enter the breed of the livestock here." placeholder="E.g. Holstein Friesian" maxLength={20} required value={formInput.breed} onChange={handleChange} name="breed" id="breed" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
                    
 
                     <label className="input-label" htmlFor="tag Id" >Tag ID</label>
@@ -459,7 +476,7 @@ export default function Livestock() {
                     </select>
                     
                     <label className="input-label" for="name" >Staff in charge</label>
-                    <input title="Name of staff creating this livestock profile" placeholder="e.g Mr. Ibharalu" id="name" value={formInput.staff} onChange={handleChange} type="text" name="staff" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                    <input title="Name of staff creating this livestock profile" id="name" value={formInput.staff} onChange={handleChange} type="text" name="staff" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
                     <label className="input-label" for="name" >Remark</label>
                     <input title="Add additional remarks about the livestock here. Make it brief for easy readablility."  id="name" value={formInput.remark} onChange={handleChange} type="text" name="remark" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
                    
@@ -517,7 +534,7 @@ editFormModal && <div className="form-backdrop" class=" py-12 bg-white transitio
       <div className="general-form">
         <div>
           <label className="input-label" for="name" >Breed</label>
-          <input title="Enter the breed of the livestock (e.g., Angus, Holstein) here." maxLength={20} value={editformInput.breed} onChange={handleChange} name="breed" id="breed" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+          <input title="Enter the breed of the livestock here." placeholder="E.g. Holstein Friesian" maxLength={20} value={editformInput.breed} onChange={handleChange} name="breed" id="breed" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
 
           <label className="input-label" for="name" >Tag ID</label>
           <input title="Input the unique identification number assigned to the livestock tag." maxLength={15} value={editformInput.tagId} onChange={handleChange} id="name" name="tagId" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
@@ -559,7 +576,7 @@ editFormModal && <div className="form-backdrop" class=" py-12 bg-white transitio
             <option>Adopted</option>
           </select>
           <label className="input-label" for="name" >Staff in charge</label>
-                    <input title="Add any additional notes and remarks about the livestock here." placeholder="e.g Mr. Ibharalu" id="name" value={editformInput.staff} onChange={handleChange} type="text" name="staff" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                    <input title="Name of staff creating this livestock profile"  id="name" value={editformInput.staff} onChange={handleChange} type="text" name="staff" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
                     <label className="input-label" for="name" >Remark</label>
                     <input title="Add any additional notes and remarks about the livestock here."  id="name" value={editformInput.remark} onChange={handleChange} type="text" name="remark" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
                    
@@ -605,8 +622,8 @@ editFormModal && <div className="form-backdrop" class=" py-12 bg-white transitio
 
 
       {
-        viewLivestock && <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-          <div class="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3">
+        viewLivestock && <div class="fixed inset-0 flex  items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+          <div class="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3" style={{marginTop:"30px"}}>
             <div class="mt-2 mb-8 w-full">
               <h4  class="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
                 Livestock Profile
@@ -679,13 +696,20 @@ editFormModal && <div className="form-backdrop" class=" py-12 bg-white transitio
               </div>
 
               <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p class="text-sm text-gray-600">Entry Date</p>
+                <p class="text-base font-medium text-navy-700  dark:text-green-700" >
+                  {selected.entryDate}
+                </p>
+              </div>
+
+              <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p class="text-sm text-gray-600">Remark</p>
-                <p class="text-base font-medium text-navy-700  dark:text-green-700" style={{width:"100%", overflow:"scroll"}} >
+                <p class="text-base font-medium text-navy-700  dark:text-green-700" style={{width:"100%", overflow:"auto"}} >
                   {selected.remark}
                 </p>
               </div>
 
-              <div className="btn-div">
+              <div className="btn-div" style={{width:"100%"}}>
                 <button className="close-btn" onClick={() => setviewLivestock(false)}>Close</button>
               </div>
             </div>

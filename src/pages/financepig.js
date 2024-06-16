@@ -815,7 +815,7 @@ function FinanceRecord() {
                         </div>
 
 
-                        <div className="btn-div">
+                        <div className="btn-div" style={{width:"100%"}}>
                             <button className="close-btn" onClick={() => setviewIncomeDetails(false)}>Close</button>
                         </div>
                     </div>

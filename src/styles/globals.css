@@ -150,8 +150,8 @@ color: white;
 }
 .nav-list li {
   display: inline-block;
-  padding: 20px;
-  font-size: 17px;
+  padding: 20px 30px;
+  font-size: 15px;
   font-family: sans-serif;
 }
 .nav-list a:hover {
@@ -292,6 +292,7 @@ color: white;
   margin: 15px auto 0px auto;
   text-decoration: none;
   color: white;
+  cursor: pointer;
 }
 
 .login-btn:active {
@@ -363,7 +364,7 @@ color: white;
 }
 
 .signup-link:hover {
-  color: rgb(0, 114, 6);
+  color: rgb(0, 255, 13);
 }
 
 .login-header2 {
@@ -631,8 +632,6 @@ font-size: 17px;
   background-position: cover;
   background-size: cover;
   /* width: 100%; */
-
-
 }
 .img11{
     margin-top: 30px;
@@ -901,9 +900,7 @@ background-color: #008009;
   display: flex;
   justify-content: space-between;
 }
-.general-form input{
-  /* width: 200%; */
-}
+
 
 .btn{
   background-color: green;
@@ -951,7 +948,7 @@ background-color: #008009;
 }
 .btn-div{
   /* background-color: yellow; */
-  width: 100%;
+  width: 200%;
   text-align: right;
   margin-top: 30px;
 
@@ -976,7 +973,7 @@ background-color: #008009;
   border: 1px white solid;
   width: 60%;
   /* background-color: red; */
-  margin: 0px auto 0px auto;
+  margin: 25px auto 0px auto;
 
  }
  .livestock-select p {
@@ -990,7 +987,7 @@ background-color: #008009;
   margin-top: 10px;
  }
  .livestock-select img {
-  height: 190px;
+  height: 170px;
   margin: 1px;
   width: 200px;
   /* padding-top: 10px; */
@@ -1120,6 +1117,7 @@ padding: 10px 0px 0px 30px;
 padding: 10px 30px 0px 0px;
 text-align: right;
 }
+
 
 /* media queries */
 

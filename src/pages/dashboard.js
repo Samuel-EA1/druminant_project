@@ -38,7 +38,7 @@ export default function Staff() {
             </div>
             <div className="row-2">
                 <div className="img11">
-                <Link href={"#"} className="link2"><img src="image/duedate.jpg" />
+                <Link href={"/pregnancycheckerselection"} className="link2"><img src="image/duedate.jpg" />
                     <p>Pregnancy Checker</p></Link>
                 </div>
                 <div className="img11">
@@ -46,7 +46,7 @@ export default function Staff() {
                     <p>Lactation tracking</p></Link>
                 </div>
                 <div className="img11">
-                <Link href={"#"} className="link2"><img src="image/quarantine.jpg" />
+                <Link href={"quarantineselection"} className="link2"><img src="image/quarantine.jpg" />
                     <p className="qua">Quarantine</p></Link>
                 </div>
             </div>

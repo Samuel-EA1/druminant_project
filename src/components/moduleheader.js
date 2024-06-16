@@ -23,7 +23,7 @@ function ModuleHeader() {
     return <div>
         <div className="admin-header">
             <div>
-                <Link href={"/"}><img src="image/newlogo.png" className="main-image-laptop" /></Link>
+                <Link href={"/"}><img src="image/newlogo.png" title="Home" className="main-image-laptop" /></Link>
             </div>
 
             <div className="module-nav-list">
