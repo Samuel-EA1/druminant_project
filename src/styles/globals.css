@@ -290,7 +290,7 @@ a {
 
 .login-btn {
   background-color: #00c40d;
-  width: 17%;
+  width: 25%;
   border-radius: 15px;
   text-align: center;
   margin: 15px auto 0px auto;
@@ -486,7 +486,7 @@ a {
 
 .main-image-laptop {
   height: auto;
-  width: 90px;
+  width: 100px;
   /* width: 50%; */
   /* background-color: red; */
   padding: 7px 0px 5px 15px;
