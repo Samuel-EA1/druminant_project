@@ -180,7 +180,7 @@ color: white;
 }
 
 .main-name {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: 75px;
   text-align: left;
   margin-left: 80px;
@@ -1845,7 +1845,6 @@ text-align: right;            /* Ensure it doesn't overflow its container */
     margin: 130px 0px 0px 20px;
     /* background-color: red; */
     padding: 0px 55px 0px 0px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
 
   .main {
@@ -2261,19 +2260,20 @@ font-size: 17px;
   .main-text {
     max-width: 90%;
     margin-left: 15px;
-    font-size: 12px;
+    font-size: 16px;
     margin-top: 10px;
   }
   
   .main-name {
-    font-size: 40px;
-    margin-top: 170px;
+    font-size: 50px;
+    margin-top: 120px;
     margin-left: 15px;
+
   }
   .launch-btn{
     font-size: 18px;
-    margin: 30px 0px 0px 15px;
-    padding: 12px 15px 12px 15px;
+    margin: 33px 0px 0px 15px;
+    padding: 9px 15px 9px 15px;
   }
 }
   
