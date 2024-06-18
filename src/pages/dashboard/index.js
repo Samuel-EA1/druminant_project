@@ -38,7 +38,7 @@ export default function Staff() {
         <ModuleHeader />
         <div className="dashboard">
             {/*welcome to famrland name dashboard */}
-            <p className="first-letter:capitalize">{userFromLocalStorage?.farmland} Dashboard</p>
+            <p className="first-letter:capitalize">{userFromLocalStorage && userFromLocalStorage.farmland} Dashboard</p>
         </div>
 
 
