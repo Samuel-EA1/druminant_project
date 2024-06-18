@@ -42,9 +42,9 @@ export default function Login() {
     }
 
 
-    return <div className="main" >
+    return <div className="main">
         <Header />
-        <div className="text-center mx-0  items-center justify-center">
+        <div className="form">
             <div className="login-header">
                 <Image style={{ margin: "0px auto", width: "120px" }} src={"/image/newlogo.png"} width={100} height={100} />
                 <p>Livestock Management System</p>
