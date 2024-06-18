@@ -1,81 +1,86 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import ModuleHeader from "./moduleheader";
+import { useRecoilState } from "recoil";
+import { userState } from "@/atom";
 
 function Header() {
   const [dropdown, setDropdown] = useState(false);
-  const [cancel, setCancel] = useState(false)
-  const [hamburg, setHamburg] = useState(true)
+  const [userFromLocalStorage, setUserFromLocalStorage] = useRecoilState(userState);
+  const router = useRouter();
 
-  function dropNav() {
-    setDropdown(true);
-    setCancel(true)
-    setHamburg(false)
-  }
-  
-  function hideNav(){
-    setDropdown(false);
-    setCancel(false)
-    setHamburg(true)
-  }
+  const toggleDropdown = () => setDropdown(!dropdown);
 
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    setUserFromLocalStorage(user);
+  }, []);
+
+  const logOut = () => {
+    localStorage.removeItem('user');
+    setUserFromLocalStorage(null);
+    router.push('/');
+  };
+
+  console.log(router)
   return (
     <div className="parent-nav">
-      <div className="navbar">
+  <ModuleHeader/>
+      {/* <div className="navbar">
         <div>
-          <Link href="/" className="Header-links">
-            <img src="image/newlogo.png" alt="broken image" />
+          <Link href="/">
+            <img src="image/newlogo.png" alt="Logo" />
           </Link>
         </div>
         <div className="nav-list-head">
           <ul className="nav-list">
             <li>
-              <a href="/">Home</a>
+              <Link href="/">Home</Link>
             </li>
             <li>
-              <a href="#">Profile</a>
+              <Link href="#">Profile</Link>
+            </li>
+            <li onClick={logOut} style={{ cursor: "pointer" }}>
+              {userFromLocalStorage === null ? "Sign up" : "Log out"}
             </li>
             <li>
-              <a href="/signup">Sign up</a>
-            </li>
-            <li>
-              <a href="#">Help Center</a>
+              <Link href="/help">Help</Link>
             </li>
           </ul>
-          <div className="menu-icon">
-            {
-              hamburg &&   <h1 style={{paddingTop:"4px", fontSize:"23px"}} onClick={dropNav}>&#9776;</h1>
-            }
-            {
-              cancel &&  <h1 style={{paddingTop:"10px", fontSize:"23px"}} onClick={hideNav}> <AiOutlineClose /></h1>
-            }
-           
+          <div className="menu-icon" onClick={toggleDropdown}>
+            {dropdown ? (
+              <h1 style={{ paddingTop: "10px", fontSize: "23px" }}>
+                <AiOutlineClose />
+              </h1>
+            ) : (
+              <h1 style={{ paddingTop: "4px", fontSize: "23px" }}>
+                &#9776;
+              </h1>
+            )}
           </div>
         </div>
-      </div>
-      <div className="drop">
-        {dropdown && 
-          <div>
-            <ul className="dropDownList">
-              <li>
-                <a href="/">Home</a>
-              </li>
-              <li>
-                <a href="/login">Log in</a>
-              </li>
-              <li>
-                <a href="signup">Sign up</a>
-              </li>
-              <li>
-                <a href="#">Administration</a>
-              </li>
-              <li style={{borderBottom: "none"}}>
-                <a href="#">Help Center</a>
-              </li>
-            </ul>
-          </div>
-        }
-      </div>
+      </div> */}
+      {/* {dropdown && (
+        <ModuleHeader/>
+        // <div className="drop">
+        //   <ul className="dropDownList">
+        //     <li>
+        //       <Link href="/">Home</Link>
+        //     </li>
+        //     <li>
+        //       <Link href="/login">Profile</Link>
+        //     </li>
+        //     <li onClick={logOut}>
+        //       <p>{userFromLocalStorage === null ? "Sign up" : "Log out"}</p>
+        //     </li>
+        //     <li style={{ borderBottom: "none" }}>
+        //       <Link href="/help">Help</Link>
+        //     </li>
+        //   </ul>
+        // </div>
+      )} */}
     </div>
   );
 }

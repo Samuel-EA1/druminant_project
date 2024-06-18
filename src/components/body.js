@@ -1,18 +1,33 @@
-import Link from "next/link"
+import { userState } from "@/atom";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 
 function Body() {
-  return <div className="parent-body">
-    <h1 className="main-name">D'Ruminant</h1>
-    <p className="main-text">
-      Your solution for streamlined ruminant livestock management. Our user-friendly web-based system centralizes all aspects 
-      of livestock care, offering tools to enhance efficiency and productivity. Record and organize detailed animal information effortlessly,
-      and access vital data with ease. Revolutionize your livestock management experience with D’ Ruminant. </p>
+
+  const [loading, setLoading] = useState(true);
+
+  const userFromLocalStorage = useRecoilValue(userState)
+
+  // console.log(JSON.parse(userFromLocalStorage));
+
+  return (
+    <div className="parent-body">
+      <h1 className="main-name">D&apos;Ruminant</h1>
+      <p className="main-text">
+        Your solution for streamlined ruminant livestock management. Our user-friendly web-based system centralizes all aspects
+        of livestock care, offering tools to enhance efficiency and productivity. Record and organize detailed animal information effortlessly,
+        and access vital data with ease. Revolutionize your livestock management experience with D&apos;Ruminant.
+      </p>
+
+     
+        <p className="launch-btn" > <Link href={userFromLocalStorage === null ? "/login" : "/dashboard"}>{userFromLocalStorage === null ? "Launch App" : "Proceed to Dashboard"} </Link></p>
+     
+
     
-      <div className="lauch-btn">
-        <Link href={"/login"} ><p>LAUNCH APP</p></Link>
-      </div>
-    
-  </div>
+
+    </div>
+  );
 }
 
-export default Body
+export default Body;

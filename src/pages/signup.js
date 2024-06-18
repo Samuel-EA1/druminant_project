@@ -6,15 +6,15 @@ export default function Login() {
         <Header />
         <div className="form">
             <div className="login-header2">
-                <h1>D'Ruminant</h1>
+                <h1>D&apos;Ruminant</h1>
                 <p>Livestock Management System</p>
             </div>
           
             
-            <div className="signup-fields">
+            <div className="signup-fields ">
                 {/* field 1 */}
                 <input placeholder="Username" type="text"></input><br />
-                <input placeholder="Farm Name"  type="text"></input><br />
+                <input placeholder="Farmland name"  type="text"></input><br />
                 <input placeholder="Email Address"  type="gmail"></input><br />
                 <select className="signup-role">
                     <option>Select role</option>

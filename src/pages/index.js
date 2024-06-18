@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Header from "@/components/header";
 import Body from "@/components/body";
+import ModuleHeader from "@/components/moduleheader";
 
 
 
@@ -26,7 +27,7 @@ export default function Home() {
       </Head>
       <div className="main">
 
-        <Header/>
+        <ModuleHeader/>
         
         <Body />
         

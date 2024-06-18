@@ -174,7 +174,7 @@ color: white;
   text-align: left;
   font-size: 17px;
   /* background-color: yellow; */
-  width: 80%;
+  width: 60%;
   margin: 20px 0px 0px 80px;
   color: white;
 }
@@ -237,8 +237,8 @@ color: white;
 
 .login-header {
   text-align: center;
-  width: 12%;
-  margin: 130px auto 0px auto;
+  width: 15%;
+  margin: 90px auto 0px auto;
 }
 
 .login-header h1 {
@@ -246,6 +246,7 @@ color: white;
   color: white;
   font-weight: bold;
   font-size: 20px;
+
 }
 
 .login-header p {
@@ -371,7 +372,7 @@ color: white;
   text-align: center;
   color: white;
   width: auto;
-  margin: 50px auto 30px auto;
+  margin: 30px auto 20px auto;
 }
 
 .login-header2 h1 {
@@ -393,7 +394,19 @@ color: white;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin-top: 5px ;
 }
-
+.launch-btn{
+  font-weight: 600;
+  text-align: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 26px;
+  background-color: #009E0B;
+  border-radius: 25px;
+  border: 1px solid white;
+  margin: 50px 0px 0px 80px;
+  font-weight: bold;
+  width: fit-content; 
+  padding: 8px 15px 8px 15px;
+}
  .pic-name1{
   /* background-color: green; */
  
@@ -423,23 +436,30 @@ font-family: Verdana, Geneva, Tahoma, sans-serif;
   background-color: red;
 }
 .admin-header{
-  background-color: #008000;
+  /* background-color: #008000; */
   display: flex;
   justify-content: space-between; 
+  align-items: center;
+  padding-bottom: 0px;
 }
 .link1{
   text-decoration: none;
 }
 .log-out{
-  font-size: 20px;
-
+  font-size: 13px;
   width: 100%;
-  margin-top: 10px;
-  margin-right: 15px;
+  margin-top: 3px;
+  margin-right: 20px;
   height: auto;
+  padding-right: 15px;
   color: white;
   cursor: pointer;
 
+}
+.module-nav-list ul li.active  {
+  /* background-color: #007bff;  */
+  /* text-decoration: underline; */
+  /* background-color: rgba(18, 82, 0, 0.5); */
 }
 .hr-right{
   height: 60%;
@@ -450,7 +470,7 @@ font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 .main-image-laptop{
   height: auto;
-  width: 110px;
+  width: 90px;
   /* width: 50%; */
   /* background-color: red; */
   padding: 7px 0px 5px 15px;
@@ -459,6 +479,43 @@ font-family: Verdana, Geneva, Tahoma, sans-serif;
 .module-drop{
   display: none;
 }
+.main-help-page{
+  background-color: #009E0B;
+  color:white;
+  width: 70%;
+  margin: 20px auto;
+}
+.modules-help{
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #005a06;
+  /* border-bottom: 1px solid #005a06; */
+  margin-top: 10px;
+}
+.add-icon{
+  cursor: pointer;
+  margin-right: 10px;
+  margin-top: 7px;
+  font-size: 22px;
+  font-weight: bold;
+}
+.module-help-content {
+  background-color: rgb(210, 252, 197);
+  padding: 0 9px;
+  color: #092b00;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.modules-help {
+  position: relative;
+}
+
+.modules-help .module-help-content.open {
+  padding: 9px;
+}
+
 
 .admin-header h4 {
   font-size: 20px;
@@ -469,7 +526,7 @@ font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 16px;
 }
 .icon1{
-  font-size: 30px;
+  font-size: 25px;
   margin: -5px 0px 0px 10px;
   color: white;
   display: block;
@@ -481,7 +538,7 @@ font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: none;
 }
 .dashboard{
-  background-color: rgb(32, 94, 16);
+  background-color: rgb(20, 78, 6);
   color: white;
   text-align: center;
   padding: 7px 0px 7px 0px;
@@ -594,6 +651,32 @@ padding: 10px 0px 0px 5px;
   margin: 0px auto 20px auto;
   justify-content: space-around; 
 }
+.dashboard-mssg{
+  font-size: 18px;
+  margin-top: -100px;
+  font-family: sans-serif;
+}
+.mss-login{
+  background-color: #00c40d;
+  color: white;
+  padding: 10px 60px;
+  font-family: sans-serif;
+  margin-top: 20px;
+  border-radius: 15px;
+  font-size: 17px;
+}
+.log-out2{
+  border: 1px solid white;
+  padding: 5px 15px;
+  margin-right: 15px;
+  font-size: 14px;
+  color: white;
+  border-radius: 10px;
+}
+.log-out2:hover{
+  background-color: white;
+  color: #008000;
+}
 .row-2 p{
   background-color: green;
   text-align: center;
@@ -705,6 +788,7 @@ font-size: 17px;
 .general{
   display: flex;
 }
+
 .mainPage2{
   background-color: rgb(240, 255, 235);
   width: 90%;
@@ -749,7 +833,7 @@ font-size: 17px;
 }
 .menu-nav2 li p{
   margin-left: 5px;
-  width: 150px;
+
   /* border: 2px solid yellow; */
 }
 .right{
@@ -762,8 +846,7 @@ font-size: 17px;
   color: white;
   text-decoration: none;
   display: inline-block;
-  padding: 10px 50px 7px 50px;
-
+  padding: 5px 35px 7px 35px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 14px;
   margin: 0px;
@@ -782,9 +865,8 @@ font-size: 17px;
   color: green;
 }
 .module-nav-list li:hover{
-  text-decoration: underline;
   color: white;
-  background-color: #1c8b00;
+  text-decoration: underline;
 
 }
 .module-content{
@@ -978,7 +1060,7 @@ background-color: #008009;
  }
  .livestock-select p {
   text-align: center;
-  background-color: #009E0B;
+  background-color: #008000;
   color: white;
   padding: 4px 10px;
   /* margin: 1px; */
@@ -992,8 +1074,7 @@ background-color: #008009;
   width: 200px;
   /* padding-top: 10px; */
   border: 1px solid #009E0B;
-
-  margin-top: 30px;
+  margin-top: 0px;
 
  }
  .live-img2:hover {
@@ -1005,10 +1086,11 @@ background-color: #008009;
  .select-header{
   text-align: center;
   font-size: 17px;
+  padding: 5px 10px;
   font-family:sans-serif;
-  background-color: #009E0B;
-  width: 60%;
-  margin: 120px auto 5px auto;
+  background-color:#008000;
+  width: 57.5%;
+  margin: 150px auto 5px auto;
   color: white;
  }
 .module-header-first{
@@ -1171,7 +1253,7 @@ text-align: right;
     margin: -5px 0px 0px 90px;
   }
   .parent{
-    margin-top: -10px;
+    margin-top: -30px;
   }
   .img11{
     margin-top: 30px;
@@ -1247,7 +1329,7 @@ text-align: right;
   margin: 0px auto 0px auto;
  }
  .livestock-select img {
-  padding-top: 10px;
+  padding-top: 0px;
   margin-top: 30px;
 
  }
@@ -1305,6 +1387,7 @@ text-align: right;
   .dropDownList{  
     position: absolute;
     background-color: #009E0B;
+    border-bottom: 1px solid white;
     top: 20;
     right: 0;
     left: 0;
@@ -1335,20 +1418,23 @@ text-align: right;
     background-color: #fff;
     z-index: 1000;
     display: block;
+    border-bottom: 1px solid white;
   }
   .dropDownList-md li{
     padding: 13px;
-
-      color: white;
+      color: #005a06;
       width: 40%;
       margin: 0px auto 0px auto;
       padding: 10px;
       border-bottom: 1px solid rgb(0, 68, 15);
       text-align: center;
+
+      
   }
   .dropDownList-md{
     position: absolute;
-    background-color: #009E0B;
+    background-color: white;
+    border-bottom: 2px solid white;
     top: 0;
     right: 0;
     left: 0;
@@ -1491,7 +1577,10 @@ position: relative;
     justify-content: space-between;
     height: 33px;
   }
-  
+  .launch-btn{
+    font-size: 22px;
+    margin: 40px 0px 0px 30px;
+  }
   .livestock-select{
     width: 95%;
     /* background-color: red; */
@@ -1532,8 +1621,17 @@ position: relative;
     border: none;
     border-radius: 50%;
     margin-top: 30px;
-  
    }
+   .main-help-page{
+    background-color: #009E0B;
+    color:white;
+    width: 95%;
+    margin: 20px auto;
+  }
+  .parent{
+    margin-top: -40px;
+    height: 90vh;
+  }
 }
 
 @media screen and (max-width: 849px) {
@@ -1654,15 +1752,24 @@ position: relative;
     margin: -3px 0px 0px 10px;
   }
   .row-1{
+    /* background-color: yellow; */
+    display: flex;
     width: 90%;
-    /* background-color: red; */
-    justify-content: space-between;
-    /* margin-top: 50px; */
-
+    margin: 30px auto 20px auto;
+    padding-top: 50px;
+    justify-content: space-around; 
   }
+  .dashboard{
+    font-size: 17px;
+    padding-bottom: 20px;
+  }
+  
   .row-2{
+    display: flex;
     width: 90%;
-    justify-content: space-between;
+    margin: 70px auto 20px auto;
+    padding-top: 00px;
+    justify-content: space-around;  
   }
   .row-2 img{
     width: 150px;
@@ -2010,7 +2117,14 @@ padding-left: 4px;
   font-size: 27px;
   padding: 7px 5px 0px 0px;
 }
-
+.launch-btn{
+  font-size: 19px;
+  margin: 40px 0px 0px 20px;
+}
+.dashboard{
+  font-size: 17px;
+  padding-bottom: 10px;
+}
 }
 
 @media screen and (max-width: 389px) {
@@ -2108,6 +2222,9 @@ font-size: 17px;
     padding: 2px;
     border-radius: 7px;
     font-size: 15px;
+  }
+  .row-1{
+    padding-top: 5px;
   }
 
 
