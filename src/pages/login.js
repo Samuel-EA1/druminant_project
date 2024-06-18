@@ -51,8 +51,8 @@ export default function Login(){
         </div>
         <div className="fields">
             {/* field 1 */}
-            <input placeholder="Username" type="text" name="username" value={formData.username} onChange={handleChange}></input><br/>
-            <input placeholder="Password" type="password" name="password" value={formData.password} onChange={handleChange}></input>
+            <input placeholder="Username (Max. 20 characters)" type="text" name="username" maxLength={20} value={formData.username} onChange={handleChange}></input><br/>
+            <input placeholder="Password (Max. 20 characters)" type="password" name="password"  maxLength={20} value={formData.password} onChange={handleChange}></input>
         </div>
         <div className="login-btn">
         <button onClick={login}><p>Login</p></button>

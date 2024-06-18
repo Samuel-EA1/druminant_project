@@ -281,6 +281,7 @@ a {
   color: green;
   border-radius: 15px;
   padding-left: 10px;
+  padding-right: 10px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 16px;
   outline: none;
@@ -290,7 +291,7 @@ a {
 .login-btn {
   background-color: #00c40d;
   width: 17%;
-  border-radius: 9px;
+  border-radius: 15px;
   text-align: center;
   margin: 15px auto 0px auto;
   text-decoration: none;
@@ -1363,9 +1364,7 @@ a {
   }
 
   .login-btn {
-    background-color: #008000;
     width: 20%;
-    border-radius: 7px;
     text-align: center;
     margin: 15px auto 0px auto;
     text-decoration: none;
@@ -2128,7 +2127,7 @@ a {
   }
 
   .login-header p {
-    font-size: 7px;
+    font-size: 8px;
     text-align: center;
   }
 
