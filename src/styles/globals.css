@@ -1547,15 +1547,15 @@ a {
 
   }
 
-  .dropDownList li {
-    padding: 13px;
-    text-align: center;
-    color: white;
-    width: 40%;
-    margin: 0px auto 0px auto;
-    padding: 10px;
-    border-bottom: 1px solid rgb(0, 68, 15);
-  }
+  .dropDownList {
+    position: absolute;
+    background-color: #009E0B;
+    border-bottom: 1px solid white;
+    top: 0;  /* Corrected the top property */
+    right: 0;
+    left: 0;
+    margin-top: 0px;
+}
 
   .dropDownList a:active {
     color: red;
@@ -1563,14 +1563,19 @@ a {
   }
 
   .module-drop {
-    position: relative;
-    top: 0px;
+    position: fixed;
+    top: 10;
     right: 0;
+    left: 0;
     background-color: #fff;
     z-index: 1000;
     display: block;
     border-bottom: 1px solid white;
-  }
+    animation: slideDown 0.5s ease forwards;
+}
+.module-drop.hidden {
+  animation: slideUp 0.5s ease forwards;
+}
 
   .dropDownList-md li {
     padding: 13px;
@@ -1581,21 +1586,36 @@ a {
     border-bottom: 1px solid rgb(0, 68, 15);
     text-align: center;
 
-
   }
 
   .dropDownList-md {
-    position: absolute;
-    background-color: white;
-    border-bottom: 2px solid white;
-    top: 0;
-    right: 0;
-    left: 0;
-    top: 0;
-    right: 0;
-    left: 0;
-    margin-top: 0px;
-  }
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+  @keyframes slideDown {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+}
+
+
 
   .drop {
     position: relative;
@@ -1744,7 +1764,7 @@ a {
   }
 
   .mobile-header {
-    background-color: green;
+    background-color: rgba(9, 43, 0, 0.5);;
     display: flex;
     justify-content: space-between;
     height: 45px;

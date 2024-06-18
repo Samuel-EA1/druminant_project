@@ -19,6 +19,8 @@ function ModuleHeader() {
         setactivateIcon(true);
         setCancel(true)
         setHamburg(false)
+         currentPath === "/" || currentPath === "/login" || currentPath === "/signup" ? "bg-transparent" : "";
+        currentPath !== "/" && currentPath !== "/login" && currentPath !== "/signup" ? "#008000" : "transparent"
     }
     function hideNav() {
         setactivateIcon(false);
@@ -37,16 +39,19 @@ function ModuleHeader() {
         setUserFromLocalStorage(JSON.parse(user))
 
     }, []);
+    const currentPath = router.asPath
 
     function logOut() {
         localStorage.removeItem('user')
         setUserFromLocalStorage(null)
         router.push('/')
         toast("Bye!")
-
+        currentPath === "/" || currentPath === "/login" || currentPath === "/signup" ? "bg-transparent" : "";
+        currentPath !== "/" && currentPath !== "/login" && currentPath !== "/signup" ? "#008000" : "transparent"
     }
 
-    const currentPath = router.asPath
+    
+  
 
 
 
@@ -97,12 +102,12 @@ function ModuleHeader() {
             </div>}
         </div>
 
-        <div
+        {/* <div
             className={`mobile-header ${currentPath === "/" || currentPath === "/login" || currentPath === "/signup" ? "bg-transparent" : ""}`}
             style={{ backgroundColor: currentPath !== "/" && currentPath !== "/login" && currentPath !== "/signup" ? "#008000" : "transparent" }}
-        >
+        > */}
 
-        {/* <div className="mobile-header"> */}
+        <div className="mobile-header">
 
             
             <Link href={"/"}>
