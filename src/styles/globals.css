@@ -182,10 +182,10 @@ a {
 .main-text {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   text-align: left;
-  font-size: 14px;
+  font-size: 16px;
   /* background-color: yellow; */
   width: 50%;
-  margin: 10px 0px 0px 80px;
+  margin: 12px 0px 0px 80px;
   color: white;
 }
 
@@ -193,7 +193,7 @@ a {
   width: 18%;
   height: auto;
   margin-left: 80px;
-  margin-top: 160px;
+  margin-top: 170px;
 }
 
 .lauch-btn p {
@@ -278,14 +278,13 @@ a {
   width: 99%;
   margin-bottom: 50px;
   background-color: white;
-  border: 1.5px solid green;
   color: green;
-  border-radius: 7px;
+  border-radius: 15px;
   padding-left: 10px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 17px;
+  font-size: 16px;
   outline: none;
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 .login-btn {
@@ -1764,10 +1763,11 @@ a {
   }
 
   .mobile-header {
-    background-color: rgba(9, 43, 0, 0.5);;
+    background-color: rgba(9, 43, 0, 0.5);
     display: flex;
     justify-content: space-between;
     height: 45px;
+    color: #008000;
   }
 
   .launch-btn {
@@ -2138,7 +2138,7 @@ a {
   }
 
   .fields input {
-    height: 50px;
+    height: 45px;
     width: 100%;
     margin: 0px auto 30px auto;
     font-size: 15px;
@@ -2532,18 +2532,6 @@ a {
   .finance-cards {
     margin-top: 0px;
   }
-
-  /* .incomeCard img{
-    width: 50px;
-    height: auto;
-    padding: 10px 0px 0px 10px;
-  } */
-  /* .incomeCard p{
-    font-size: 13px
-  } */
-  /* .incomeCard h3{
-    font-size: 13px
-  } */
   .finan-add-btn2 {
     margin: 010px 5px 5px 0px;
     padding: 2px;
@@ -2558,9 +2546,8 @@ a {
   .main-text {
     max-width: 85%;
     margin-left: 15px;
-    font-size: 15px;
-    margin-top: 10px;
-    
+    font-size: 14px;
+    margin-top: 15px;
   }
 
   .main-name {

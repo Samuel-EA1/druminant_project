@@ -1,4 +1,5 @@
 import Header from "@/components/header";
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
@@ -45,7 +46,7 @@ export default function Login(){
         <Header />
         <div className="form"> 
         <div className="login-header">
-            <h1>D&apos;Ruminant</h1>
+            <Image style={{ margin:"0px auto", width:"120px"}} src={"/image/newlogo.png"} width={100} height={100} />
             <p>Livestock Management System</p>
         </div>
         <div className="fields">
