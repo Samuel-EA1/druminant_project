@@ -172,10 +172,10 @@ color: white;
 .main-text {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   text-align: left;
-  font-size: 17px;
+  font-size: 14px;
   /* background-color: yellow; */
-  width: 60%;
-  margin: 20px 0px 0px 80px;
+  width: 50%;
+  margin: 0px 0px 0px 80px;
   color: white;
 }
 
@@ -184,7 +184,7 @@ color: white;
   font-size: 75px;
   text-align: left;
   margin-left: 80px;
-  margin-top: 180px;
+  margin-top: 200px;
   font-weight: bold;
   color: white;
 }
@@ -216,7 +216,7 @@ color: white;
 } */
 .main {
   background-image: url("../../public/image/background.jpg");
-  background-position: cover;
+  background-position: center;
   background-size: cover;
   height: 100vh;
 }
@@ -226,14 +226,9 @@ color: white;
   background-size: cover;
   height: 100vh;
 }
-.parent-body {
-  /* border: 3px solid red; */
-}
 
-.parent-body a {
-  color: white;
-  text-decoration: none;
-}
+
+
 
 .login-header {
   text-align: center;
@@ -400,12 +395,12 @@ color: white;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 26px;
   background-color: #009E0B;
-  border-radius: 25px;
-  border: 1px solid white;
-  margin: 50px 0px 0px 80px;
+  border-radius: 20px;
+  margin: 30px 0px 0px 80px;
   font-weight: bold;
   width: fit-content; 
-  padding: 8px 15px 8px 15px;
+  color: white;
+  padding: 12px 15px 12px 15px;
 }
  .pic-name1{
   /* background-color: green; */
@@ -1364,18 +1359,12 @@ text-align: right;
   }
   .main-name {
     font-size: 65px;
-    margin-top: 140px;
+    margin-top: 150px;
   }
   .main-text {
     width: 900px;
-    max-width: 90%;
-    font-size: 15px;
-  }
-  .lauch-btn p {
-    font-size: 22px;
-    width: 250px;
-    height: 50px;
-    margin-top: 40px;
+    max-width: 50%;
+    font-size: 14px;
   }
 }
 @media screen and (max-width: 1106px) {
@@ -1471,22 +1460,26 @@ position: relative;
 
   .main-text {
     width: 900px;
-    max-width: 80%;
+    max-width: 50%;
     font-size: 14px;
+    margin-left: 30px;
     position: relative;
+    margin-top: 10px;
   }
 
   .main-name {
-    font-size: 65px;
+    font-size: 60px;
     margin-top: 140px;
+    margin-left: 30px;
     position: relative;
   }
-
-  .lauch-btn p {
-    font-size: 22px;
-    padding-top: 10.5px;
-    width: 250px;
-    height: 50px;
+  .launch-btn{
+    font-weight: 600;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 23px;
+    margin: 30px 0px 0px 30px;
+    padding: 12px 15px 12px 15px;
   }
 
  
@@ -1595,23 +1588,23 @@ position: relative;
     border: none;
    }
    .main-text {
+    max-width: 50%;
     font-size: 14px;
-    margin-left: 30px;
-    max-width: 90%;
   }
 
   .main-name {
-    font-size: 60px;
-    margin-top: 150px;
+    font-size: 58px;
+    margin-top: 160px;
     margin-left: 30px;
+    position: relative;
   }
-
-  .lauch-btn p {
-    font-size: 22px;
-    padding-top: 10.5px;
-    width: 250px;
-    margin-left: 30px;
-    height: 50px;
+  .launch-btn{
+    font-weight: 600;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 23px;
+    margin: 30px 0px 0px 30px;
+    padding: 12px 15px 12px 15px;
   }
   .livestock-select img {
     height: 190px;
@@ -1633,6 +1626,27 @@ position: relative;
     height: 90vh;
   }
 }
+
+@media screen and (max-width: 764px) {
+  .main-text {
+    max-width: 60%;
+    font-size: 13.5px;
+  }
+  
+  .main-name {
+    font-size: 52px;
+    margin-top: 170px;
+    margin-left: 30px;
+    position: relative;
+  }
+  .launch-btn{
+    font-weight: 600;
+    font-size: 20px;
+    margin: 30px 0px 0px 30px;
+    padding: 12px 15px 12px 15px;
+  }
+}
+
 
 @media screen and (max-width: 849px) {
   .login-header h1 {
@@ -2125,6 +2139,23 @@ padding-left: 4px;
   font-size: 17px;
   padding-bottom: 10px;
 }
+.main-text {
+  max-width: 70%;
+  margin-left: 30px;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.main-name {
+  font-size: 47px;
+  margin-top: 170px;
+  margin-left: 30px;
+}
+.launch-btn{
+  font-size: 18px;
+  margin: 30px 0px 0px 30px;
+  padding: 12px 15px 12px 15px;
+}
 }
 
 @media screen and (max-width: 389px) {
@@ -2202,7 +2233,7 @@ font-size: 17px;
   .amount p {
     font-size: 14px;
   }
-  }
+  
   .finance-cards{
     margin-top: 0px;
   }
@@ -2227,10 +2258,22 @@ font-size: 17px;
     padding-top: 5px;
   }
 
-
-  /* .btn-div{
-    background-color: yellow;
-  } */
- 
+  .main-text {
+    max-width: 90%;
+    margin-left: 15px;
+    font-size: 12px;
+    margin-top: 10px;
+  }
   
-
+  .main-name {
+    font-size: 40px;
+    margin-top: 170px;
+    margin-left: 15px;
+  }
+  .launch-btn{
+    font-size: 18px;
+    margin: 30px 0px 0px 15px;
+    padding: 12px 15px 12px 15px;
+  }
+}
+  
