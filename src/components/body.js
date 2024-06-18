@@ -17,7 +17,7 @@ function Body() {
         {/* <h1 className="main-name">D&apos;Ruminant</h1> */}
         <Image className="main-name" src={"/image/newlogo.png"} width={100} height={100} />
         <p className="main-text">
-          Your solution for streamlined ruminant livestock management. Our user-friendly web-based system centralizes all aspects
+          Your solution for streamlined ruminant livestock management which centralizes all aspects
           of livestock care, offering tools to enhance efficiency and productivity. Record and organize detailed animal information effortlessly,
           and access vital data with ease. 
         </p>

@@ -97,22 +97,22 @@ function ModuleHeader() {
             </div>}
         </div>
 
-        {/* <div
-            className={`admin-header ${currentPath === "/" || currentPath === "/login" || currentPath === "/signup" ? "bg-transparent" : ""}`}
+        <div
+            className={`mobile-header ${currentPath === "/" || currentPath === "/login" || currentPath === "/signup" ? "bg-transparent" : ""}`}
             style={{ backgroundColor: currentPath !== "/" && currentPath !== "/login" && currentPath !== "/signup" ? "#008000" : "transparent" }}
-        > */}
+        >
 
-        <div className="mobile-header">
+        {/* <div className="mobile-header"> */}
 
             
             <Link href={"/"}>
-                <Image src="/image/mobilelogo.png" alt="Home"  width={40} height={70} className="main-image" style={{ height: "35px"}} />
+                <Image src="/image/mobilelogo.png"  width={40} height={70} className="main-image"  />
             </Link>
             {hamburg && (
                 <Link className="link1" href={"#"}><p onClick={dropNav} className="icon1">&#9776;</p></Link>
             )}
             {cancel && (
-                <Link className="link1" href={"#"}><p style={{ paddingTop: "12px" }} onClick={hideNav} className="icon1"><AiOutlineClose /></p></Link>
+                <Link className="link1" href={"#"}><p style={{paddingTop:"10px"}}  className="icon1"><AiOutlineClose onClick={hideNav}  /></p></Link>
             )}
         </div>
 

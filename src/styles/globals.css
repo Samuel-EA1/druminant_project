@@ -411,7 +411,7 @@ a {
   font-weight: bold;
   width: fit-content;
   color: white;
-  padding: 12px 25px 12px 25px;
+  padding: 10px 25px 10px 25px;
 }
 
 .pic-name1 {
@@ -548,10 +548,13 @@ a {
 }
 
 .icon1 {
-  font-size: 25px;
-  margin: -5px 0px 0px 10px;
+  font-size: 35px;
+  margin-top: -7px;
+  margin-bottom: 0px;
   color: white;
-  display: block;
+  /* background-color: red; */
+  margin-right: 15px;
+  width: auto;
 }
 
 .mobile-header {
@@ -1643,7 +1646,7 @@ a {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 23px;
     margin: 30px 0px 0px 30px;
-    padding: 12px 15px 12px 15px;
+    padding: 10px 25px 10px 25px;
   }
 
 
@@ -1744,7 +1747,7 @@ a {
     background-color: green;
     display: flex;
     justify-content: space-between;
-    height: 33px;
+    height: 45px;
   }
 
   .launch-btn {
@@ -1785,7 +1788,7 @@ a {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 23px;
     margin: 30px 0px 0px 30px;
-    padding: 12px 15px 12px 15px;
+    padding: 10px 25px 10px 25px;
   }
 
   .livestock-select img {
@@ -1809,6 +1812,13 @@ a {
     margin-top: -40px;
     height: 90vh;
   }
+  .main-image{
+    /* background-color: red; */
+    padding-left: 0px;
+    margin-left: 8px;
+    margin-top: -1px;
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 764px) {
@@ -1828,7 +1838,7 @@ a {
     font-weight: 600;
     font-size: 20px;
     margin: 30px 0px 0px 30px;
-    padding: 12px 15px 12px 15px;
+    padding: 10px 25px 10px 25px;
   }
 }
 
@@ -2207,9 +2217,7 @@ a {
     padding-left: 4px;
   }
 
-  .mobile-header p {
-    padding-right: 4px;
-  }
+
 
   .hello-message {
     background-color: rgb(0, 128, 17);
@@ -2225,12 +2233,7 @@ a {
     display: block;
   }
 
-  .mobile-header p {
-    color: white;
-    font-family: sans-serif;
-    font-size: 19px;
-    padding: 8px 5px 0px 0px;
-  }
+
 
   .menu {
     display: none;
@@ -2414,7 +2417,7 @@ a {
   .launch-btn {
     font-size: 18px;
     margin: 30px 0px 0px 30px;
-    padding: 12px 15px 12px 15px;
+    padding: 10px 25px 10px 25px;
   }
 }
 
@@ -2537,6 +2540,7 @@ a {
     margin-left: 15px;
     font-size: 15px;
     margin-top: 10px;
+    
   }
 
   .main-name {
@@ -2545,11 +2549,12 @@ a {
     width: 55%;
     height: auto;
     margin-top: 110px;
+
   }
 
   .launch-btn {
     font-size: 22px;
     margin: 33px 0px 0px 15px;
-    padding: 12px 25px 12px 25px;
+    padding: 10px 25px 10px 25px;
   }
 }
