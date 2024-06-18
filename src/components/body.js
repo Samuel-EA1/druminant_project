@@ -1,4 +1,5 @@
 import { userState } from "@/atom";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -13,7 +14,8 @@ function Body() {
 
   return (
       <div className="parent-body">
-        <h1 className="main-name">D&apos;Ruminant</h1>
+        {/* <h1 className="main-name">D&apos;Ruminant</h1> */}
+        <Image className="main-name" src={"/image/newlogo.png"} width={100} height={100} />
         <p className="main-text">
           Your solution for streamlined ruminant livestock management. Our user-friendly web-based system centralizes all aspects
           of livestock care, offering tools to enhance efficiency and productivity. Record and organize detailed animal information effortlessly,
