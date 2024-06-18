@@ -96,7 +96,7 @@ export default function Livestock() {
     setEditFormModal(true);
   };
 
-  const [livestockData, setLivestockData] = useState([]);
+  const [livestockData, setLivestockData] = useState([0,2,3,4,5,6,7,7,8,8,9,9,9,9,9,9,9,9,99,]);
   const [idCounter, setIdCounter] = useState(1);
 
   const getCurrentDateTime = () => {
