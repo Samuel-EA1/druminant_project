@@ -102,22 +102,22 @@ function ModuleHeader() {
             </div>}
         </div>
 
-        {/* <div
-            className={`mobile-header ${currentPath === "/" || currentPath === "/login" || currentPath === "/signup" ? "bg-transparent" : ""}`}
-            style={{ backgroundColor: currentPath !== "/" && currentPath !== "/login" && currentPath !== "/signup" ? "#008000" : "transparent" }}
-        > */}
+        <div
+            className={`mobile-header ${currentPath === "/" || currentPath === "/login" || currentPath === "/signup" ? "rgba(9, 43, 0, 0.5)" : "#008000"}`}
+            style={{ backgroundColor: currentPath !== "/" && currentPath !== "/login" && currentPath !== "/signup" ? "#008000" : "rgba(9, 43, 0, 0.5)" }}
+        >
 
-        <div className="mobile-header">
+        {/* <div className="mobile-header"> */}
 
             
             <Link href={"/"}>
                 <Image src="/image/mobilelogo.png"  width={40} height={70} className="main-image"  />
             </Link>
             {hamburg && (
-                <Link className="link1" href={"#"}><p onClick={dropNav} className="icon1">&#9776;</p></Link>
+                <p onClick={dropNav} className="icon1">&#9776;</p>
             )}
             {cancel && (
-                <Link className="link1" href={"#"}><p style={{paddingTop:"10px"}}  className="icon1"><AiOutlineClose onClick={hideNav}  /></p></Link>
+                <p style={{paddingTop:"10px"}}  className="icon1"><AiOutlineClose onClick={hideNav}  /></p>
             )}
         </div>
 
