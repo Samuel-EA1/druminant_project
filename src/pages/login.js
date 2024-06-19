@@ -4,6 +4,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { FaUser } from "react-icons/fa";
 
 export default function Login() {
     const router = useRouter()
@@ -46,8 +47,8 @@ export default function Login() {
         <Header />
         <div className="form">
             <div className="login-header">
-                <Image style={{ margin: "0px auto", width: "120px" }} src={"/image/newlogo.png"} width={100} height={100} />
-                <p>Livestock Management System</p>
+            <FaUser className="login-user"/>
+                <p>USER LOGIN</p>
             </div>
             <div className="fields">
                 {/* field 1 */}
@@ -59,6 +60,7 @@ export default function Login() {
             </div>
             <div className="signup">
                 <p>Don&apos;t have an account yet? <Link href={"/signup"} className="signup-link">Sign up</Link></p>
+                <p><Link href={"/signup"} className="signup-link">Forgot password?</Link></p>
             </div>
         </div>
 

@@ -227,30 +227,15 @@ a {
   background-size: cover;
   height: 100vh;
   width: 100vw;
-  position: fixed;
-  top: 0;
-  left: 0;
+  object-fit: cover;
 }
 
-@media (orientation: landscape) {
-  html, body {
-    overflow: scroll;
-  }
-}
-
-@media (orientation: portrait) {
-  html, body {
-    overflow: hidden;
-  }
-}
-
-
-/* .main2 {
+.main2 {
   background-image: url("../../public/image/image2.jpg");
   background-position: cover;
   background-size: cover;
   height: 100vh;
-} */
+}
 
 
 
@@ -270,9 +255,8 @@ a {
 }
 
 .login-header p {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: bold;
-  font-size: 11px;
+  font-size: 20px;
   text-align: center;
   color: white;
 }
@@ -303,6 +287,14 @@ a {
   font-size: 16px;
   outline: none;
   font-weight: bolder;
+}
+.login-user{
+  background-color: #00c40d;
+  border-radius: 50%;
+  margin:-30px auto 10px auto;
+  width: auto;
+  height: 50px;
+  color: white;
 }
 
 .login-btn {
@@ -1000,11 +992,7 @@ a {
   cursor: default;
 }
 
-.form{
-  border: 2px solid red;
-  display: flex;
-  flex-direction: column;
-}
+
 
 .module-header {
   font-size: 20px;
@@ -1373,6 +1361,7 @@ a {
     width: 20%;
   }
 
+
   .login-header2 {
     margin: 30px auto 30px auto;
   }
@@ -1697,12 +1686,7 @@ a {
   }
 
   .login-header p {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: bold;
-    font-size: 11px;
-    text-align: center;
-    width: 100%;
-    /* background-color: green; */
+    font-size: 15px;
   }
 
   .login-btn {
@@ -1742,6 +1726,9 @@ a {
   .row-1 {
     width: 90%;
     margin: 40px;
+  }
+  .login-header p {
+    font-size: 15px;
   }
 
   .row-2 {
@@ -1881,6 +1868,9 @@ a {
     margin: 30px 0px 0px 30px;
     padding: 10px 25px 10px 25px;
   }
+  .login-header p {
+    font-size: 15px;
+  }
 }
 
 
@@ -1895,16 +1885,9 @@ a {
     /* margin: 120px auto 0px auto; */
     /* background-color: red; */
   }
-
   .login-header p {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: bold;
-    font-size: 11px;
-    text-align: center;
-    width: 100%;
-    /* background-color: green; */
+    font-size: 15px;
   }
-
   .login-header2 p {
     font-size: 6px;
 
@@ -2172,9 +2155,8 @@ a {
     margin: 15px auto 0px auto;
   }
 
-  .login-btn p {
+  .login-header p {
     font-size: 15px;
-    padding-top: 12px;
   }
 
   .login-header2 p {
@@ -2238,13 +2220,12 @@ a {
 
   .login-btn {
     width: 60%;
-    height: 40px;
+    height: 50px;
     margin: 15px auto 0px auto;
   }
 
-  .login-btn p {
-    font-size: 16px;
-    padding-top: 10px;
+  .login-header p {
+    font-size: 15px;
   }
 
   .admin-header h4 {
@@ -2470,7 +2451,12 @@ a {
     padding-left: 7px;
     font-size: 12px;
   }
-
+  .login-header p {
+    font-size: 15px;
+  }
+  .login-user{
+    background-color: rgba(9, 43, 0, 0.5);
+  }
   .search-icon {
     font-size: 24px;
     margin-top: 5px;
