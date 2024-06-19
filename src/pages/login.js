@@ -60,7 +60,7 @@ export default function Login() {
             </div>
             <div className="signup">
                 <p>Don&apos;t have an account yet? <Link href={"/signup"} className="signup-link">Sign up</Link></p>
-                <p><Link href={"/signup"} className="signup-link">Forgot password?</Link></p>
+                <p className="pt-4"><Link href={"/signup"} className="signup-link">Forgot password?</Link></p>
             </div>
         </div>
 

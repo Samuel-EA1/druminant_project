@@ -1,28 +1,28 @@
 import Header from "@/components/header";
 import Link from "next/link";
+import { FaUser } from "react-icons/fa";
 
 export default function Login() {
     return <div className="main">
         <Header />
         <div className="form">
-            <div className="login-header2">
-                <h1>D&apos;Ruminant</h1>
-                <p>Livestock Management System</p>
+        <div className="login-header">
+            <FaUser className="login-user" style={{marginTop:"-70px"}}/>
+                <p>USER SIGNUP</p>
             </div>
-          
             
             <div className="signup-fields ">
                 {/* field 1 */}
-                <input placeholder="Username" type="text"></input><br />
-                <input placeholder="Farmland name"  type="text"></input><br />
-                <input placeholder="Email Address"  type="gmail"></input><br />
+                <input placeholder="Username" maxLength={20} type="text"></input><br />
+                <input placeholder="Farmland name" maxLength={40}  type="text"></input><br />
+                <input placeholder="Email Address" maxLength={40} type="gmail"></input><br />
                 <select className="signup-role">
                     <option>Select role</option>
                     <option>Admin</option>
                     <option>Staff</option>
                 </select>
-                <input placeholder="Password" type="password"></input><br />
-                <input placeholder="Password Confirmation" type="password"></input><br />
+                <input placeholder="Password" maxLength={20} type="password"></input><br />
+                <input placeholder="Password Confirmation" maxLength={20} type="password"></input><br />
                 
     
             </div>

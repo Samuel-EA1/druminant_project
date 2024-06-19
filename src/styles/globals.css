@@ -348,14 +348,14 @@ a {
   width: 100%;
   margin: 0px auto 30px auto;
   background-color: white;
-  border: 1px solid green;
   color: green;
   padding-left: 10px;
+  padding-right: 10px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   outline: none;
   font-weight: bold;
-  border-radius: 7px;
+  border-radius: 15px;
 }
 
 .signup-role {
@@ -379,7 +379,7 @@ a {
 }
 
 .signup-link:hover {
-  color: rgb(0, 255, 13);
+  color: #00c40d;
 }
 
 .login-header2 {
@@ -558,12 +558,13 @@ a {
 
 .icon1 {
   font-size: 35px;
-  margin-top: -7px;
+  margin-top: -5px;
   margin-bottom: 0px;
   color: white;
   /* background-color: red; */
   margin-right: 15px;
   width: auto;
+  
 }
 
 .mobile-header {
@@ -1576,11 +1577,12 @@ a {
     top: 10;
     right: 0;
     left: 0;
-    background-color: #fff;
+    background-color: white;
+    border-bottom: 5px solid #0e4100;
     z-index: 1000;
     display: block;
-    border-bottom: 1px solid white;
     animation: slideDown 0.5s ease forwards;
+
 }
 .module-drop.hidden {
   animation: slideUp 0.5s ease forwards;
@@ -1708,7 +1710,7 @@ a {
   }
 
   .signup-fields input {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .signup-role {
@@ -2173,7 +2175,7 @@ a {
 
   .signup-fields input {
     height: 38px;
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .signup-role {
