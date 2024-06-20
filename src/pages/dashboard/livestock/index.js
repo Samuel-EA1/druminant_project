@@ -11,10 +11,10 @@ function LivestockSelection() {
         <p className="select-header">Select livestock to monitor and record livestock details</p>
         <div className="livestock-select">
             <div className="live-img2">
-                <Link href={`/dashboard/livestock/cattle`}>
-                    <Image className="live-img1" width={100} height={100} src="/image/cattle.jpg" />
-                    <p>Cattle</p>
-                </Link>
+                
+                    <Image className="live-img1" width={100} height={100} style={{borderRadius:"5px"}} src="/image/cattle.jpg" />
+                    <Link href={`/dashboard/livestock/cattle`}><p>Cattle</p></Link>
+                
             </div>
 
             <div className="live-img2">

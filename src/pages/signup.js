@@ -8,7 +8,7 @@ export default function Login() {
         <div className="form">
         <div className="login-header">
             <FaUser className="login-user" style={{marginTop:"-70px"}}/>
-                <p>USER SIGNUP</p>
+                <p style={{paddingBottom:"10px"}}>USER SIGNUP</p>
             </div>
             
             <div className="signup-fields ">

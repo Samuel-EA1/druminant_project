@@ -124,14 +124,14 @@ function ModuleHeader() {
         {activateIcon && (
             <div className="module-drop">
                 <ul className="dropDownList-md">
-                    <li><Link href={"/"} className="menu-nav2">Home</Link></li>
-                    <li><Link href={"/dashboard"} className="menu-nav2">Dashboard</Link></li>
-                    <li><Link href={"#"} className="menu-nav2">Profile</Link></li>
-                    <li><Link href={"/help"} className="menu-nav2">Help</Link></li>
+                    <li className={router.pathname === "/" ? "active" : ""} ><Link href={"/"} className="menu-nav2">Home</Link></li>
+                    <li className={router.pathname === "/dashboard" ? "active" : ""} ><Link href={"/dashboard"} className="menu-nav2">Dashboard</Link></li>
+                    <li className={router.pathname === "/profile" ? "active" : ""} ><Link href={"profile"} className="menu-nav2">Profile</Link></li>
+                    <li className={router.pathname === "/help" ? "active" : ""} ><Link href={"/help"} className="menu-nav2">Help</Link></li>
                     {userFromLocalStorage?.isAdmin && (
                         <>
-                            <li><Link href={"/request"} className="menu-nav2">Requests</Link></li>
-                            <li><Link href={"/staffinfo"} className="menu-nav2">Staff</Link></li>
+                            <li className={router.pathname === "/request" ? "active" : ""} ><Link href={"/request"} className="menu-nav2">Requests</Link></li>
+                            <li className={router.pathname === "/staffinfo" ? "active" : ""} ><Link href={"/staffinfo"} className="menu-nav2">Staff</Link></li>
                         </>
                     )}
                     <li style={{ borderBottom: "none", cursor: "pointer" }}><p onClick={logOut} className="menu-nav2">Log out</p></li>

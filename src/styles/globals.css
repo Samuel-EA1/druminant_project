@@ -480,9 +480,13 @@ a {
 }
 
 .module-nav-list ul li.active {
-  /* background-color: #007bff;  */
+  background-color: #004b00; 
   /* text-decoration: underline; */
   /* background-color: rgba(18, 82, 0, 0.5); */
+}
+.module-drop ul li.active{
+  background-color: #008000;
+  color: white;
 }
 
 .hr-right {
@@ -576,7 +580,7 @@ a {
 }
 
 .dashboard {
-  background-color: rgb(20, 78, 6);
+  background-color: #0f4b00;
   color: white;
   text-align: center;
   padding: 7px 0px 7px 0px;
@@ -1181,15 +1185,7 @@ a {
   margin-top: 10px;
 }
 
-.livestock-select img {
-  height: 170px;
-  margin: 1px;
-  width: 200px;
-  /* padding-top: 10px; */
-  border: 1px solid #009E0B;
-  margin-top: 0px;
 
-}
 
 .live-img2:hover {
   transform: scale(1.04);
@@ -1725,6 +1721,17 @@ a {
 }
 
 @media screen and (max-width: 951px) {
+
+  .main {
+    background-image: url("../../public/image/phonebg.jpg");
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+    object-fit: cover;
+    color: #092b00; 
+  }
+  
   .row-1 {
     width: 90%;
     margin: 40px;
@@ -1756,7 +1763,7 @@ a {
 
   .row-1 p {
     padding: 5px 0px 5px 0px;
-    font-weight: normal;
+    font-weight: bold;
     font-size: 14px;
   }
 
@@ -1855,6 +1862,7 @@ a {
   .main-text {
     max-width: 60%;
     font-size: 13.5px;
+    text-shadow: black 5px ;
   }
 
   .main-name {
@@ -2043,7 +2051,7 @@ a {
 
   .row-1 p {
     padding: 5px 0px 5px 0px;
-    font-weight: normal;
+    font-weight:bold;
     font-size: 12px;
 
   }
@@ -2305,9 +2313,9 @@ a {
 
   .row-1 p {
     color: white;
-    font-family: sans-serif;
+  
     border: 1px solid white;
-    font-weight: lighter;
+    font-weight: bold;
     font-size: 15px;
 
   }
