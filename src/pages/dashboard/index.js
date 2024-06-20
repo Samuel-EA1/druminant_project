@@ -20,12 +20,12 @@ export default function Staff() {
     useEffect(() => {
         const user = localStorage.getItem('user');
         if (user) {
-          const parsedUser = JSON.parse(user);
-          setUserFromLocalStorage(parsedUser);
-          console.log("debugging")
-          toast(`Welcome ${parsedUser.username}`);
+            const parsedUser = JSON.parse(user);
+            setUserFromLocalStorage(parsedUser);
+            console.log("debugging")
+            toast(`Welcome ${parsedUser.username}`);
         }
-      }, []);
+    }, []);
     console.log(userFromLocalStorage)
     //conditions
     //1. display everything for admin
@@ -34,53 +34,297 @@ export default function Staff() {
     //4 . display "join another farm", show a button on a text input to request to join anther farm, only if the status is rejected
 
     //{userFromLocalStorage?.isAdmin &&
-    return <div>
+    return <div className="dashboard-main">
         <ModuleHeader />
+        <hr />
+
         <div className="dashboard">
-            {/*welcome to famrland name dashboard */}
-            <p className="first-letter:capitalize">{userFromLocalStorage && userFromLocalStorage.farmland}<br className="break"/> Dashboard</p>
+            <p className="first-letter:capitalize">{userFromLocalStorage && userFromLocalStorage.farmland}<br className="break" /> Dashboard</p>
+        </div>
+        <p style={{ color: "white", textAlign: "center", fontSize: "14px" }}>(Click on the name of the module)</p>
+
+        <div className="desktop-dashboard">
+            <div className="row-1">
+                <div className="card1">
+                    <Link href={`/dashboard/livestock`}><h1>Livestock Profile</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "auto", width: "60px", borderRadius: "50%", marginRight: "10px" }} src={"/image/sheep.jpg"} width={100} height={100} />
+                        </div>
+                    </div>
+                </div>
+                <div className="card1">
+                    <Link href={`/dashboard/incomeexpense`}><h1>Income & Expense</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "60px ", width: "60px", borderRadius: "50%", marginRight: "10px" }} src={"/image/finance.jpg"} width={100} height={100} />
+                        </div>
+                    </div>
+                </div>
+                <div className="card1">
+                    <Link href={`/dashboard/event`}><h1>Event Tracker</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "60px", width: "60px", borderRadius: "50%", marginRight: "10px" }} src={"/image/event.jpg"} width={100} height={100} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="row-1">
+
+                <div className="card1">
+                    <Link href={`/dashboard/pregnancychecker`}><h1>Pregnancy Checker</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "60px", width: "60px", borderRadius: "50%", marginRight: "10px" }} src={"/image/pregnant.png"} width={100} height={100} />
+                        </div>
+                    </div>
+                </div>
+                <div className="card1">
+                    <Link href={`/dashboard/lactation`}><h1>Lactation Tracker</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "60px", width: "60px", borderRadius: "50%", marginRight: "10px" }} src={"/image/lactation2.jpg"} width={100} height={100} />
+                        </div>
+                    </div>
+                </div>
+                <div className="card1">
+                    <Link href={`/dashboard/quarantine`}><h1>Quarantine</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "55px", width: "55px", borderRadius: "50%", marginRight: "10px" }} src={"/image/quaran.jpg"} width={100} height={100} />
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        {/* mobile 2*/}
+        <div className="mobile-dashboard2">
 
-        {userFromLocalStorage === null ? <div className="text-center mx-0 h-screen flex items-center justify-center">
-           <div className="flex items-center justify-center flex-col">
-           <p className="dashboard-mssg">You are not logged in! <br/>Please, log in to access dashboard</p>
-           <Link href={"/login"} className="mss-login">login</Link>
-           </div>
-            </div> 
-            : 
-            <div className="parent">
+            <div className="row-3">
+                <div className="card3">
+                    <Link href={`/dashboard/livestock`}><h1>Livestock Profile</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "auto", width: "60px", borderRadius: "50%", marginRight: "10px" }} src={"/image/sheep.jpg"} width={100} height={100} />
+                        </div>
+                    </div>
+                </div>
+                <div className="card3">
+                    <Link href={`/dashboard/incomeexpense`}><h1>Income & Expense</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "60px ", width: "60px", borderRadius: "50%", marginRight: "10px" }} src={"/image/finance.jpg"} width={100} height={100} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="row-3">
+                <div className="card3">
+                    <Link href={`/dashboard/event`}><h1>Event Tracker</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "60px", width: "60px", borderRadius: "50%", marginRight: "10px" }} src={"/image/event.jpg"} width={100} height={100} />
+                        </div>
+                    </div>
+                </div>
+                <div className="card3">
+                    <Link href={`/dashboard/pregnancychecker`}><h1>Pregnancy Checker</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "60px", width: "60px", borderRadius: "50%", marginRight: "10px" }} src={"/image/pregnant.png"} width={100} height={100} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="row-3">
+                <div className="card3">
+                    <Link href={`/dashboard/lactation`}><h1>Lactation Tracker</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "60px", width: "60px", borderRadius: "50%", marginRight: "10px" }} src={"/image/lactation2.jpg"} width={100} height={100} />
+                        </div>
+                    </div>
+                </div>
+                <div className="card3">
+                    <Link href={`/dashboard/quarantine`}><h1>Quarantine</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "55px", width: "55px", borderRadius: "50%", marginRight: "10px" }} src={"/image/quaran.jpg"} width={100} height={100} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <div className="row-1">
-                <div className="img11">
-                    <Link href={`/dashboard/livestock`} className="link2"><Image src="/image/live.jpg" width={100} height={100}/>
-                        <p>Livestock</p></Link>
+        {/* mobile */}
+        <div className="mobile-dashboard">
+
+            <div className="row-2">
+                <div className="card2">
+                    <Link href={`/dashboard/livestock`}><h1>Livestock Profile</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "auto", width: "60px", borderRadius: "50%", marginRight: "10px" }} src={"/image/sheep.jpg"} width={100} height={100} />
+                        </div>
+                    </div>
                 </div>
-                <div className="img11">
-                    <Link href={`/dashboard/incomeexpense`} className="link2"><Image src="/image/cash.jpg" width={100} height={100} />
-                        <p>Income/Expense</p></Link>
-                </div>
-                <div className="img11">
-                    <Link href={`/dashboard/event`} className="link2"><Image width={100} height={100} quality={100} src="/image/eventt.jpg" className="event" />
-                        <p>Event Tracker</p></Link>
+                <div className="card2">
+                    <Link href={`/dashboard/incomeexpense`}><h1>Income & Expense</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "60px ", width: "60px", borderRadius: "50%", marginRight: "10px" }} src={"/image/finance.jpg"} width={100} height={100} />
+                        </div>
+                    </div>
                 </div>
             </div>
             <div className="row-2">
-                <div className="img11">
-                    <Link href={`/dashboard/pregnancychecker`} className="link2"><Image width={100} height={100} src="/image/duedate.jpg" />
-                        <p>Pregnancy Checker</p></Link>
+                <div className="card2">
+                    <Link href={`/dashboard/event`}><h1>Event Tracker</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "60px", width: "60px", borderRadius: "50%", marginRight: "10px" }} src={"/image/event.jpg"} width={100} height={100} />
+                        </div>
+                    </div>
                 </div>
-                <div className="img11">
-                    <Link href={`/dashboard/lactation`} className="link2"><Image width={100} height={100} src="/image/task.jpg" className="task" />
-                        <p>Lactation tracking</p></Link>
+                <div className="card2">
+                    <Link href={`/dashboard/pregnancychecker`}><h1>Pregnancy Checker</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "60px", width: "60px", borderRadius: "50%", marginRight: "10px" }} src={"/image/pregnant.png"} width={100} height={100} />
+                        </div>
+                    </div>
                 </div>
-                {/*if userfromlocalstorage is null ? a : b*/}
-                <div className="img11">
-                    <Link href={`/dashboard/quarantine`} className="link2"><Image width={100} height={100} src="/image/quarantine.jpg" />
-                        <p className="qua">Quarantine</p></Link>
-                </div>
-
             </div>
-        </div>}
+            <div className="row-2">
+                <div className="card2">
+                    <Link href={`/dashboard/lactation`}><h1>Lactation Tracker</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "60px", width: "60px", borderRadius: "50%", marginRight: "10px" }} src={"/image/lactation2.jpg"} width={100} height={100} />
+                        </div>
+                    </div>
+                </div>
+                <div className="card2">
+                    <Link href={`/dashboard/quarantine`}><h1>Quarantine</h1></Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <p>Cattle: <strong>3</strong> </p>
+                            <p>Goat: <strong>5</strong> </p>
+                            <p>Pig: <strong>0</strong> </p>
+                            <p>Sheep: <strong>10</strong> </p>
+                        </div>
+                        <div>
+                            <Image style={{ height: "55px", width: "55px", borderRadius: "50%", marginRight: "10px" }} src={"/image/quaran.jpg"} width={100} height={100} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 }

@@ -59,8 +59,8 @@ function ModuleHeader() {
 
     return (<div>
         <div
-            className={`admin-header ${currentPath === "/" || currentPath === "/login" || currentPath === "/signup" ? "bg-transparent" : ""}`}
-            style={{ backgroundColor: currentPath !== "/" && currentPath !== "/login" && currentPath !== "/signup" ? "#008000" : "transparent" }}
+            className={`admin-header ${currentPath === "/" || currentPath === "/login" || currentPath === "/signup"  ? "bg-transparent" : ""}`}
+            style={{ backgroundColor: currentPath !== "/" && currentPath !== "/login" && currentPath !== "/signup"  && currentPath !== "/dashboard" ? "#008000" : "transparent" }}
         >
             <div>
                 <Link href={"/"}>

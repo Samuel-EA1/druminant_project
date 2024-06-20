@@ -466,6 +466,9 @@ a {
 .link1 {
   text-decoration: none;
 }
+.mobile-dashboard2{
+  display: none;
+}
 
 .log-out {
   font-size: 13px;
@@ -480,7 +483,8 @@ a {
 }
 
 .module-nav-list ul li.active {
-  background-color: #004b00; 
+  color: #3dff4a;
+  text-decoration: underline;
   /* text-decoration: underline; */
   /* background-color: rgba(18, 82, 0, 0.5); */
 }
@@ -580,16 +584,51 @@ a {
 .hello-message {
   display: none;
 }
-
+.card1{
+  background-color: white;
+  height: 170px;
+  width: 25%;
+  border-radius: 15px;
+  /* display: flex;
+  justify-content: space-around; */
+}
+.card1 h1 {
+  padding: 18px 0px 5px 10px;
+  font-weight: bold;
+  font-size: 18px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #005a06;
+}
+.card1 h1:hover {
+  text-decoration: underline;
+}
+.card1 p {
+  padding-left: 10px;
+  font-size: 15px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.mobile-dashboard{
+  display: none;
+}
 .dashboard {
   /* background-color: #0f4b00; */
-  color: #004b00;
+  color: white;
   text-align: center;
-  padding: 3px 0px 3px 0px;
+  padding: 10px 0px 3px 0px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: bold;
   font-size: 21px;
 }
+.dashboard-main {
+  background-image: url("../../public/image/dashmain.jpg");
+  background-position: center; /* Ensures the image is centered */
+  background-size: cover; /* Ensures the image covers the entire background */
+  min-height: 100vh; /* At least full viewport height */
+  background-attachment: fixed; /* Keeps the background fixed while scrolling */
+  overflow-y: auto; /* Allows vertical scrolling */
+  width: 100%; /* Full width */
+}
+
 
 .menu {
   text-align: center;
@@ -632,14 +671,7 @@ a {
   padding: 10px 0px 0px 5px;
 }
 
-.admin-row-1 {
-  display: flex;
-  justify-content: space-around;
-  width: 85%;
-  background-color: red;
-  margin-bottom: 50px;
 
-}
 
 .up {
   display: flex;
@@ -655,12 +687,6 @@ a {
   cursor: pointer;
 }
 
-.admin-row-2 {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  background-color: red;
-}
 
 .admin-navlinks {
   /* background-color: red; */
@@ -699,18 +725,12 @@ a {
   /* background-color: yellow; */
   display: flex;
   width: 80%;
-  margin: 30px auto 20px auto;
+  margin: 50px auto 70px auto;
   padding-top: 28px;
   justify-content: space-around;
 }
 
-.row-2 {
-  /* background-color: red; */
-  display: flex;
-  width: 80%;
-  margin: 0px auto 20px auto;
-  justify-content: space-around;
-}
+
 
 .dashboard-mssg {
   font-size: 18px;
@@ -742,33 +762,10 @@ a {
   color: #008000;
 }
 
-.row-2 p {
-  background-color: #0e4100;
-  text-align: center;
-  padding: 5px 0px 5px 0px;
-  color: white;
-  font-family: sans-serif;
-  border: 1px solid #008000;
-  font-weight: bold;
-  font-size: 17px;
-}
 
-.row-1 p {
-  background-color: #0e4100;
-  text-align: center;
-  padding: 5px 0px 5px 0px;
-  color: white;
-  font-family: sans-serif;
-  border: 1px solid #008000;
-  font-weight: bold;
-  font-size: 17px;
-}
 
-.row-2 img {
-  width: 250px;
-  height: 200px;
-  border: 1px solid #008000;
-}
+
+
 
 .row-1 img {
   width: 250px;
@@ -777,12 +774,7 @@ a {
 }
 
 .parent {
-  height: 87vh;
-  margin-top: -29px;
-  background-image: url("../../public/image/image2.jpg");
-  background-position: cover;
-  background-size: cover;
-  /* width: 100%; */
+
 }
 
 .img11 {
@@ -1177,15 +1169,18 @@ a {
 
 .livestock-select p {
   text-align: center;
-  background-color: #008000;
   color: white;
+  background-color: #008009;
   padding: 4px 10px;
   /* margin: 1px; */
   font-size: 18px;
   margin-left: 1px;
   margin-top: 10px;
 }
-
+.live-img1{
+  width: 200px;
+  height: 180px;
+}
 
 
 .live-img2:hover {
@@ -1200,10 +1195,9 @@ a {
   font-size: 17px;
   padding: 5px 10px;
   font-family: sans-serif;
-  background-color: #008000;
   width: 57.5%;
-  margin: 150px auto 5px auto;
-  color: white;
+  margin: 10px auto 5px auto;
+  color: #092b00;
 }
 
 .module-header-first {
@@ -1394,15 +1388,6 @@ a {
     margin-top: 30px;
   }
 
-  .row-2 p {
-    margin-bottom: 45px;
-  }
-
-  .row-2 img {
-    width: 220px;
-    height: 170px;
-  }
-
   .row-1 img {
     width: 220px;
     height: 170px;
@@ -1411,11 +1396,6 @@ a {
   .row-1 {
     width: 90%;
     margin: 30px auto 20px auto;
-  }
-
-  .row-2 {
-    width: 90%;
-    margin: 0px auto 20px auto;
   }
 
   .left-navbar {
@@ -1509,7 +1489,14 @@ a {
     width: 20%;
     margin: 15px auto 0px auto;
   }
-
+  .row-1 {
+    /* background-color: yellow; */
+    display: flex;
+    width: 100%;
+    margin: 40px auto 50px auto;
+    padding-top: 28px;
+    justify-content: space-around;
+  }
   .login-btn p {
     font-size: 24px;
   }
@@ -1732,41 +1719,82 @@ a {
     object-fit: cover;
     color: #092b00; 
   }
-  
+  .dashboard-main {
+    height: 100vh;
+    width: 100vw;
+  }
   .row-1 {
-    width: 90%;
-    margin: 40px;
+    /* background-color: yellow; */
+    display: flex;
+    width: 100%;
+    margin: 50px auto 50px auto;
+    padding-top: 28px;
+    justify-content: space-around;
+  }
+  .card1{
+    background-color: white;
+    height: 170px;
+    width: 25%;
+    border-radius: 15px;
+    /* display: flex;
+    justify-content: space-around; */
+  }
+  .card1 h1 {
+    padding: 18px 0px 5px 8px;
+    font-size: 16px;
+  }
+  .card1 p {
+    padding-left: 8px;
+    font-size: 14px;
+  }
+  .mobile-dashboard{
+    display: block;
+    /* background-color: red; */
+  }
+  .row-2 {
+    /* background-color: yellow; */
+    display: flex;
+    width: 100%;
+    margin: 25px auto 15px auto;
+    padding-top: 20px;
+    justify-content: space-around;
+  }
+  .desktop-dashboard{
+    display: none;
+  }
+  .card2{
+    background-color: white;
+    height: 150px;
+    width: 40%;
+    border-radius: 15px;
+    /* display: flex;
+    justify-content: space-around; */
+  }
+  .card2 h1 {
+    padding: 14px 0px 5px 10px;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #005a06;
+  }
+  .card2 h1:hover {
+    text-decoration: underline;
+  }
+  .card2 p {
+    padding-left: 10px;
+    font-size: 15px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+  .mobile-dashboard2{
+    display: none;
   }
   .login-header p {
     font-size: 15px;
   }
-
-  .row-2 {
-    width: 90%;
-  }
-
-  .row-2 img {
-    width: 180px;
-    height: 140px;
-  }
-
   .row-1 img {
     width: 180px;
     height: 140px;
   }
-
-  .row-2 p {
-    padding: 5px 0px 5px 0px;
-    font-weight: bold;
-    font-size: 14px;
-  }
-
-  .row-1 p {
-    padding: 5px 0px 5px 0px;
-    font-weight: bold;
-    font-size: 14px;
-  }
-
   .menu {
     font-size: 14px;
   }
@@ -1834,7 +1862,6 @@ a {
     width: 200px;
     padding-top: 10px;
     border: none;
-    border-radius: 50%;
     margin-top: 30px;
   }
 
@@ -1912,16 +1939,15 @@ a {
   }
 
   .livestock-select img {
-    height: 180px;
-    width: 100%;
+    height: auto;
+    width: 90%;
     margin: 1px auto 0px auto;
-    border: 1px solid white;
   }
 
   .livestock-select p {
-    width: 100%;
+    width: 90%;
     margin: 0px auto 10px auto;
-    border: 1px solid white;
+    padding: 0px;
   }
 
   .finan-add-btn {
@@ -2025,38 +2051,11 @@ a {
   .break{
     display: block;
   }
-  .row-2 {
-    display: flex;
-    width: 90%;
-    margin: 70px auto 20px auto;
-    padding-top: 00px;
-    justify-content: space-around;
-  }
-
-  .row-2 img {
-    width: 150px;
-    height: 110px;
-  }
 
   .row-1 img {
     width: 150px;
     height: 110px;
   }
-
-  .row-2 p {
-    padding: 5px 0px 5px 0px;
-    font-weight:bold;
-    font-size: 12px;
-
-  }
-
-  .row-1 p {
-    padding: 5px 0px 5px 0px;
-    font-weight:bold;
-    font-size: 12px;
-
-  }
-
   .menu {
     font-size: 13px;
   }
@@ -2199,13 +2198,13 @@ a {
     display: block;
     width: 100%;
     /* background-color: red; */
-    margin: 0px auto 0px auto;
+    margin: -30px auto 0px auto;
   }
 
   .livestock-select img {
-    height: 240px;
+    height: auto;
     margin: 1px;
-    width: 260px;
+    width: 60%;
     padding-top: 10px;
     border: none;
     border-radius: 50%;
@@ -2215,7 +2214,7 @@ a {
   }
 
   .livestock-select p {
-    width: 50%;
+    width: 60%;
     margin: 0px auto 10px auto;
   }
 
@@ -2292,35 +2291,6 @@ a {
     width: 90%;
     margin: 30px auto 20px auto;
     padding-top: 10px;
-  }
-
-  .row-2 {
-    /* background-color: red; */
-    display: block;
-    width: 90%;
-    margin: 30px auto 20px auto;
-    justify-content: space-around;
-  }
-
-  .row-2 p {
-    color: white;
-    border: 1px solid #008000;
-    font-weight: bold;
-    font-size: 16px;
-    background-color: #092b00;
-  }
-
-  .row-1 p {
-    color: white;
-    border: 1px solid #008000;
-    font-weight: bold;
-    font-size: 16px;
-  }
-  .row-2 img {
-    width: 100%;
-    height: 100%;
-    border: 1px solid #008000;
-    margin: 0px auto 0px auto;
   }
 
   .row-1 img {
@@ -2425,7 +2395,8 @@ a {
   }
 
   .dashboard {
-    font-size: 17px;
+    font-size: 19px;
+    padding-top: 10px;
     padding-bottom: 10px;
   }
 
@@ -2446,6 +2417,37 @@ a {
     font-size: 18px;
     margin: 30px 0px 0px 30px;
     padding: 10px 25px 10px 25px;
+  }
+  .mobile-dashboard{
+    display:none;
+    /* background-color: red; */
+  }
+  .mobile-dashboard2{
+    display: block;
+  }
+  .card3{
+    background-color: white;
+    height: 150px;
+    width: 90%;
+    margin: 15px auto;
+    border-radius: 15px;
+    /* display: flex;
+    justify-content: space-around; */
+  }
+  .card3 h1 {
+    padding: 14px 0px 5px 10px;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #005a06;
+  }
+  .card3 h1:hover {
+    text-decoration: underline;
+  }
+  .card3 p {
+    padding-left: 10px;
+    font-size: 14px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
 }
 
