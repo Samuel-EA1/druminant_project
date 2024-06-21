@@ -20,7 +20,7 @@ function LivestockSelection() {
                 <h1 className=" text-white mt-5 text-center md:mt-16" style={{ fontFamily: "verdana", fontWeight: "bold", fontSize: "17px" }}>Livestock Profile Management</h1>
                 <p className="text-white mt-2 text-xs text-center md:text-sm" style={{ fontFamily: "verdana" }}>Select livestock to monitor and record livestock details</p>
 
-                <div className="mx-auto mt-12 md:mt-24" >
+                <div className="mx-auto mt-12 md:mt-36" >
 
                     <div className="grid grid-cols-1 w-11/12 gap-8 mx-auto md:grid-cols-2 md:gap-16 md:w-4/5">
 
@@ -109,7 +109,7 @@ function LivestockSelection() {
                         </div>
                     </div>
                     </div>
-            <div className=" md:mt-72 mt-32">
+            <div className=" md:mt-80 mt-32">
                 <Footer />
             </div>
                 </div>

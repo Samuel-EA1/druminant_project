@@ -109,9 +109,9 @@ function FinanceRecord() {
 
     const handleAddIncomeClick = () => {
         setIncomeFormModal(true);
+        setTableModal2(false)
+        setTableModal(false);
         if (incomeData.length === 0) {
-            setTableModal2(false)
-            setTableModal(true);
             setActiveSection('income');
         }
 
@@ -135,10 +135,11 @@ function FinanceRecord() {
 
     const handleAddExpenseClick = () => {
         setExpenseFormModal(true);
+        setTableModal(false);
+        setTableModal2(false);
         setActiveSection('expense'); // Set active section to expense
         if (incomeData === "") {
-            setTableModal(false);
-            setTableModal2(true);
+           
         }
     }
 
@@ -161,6 +162,7 @@ function FinanceRecord() {
         if (confirm("Are you sure you want to close the form?") == true) {
             setIncomeFormModal(false)
             setincomeInput({})
+            setTableModal(true)
 
         }
     }
@@ -168,6 +170,7 @@ function FinanceRecord() {
         if (confirm("Are you sure you want to close the form?") == true) {
             setExpenseFormModal(false)
             setexpenseInput({})
+            setTableModal2(true)
 
         }
     }
@@ -337,12 +340,14 @@ function FinanceRecord() {
         if (confirm("Are you sure you want to close the form?") == true) {
             seteditIncomeModal(false)
             setincomeInput({})
+            setTableModal(true)
         }
     }
     function closeEditExpenseModal() {
         if (confirm("Are you sure you want to close the form?") == true) {
             seteditExpenseModal(false)
             setexpenseInput({})
+            setTableModal2(true)
         }
     }
 
@@ -379,6 +384,7 @@ function FinanceRecord() {
 
         // Close the edit form modal and reset the form input
         seteditIncomeModal(false);
+        setTableModal(true)
         seteditformIncome({
             description: "",
             transactionDate: "",
@@ -427,6 +433,7 @@ function FinanceRecord() {
         setexpenseData(newExpenseData); // Update the expense data state
         setTotalExpenseAmount(prevTotal => prevTotal + amountDifference); // Update the total expense amount state
         seteditExpenseModal(false);
+        setTableModal2(true)
         seteditformExpense({
             description: "",
             transactionDate: "",
@@ -439,7 +446,7 @@ function FinanceRecord() {
 
     };
 
-    return <div>
+    return <div className="livestock">
         <ModuleHeader />
         <div className="amount">
             <h1>Finance Tracking (CATTLE)</h1>
@@ -705,10 +712,10 @@ function FinanceRecord() {
         {//Income form
 
             incomeFormModal &&
-            <div className="form-backdrop" class=" py-12 bg-white transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
+            <div className="form-backdrop" class=" py-12 bg-[#01000D] transition duration-150 overflow-y-auto  ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
                 <p className="form-header2">Income Record Details</p>
 
-                <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-xl" style={{ paddingBottom: "60px" }}>
+                <div role="alert" class="container bg-white rounded mx-auto w-11/12 md:w-2/3 max-w-xl" >
                     <div class="w-[auto] relative mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
                         <form onSubmit={handleIncomeSubmit}>
 
@@ -753,10 +760,10 @@ function FinanceRecord() {
         {// expense form
 
             expenseFormModal &&
-            <div className="form-backdrop" class=" py-12 bg-white transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
+            <div className="form-backdrop" class=" py-12 bg-[#01000D] transition duration-150 overflow-y-auto  ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
                 <p className="form-header2">Expense Record Details</p>
 
-                <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-xl" style={{ paddingBottom: "60px" }}>
+                <div role="alert" class="container rounded bg-white mx-auto w-11/12 md:w-2/3 max-w-xl">
                     <div class="w-[auto] relative mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
                         <form onSubmit={handleExpenseSubmit}>
 
@@ -939,10 +946,10 @@ function FinanceRecord() {
         {/* Edit income */
 
             editIncomeModal &&
-            <div className="form-backdrop" class=" py-12 bg-white transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
+            <div className="form-backdrop" class="  py-12 bg-[#01000D] transition duration-150 overflow-y-auto  ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
                 <p className="form-header2">Edit Income Details</p>
 
-                <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-xl" style={{ paddingBottom: "60px" }}>
+                <div role="alert" class="container bg-white mx-auto w-11/12 rounded md:w-2/3 max-w-xl">
                     <div class="w-[auto] relative mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
                         <form onSubmit={handleIncomeSubmit}>
 
@@ -988,10 +995,10 @@ function FinanceRecord() {
         {/* Edit expense */
 
             editExpenseModal &&
-            <div className="form-backdrop" class=" py-12 bg-white transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
+            <div className="form-backdrop" class="  py-12 bg-[#01000D] transition duration-150 overflow-y-auto  ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
                 <p className="form-header2">Edit Expense Details</p>
 
-                <div role="alert" class="container  mx-auto w-11/12 md:w-2/3 max-w-xl" style={{ paddingBottom: "60px" }}>
+                <div role="alert" class="container bg-white  mx-auto w-11/12 rounded md:w-2/3 max-w-xl">
                     <div class="w-[auto] relative mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700" >
                         <form onSubmit={handleEditExpensubmit2} >
 

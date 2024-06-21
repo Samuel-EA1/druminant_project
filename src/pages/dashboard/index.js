@@ -51,7 +51,7 @@ export default function Staff() {
         <>
           {" "}
           <div className="dashboard md:mt-0">
-            <p className="first-letter:capitalize md:mt-0 mt-3">
+            <p className="first-letter:capitalize md:mt-16 mt-3">
               {userFromLocalStorage && userFromLocalStorage.farmland}
               <br className="break" /> Dashboard
             </p>
@@ -710,7 +710,7 @@ export default function Staff() {
         </div>
       )}
 
-      <div className=" md:mt-16 mt-20">
+      <div className="md:mt-48 mt-20">
         <Footer />
       </div>
     </div>

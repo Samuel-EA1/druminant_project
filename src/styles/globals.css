@@ -661,9 +661,18 @@ display: none;
   background-attachment: fixed; /* Keeps the background fixed while scrolling */
   overflow-y: auto; /* Allows vertical scrolling */
   width: 100%; /* Full width */
-  background-color: #01000D;
+  background-color: #63ee6c;
 }
-
+.livestock {
+  background-position: center; /* Ensures the image is centered */
+  background-size: cover; /* Ensures the image covers the entire background */
+  min-height: 100vh; /* At least full viewport height */
+  background-attachment: fixed; /* Keeps the background fixed while scrolling */
+  overflow-y: auto; /* Allows vertical scrolling */
+  width: 100%; /* Full width */
+  background-color: white;
+  color: #020016;
+}
 
 .menu {
   text-align: center;
@@ -916,8 +925,7 @@ display: none;
 .up p {
   /* background-color: red; */
   padding: 0px 0px 10px 17px;
-  color: white;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .icon111 {
@@ -1025,14 +1033,11 @@ display: none;
 .cursor {
   cursor: default;
 }
-
-
-
 .module-header {
   font-size: 20px;
   text-transform: uppercase;
-  padding: 10px 0px 0px 17px;
-  color: white;
+  padding: 60px 0px 0px 17px;
+  color: #008000;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bolder;
 }
@@ -1263,6 +1268,7 @@ display: none;
   text-transform: uppercase;
   /* padding: 10px 0px 10px 17px; */
   color: rgb(0, 109, 0);
+  padding-top: 55px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -1332,7 +1338,7 @@ display: none;
 .form-header2 {
   margin-top: -20px;
   text-align: center;
-  color: green;
+  color: white;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -1759,6 +1765,12 @@ display: none;
     height: 100vh;
     width: 100vw;
   }
+  .module-header {
+    padding: 7px 0px 0px 17px;
+  }
+  .amount h1 {
+    padding-top: 0px;
+  }
   .row-1 {
     /* background-color: yellow; */
     display: flex;
@@ -1767,6 +1779,10 @@ display: none;
     padding-top: 28px;
     justify-content: space-around;
   }
+  .form-header2 {
+    margin-top: 20px
+  }
+  
   .card1{
     background-color: white;
     height: 170px;
