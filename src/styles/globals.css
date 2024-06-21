@@ -661,7 +661,7 @@ display: none;
   background-attachment: fixed; /* Keeps the background fixed while scrolling */
   overflow-y: auto; /* Allows vertical scrolling */
   width: 100%; /* Full width */
-  background-color: #63ee6c;
+  /* background-color: #63ee6c; */
 }
 .livestock {
   background-position: center; /* Ensures the image is centered */
@@ -2399,7 +2399,7 @@ display: none;
     font-weight: bold;
     font-size: 14px;
     padding-right: 05px;
-    margin-top: -2px;
+    margin-top: 0px;
   }
 
   .search-input {
@@ -2432,10 +2432,10 @@ display: none;
   }
 
   .finan-add-btn2 {
-    margin: 65px 5px 0px 0px;
+    margin: 63px 5px 0px 0px;
     padding: 2px;
     border-radius: 7px;
-    font-size: 15px;
+    font-size: 19px;
   }
 
   .help-icon {
@@ -2504,12 +2504,13 @@ display: none;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
   .module-header {
-    font-size: 20px;
+    font-size: 18px;
     padding: 10px 0px 0px 7px;
   }
   .up p {
     /* background-color: red; */
     padding: 0px 0px 10px 7px;
+    font-size: 14px;
   }
 }
 
@@ -2587,7 +2588,7 @@ display: none;
     margin: 75px 5px 0px 0px;
     padding: 2px;
     border-radius: 7px;
-    font-size: 15px;
+    font-size: 19px;
   }
 
   .incomeCard img {
@@ -2597,7 +2598,7 @@ display: none;
   }
 
   .amount h1 {
-    font-size: 17px;
+    font-size: 18px;
   }
 
   .amount p {
@@ -2611,7 +2612,7 @@ display: none;
     margin: 010px 5px 5px 0px;
     padding: 2px;
     border-radius: 7px;
-    font-size: 15px;
+    font-size: 19px;
   }
 
   .row-1 {

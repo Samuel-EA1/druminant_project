@@ -309,7 +309,7 @@ export default function Livestock() {
             <p className="add-btn" onClick={addProfile}><span>+ </span> Add Profile</p>
           </div>
           <input type="text" className="search-input" maxLength={15} placeholder="Search here (Tag id)" />
-          <GoSearch className="search-icon" style={{ cursor: "pointer" }} />
+          {/* <GoSearch className="search-icon" style={{ cursor: "pointer" }} /> */}
         </div>
 
       </div>
@@ -443,7 +443,7 @@ export default function Livestock() {
       {//Livestock input form
 
         formModal && <div className="dashboard-main2" class=" py-12 bg-[#01000D]  transition overflow-y-auto  duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0" id="modal">
-          <p className="form-header pt-12 pb:6 md:pt-0" style={{color:"white"}}>Livestock Profile Details</p>
+          <p className="form-header pt-10 pb:0 md:pt-0" style={{color:"white"}}>Livestock Profile Details</p>
 
           <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-xl">
             <div class="w-[auto] bg-white relative mt-4 md:mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
@@ -544,11 +544,11 @@ export default function Livestock() {
 
       {//Livestock EDIT form
 
-        editFormModal && <div className="form-backdrop" class=" py-12 bg-white overflow-y-auto  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
-          <p className="form-header">Edit livestock profile</p>
+        editFormModal && <div className="form-backdrop" class=" py-12 bg-[#01000D] overflow-y-auto  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
+          <p className="form-header pt-10 pb:0 md:pt-0" style={{color:"white"}}>Edit livestock profile</p>
 
           <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-xl">
-            <div class="w-[auto] relative mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
+            <div class="w-[auto] bg-white relative mt-4 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
               <form >
                 <div className="general-form">
                   <div>
