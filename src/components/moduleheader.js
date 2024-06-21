@@ -66,7 +66,7 @@ function ModuleHeader() {
           currentPath === "/signup"
             ? "border-none"
             : "border-[1px]"
-        }  border-gray-800 py-5  fixed top-0 left-0 right-0 main   ${
+        }  border-gray-800 py-5    ${
           currentPath === "/" ||
           currentPath === "/login" ||
           currentPath === "/signup"
