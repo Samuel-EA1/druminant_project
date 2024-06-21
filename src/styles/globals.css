@@ -98,11 +98,12 @@ body{
     background-image: url("../../public/image/background.jpg");
   background-position: cover;
   background-size: cover;
+  background-color: #01000D;
   /* height: 100vh;
   width: 100vw; */
   object-fit: cover;
-
 }
+
 
 /* body {
   height: 100vh;
@@ -206,6 +207,7 @@ body{
   height: auto;
   margin-left: 80px;
   margin-top: 150px;
+  padding-top: 50px;
 }
 
 .lauch-btn p {
@@ -623,12 +625,13 @@ display: none;
 }
 .card4{
   background-color: white;
-  height: 120px;
+  height: 80px;
   width: 100%;
   border-radius: 15px;
 }
 .card4 h1 {
-  padding: 18px 0px 5px 10px;
+  padding: 0px 0px 5px 10px;
+  margin-top: -12px;
   font-weight: bold;
   font-size: 18px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -637,11 +640,7 @@ display: none;
 .card4 h1:hover {
   text-decoration: underline;
 }
-.card4 p {
-  padding-left: 10px;
-  font-size: 15px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
+
 .mobile-dashboard{
   display: none;
 }
@@ -662,7 +661,7 @@ display: none;
   background-attachment: fixed; /* Keeps the background fixed while scrolling */
   overflow-y: auto; /* Allows vertical scrolling */
   width: 100%; /* Full width */
-  background-color: #008000;
+  background-color: #01000D;
 }
 
 
@@ -917,6 +916,8 @@ display: none;
 .up p {
   /* background-color: red; */
   padding: 0px 0px 10px 17px;
+  color: white;
+  font-size: 14px;
 }
 
 .icon111 {
@@ -970,7 +971,6 @@ display: none;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 14px;
   margin: 0px;
-
 }
 
 .module-nav-list {
@@ -1032,7 +1032,7 @@ display: none;
   font-size: 20px;
   text-transform: uppercase;
   padding: 10px 0px 0px 17px;
-  color: rgb(0, 109, 0);
+  color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bolder;
 }
@@ -1089,7 +1089,6 @@ display: none;
   font-size: 28px;
   margin-top: 6px;
   padding-left: 5px;
-  position: absolute;
   left: 450px;
 }
 
@@ -1742,10 +1741,12 @@ display: none;
   .signup-fields {
     width: 45%;
   }
+  .module-nav-list ul li {
+    font-size: 12px;
+  }
 }
 
 @media screen and (max-width: 951px) {
-
   .main {
     background-image: url("../../public/image/phonebg.jpg");
     background-position: center;
@@ -2372,8 +2373,10 @@ display: none;
 
   .add-btn {
     padding: 7px 18px 7px 18px;
+    margin: 0px 0px 20px 7px;
     width: 120px;
-    font-size: 12px;
+    font-size: 14px;
+    text-align: center;
   }
 
   .add-btn span {
@@ -2395,7 +2398,7 @@ display: none;
   .search-icon {
     font-size: 24px;
     margin-top: 5px;
-    left: 345px;
+    left: 335px;
   }
 
   .incomeCard img {
@@ -2484,6 +2487,14 @@ display: none;
     font-size: 14px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
+  .module-header {
+    font-size: 20px;
+    padding: 10px 0px 0px 7px;
+  }
+  .up p {
+    /* background-color: red; */
+    padding: 0px 0px 10px 7px;
+  }
 }
 
 @media screen and (max-width: 389px) {
@@ -2492,7 +2503,7 @@ display: none;
     margin: 0px 0px 10px 10px;
     height: 33px;
     padding-left: 7px;
-    font-size: 12px;
+    font-size: 14px;
   }
   .login-header p {
     font-size: 15px;
@@ -2503,19 +2514,16 @@ display: none;
   .search-icon {
     font-size: 24px;
     margin-top: 5px;
-    left: 250px;
+    left: 160px;
   }
 
   .add-btn {
-    padding: 7px 10px 7px 10px;
-    width: 100px;
+    padding: 7px 10px 7px 13px;
+    width: 120px;
 
   }
 
-  .module-header {
-    /* background-color: red; */
-    font-size: 14px;
-  }
+
 
   .close-btn {
 
@@ -2555,6 +2563,7 @@ display: none;
     font-size: 15px;
     margin-top: 0px;
   }
+
 
   .finan-add-btn2 {
     display: block;

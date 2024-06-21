@@ -27,119 +27,122 @@ export default function Login() {
       </Head>
       <div className="main">
         <Header />
-        <div className="form mt-5  ">
+        <div className="form mt-20  ">
 
           <>
-            <div className="flex justify-center items-center    px-2  ">
+            <div className="flex justify-center items-center  px-2  ">
               <div className=" md:bg-white h-full p-8 rounded shadow-md max-w-xl  w-full  ">
                 <h2 className="text-2xl flex items-center space-x-3 font-bold mb-4">
                   <FaUser className="md:text-[#008000] text-[#24c024]" />
                   <p className="text-white md:text-black">Sign Up</p>
                 </h2>
                 <form onSubmit={"handleSubmit"}>
-                  <div className="mb-4">
-                    <label htmlFor="username" className="text-sm text-white md:text-black">
-                      Username
-                    </label>
-                    <div className="flex items-center border rounded mt-1">
-                      <span className="pl-3">
-                        <AiOutlineUser className="md:text-[#008000] text-white" />
-                      </span>
-                      <input
-                        type="text"
-                        id="username"
-                        className="w-full py-2 px-2 outline-none h-10 text-white md:text-black bg-transparent  "
-                        placeholder="Enter your username"
-                        required
-                        maxLength={12}
-                        value={"username"}
-                        onChange={(e) => setUsername(e.target.value)}
-                      />
+                  <div className="grid grid-cols-1 w-11/12 gap-8 mx-auto md:grid-cols-2 md:gap-16 md:w-4/5">
+                    <div className="mb-4">
+                      <label htmlFor="username" className="text-s text-white md:text-black">
+                        Username
+                      </label>
+                      <div className="flex items-center border rounded mt-1">
+                        <span className="pl-3">
+                          <AiOutlineUser className="md:text-[#008000] text-white" />
+                        </span>
+                        <input
+                          type="text"
+                          id="username"
+                          className="w-full py-2 px-2 outline-none h-10 text-white md:text-black bg-transparent  "
+                          placeholder="Enter your username"
+                          required
+                          maxLength={12}
+                          value={"username"}
+                          onChange={(e) => setUsername(e.target.value)}
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="mb-4">
-                    <label htmlFor="email" className="text-sm text-white md:text-black">
-                      Email
-                    </label>
-                    <div className="flex items-center border rounded mt-1">
-                      <span className="pl-3">
-                        <AiOutlineMail className="md:text-[#008000] text-white" />
-                      </span>
-                      <input
-                        type="email"
-                        id="email"
-                        className="w-full py-2 px-2 outline-none text-white md:text-black h-10 bg-transparent"
-                        placeholder="Enter your email"
-                        required
-                        value={"email"}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
+                    <div className="mb-4">
+                      <label htmlFor="email" className="text-sm text-white md:text-black">
+                        Email
+                      </label>
+                      <div className="flex items-center border rounded mt-1">
+                        <span className="pl-3">
+                          <AiOutlineMail className="md:text-[#008000] text-white" />
+                        </span>
+                        <input
+                          type="email"
+                          id="email"
+                          className="w-full py-2 px-2 outline-none text-white md:text-black h-10 bg-transparent"
+                          placeholder="Enter your email"
+                          required
+                          value={"email"}
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="mb-4">
+                      <label htmlFor="ethAddress" className="text-sm text-white md:text-black">
+                        Password
+                      </label>
+                      <div className="flex items-center border rounded mt-1">
+                        <span className="pl-3">
+                          <GoKey className="md:text-[#008000] text-white" />
+                        </span>
+                        <input
+                          type="password"
+                          id="password"
+                          name="password"
+                          className="w-full py-2 px-2 outline-none text-white md:text-black h-10 bg-transparent"
+                          placeholder="Enter your BNB wallet address"
+                          required
+                          value={"wallet_address"}
+                          onChange={(e) => setWalletAddress(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="ethAddress" className="text-sm text-white md:text-black">
+                        Farmland name
+                      </label>
+                      <div className="flex items-center border rounded mt-1">
+                        <span className="pl-3">
+                          <PiPlantLight className="md:text-[#008000] text-white" />
+                        </span>
+                        <input
+                          type="text"
+                          id=""
+                          className="w-full py-2 px-2 outline-none text-white md:text-black h-10 bg-transparent"
+                          placeholder="Enter your BNB wallet address"
+                          required
+                          value={"wallet_address"}
+                          onChange={(e) => setWalletAddress(e.target.value)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="mb-4">
+                      <label htmlFor="ethAddress" className="text-sm text-white md:text-black">
+                        Role
+                      </label>
+                      <div className="flex items-center border rounded mt-1">
+                        <span className="pl-3">
+                          <RiAdminLine className="md:text-[#008000] text-white" />
+                        </span>
+                        <select
+                          type="text"
+                          id="role"
+                          name="role"
+                          className="w-full py-2 px-2 outline-none h-10 text-white md:text-black bg-transparent"
+                          placeholder="Enter your BNB wallet address"
+                          required
+                          value={"wallet_address"}
+                          onChange={(e) => setWalletAddress(e.target.value)}
+                        >
+                          <option value={"Admin"}>Admin</option>
+                          <option value={"Staff"}>Staff</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="mb-4">
-                    <label htmlFor="ethAddress" className="text-sm text-white md:text-black">
-                      Password
-                    </label>
-                    <div className="flex items-center border rounded mt-1">
-                      <span className="pl-3">
-                        <GoKey className="md:text-[#008000] text-white" />
-                      </span>
-                      <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        className="w-full py-2 px-2 outline-none text-white md:text-black h-10 bg-transparent"
-                        placeholder="Enter your BNB wallet address"
-                        required
-                        value={"wallet_address"}
-                        onChange={(e) => setWalletAddress(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="mb-4">
-                    <label htmlFor="ethAddress" className="text-sm text-white md:text-black">
-                      Farmland name
-                    </label>
-                    <div className="flex items-center border rounded mt-1">
-                      <span className="pl-3">
-                        <PiPlantLight className="md:text-[#008000] text-white" />
-                      </span>
-                      <input
-                        type="text"
-                        id=""
-                        className="w-full py-2 px-2 outline-none text-white md:text-black h-10 bg-transparent"
-                        placeholder="Enter your BNB wallet address"
-                        required
-                        value={"wallet_address"}
-                        onChange={(e) => setWalletAddress(e.target.value)}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <label htmlFor="ethAddress" className="text-sm text-white md:text-black">
-                      Role
-                    </label>
-                    <div className="flex items-center border rounded mt-1">
-                      <span className="pl-3">
-                        <RiAdminLine className="md:text-[#008000] text-white" />
-                      </span>
-                      <select
-                        type="text"
-                        id="role"
-                        name="role"
-                        className="w-full py-2 px-2 outline-none h-10 text-white md:text-black bg-transparent"
-                        placeholder="Enter your BNB wallet address"
-                        required
-                        value={"wallet_address"}
-                        onChange={(e) => setWalletAddress(e.target.value)}
-                      >
-                        <option value={"Admin"}>Admin</option>
-                        <option value={"Staff"}>Staff</option>
-                      </select>
-                    </div>
-                  </div>
 
                   {/* <div className="mb-4">
                     <label htmlFor="image" className="text-sm">
@@ -177,7 +180,7 @@ export default function Login() {
                 </form>
                 <div className="mt-5 text-sm text-center flex justify-between w-full items-center max-w-xs mx-auto">
                   <p className="mx-auto text-white md:text-black">
-                    You have an account? <Link href={"/login"}  className="md:text-[#008000]">Log in</Link>
+                    You have an account? <Link href={"/login"} className="md:text-[#008000]">Log in</Link>
                   </p>
                   {/* <Link href="/login" className="text-[#008000]">
               Login

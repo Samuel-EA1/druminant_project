@@ -17,7 +17,7 @@ function LivestockSelection() {
         <div>
             <ModuleHeader />
             <div className="dashboard-main  mx-auto">
-                <h1 className="text-white mt-5 text-center md:mt-16" style={{ fontFamily: "verdana", fontWeight: "bold", fontSize: "17px" }}>Livestock Profile Management</h1>
+                <h1 className=" text-white mt-5 text-center md:mt-16" style={{ fontFamily: "verdana", fontWeight: "bold", fontSize: "17px" }}>Livestock Profile Management</h1>
                 <p className="text-white mt-2 text-xs text-center md:text-sm" style={{ fontFamily: "verdana" }}>Select livestock to monitor and record livestock details</p>
 
                 <div className="mx-auto mt-12 md:mt-24" >
@@ -28,7 +28,7 @@ function LivestockSelection() {
                             <Link href={`/dashboard/livestock/cattle`}>
                                 <div className="flex justify-between mt-10">
                                     <h1>Cattle</h1>
-                                    <div>
+                                    <div  style={{marginTop:"-28px"}}>
                                         <Image
                                             style={{
                                                 height: "auto",
@@ -49,7 +49,7 @@ function LivestockSelection() {
                             <Link href={`/dashboard/livestock/goat`}>
                                 <div className="flex justify-between mt-10">
                                     <h1>Goat</h1>
-                                    <div>
+                                    <div style={{marginTop:"-28px"}}>
                                         <Image
                                             style={{
                                                 height: "auto",
@@ -70,7 +70,7 @@ function LivestockSelection() {
                             <Link href={`/dashboard/livestock/pig`}>
                                 <div className="flex justify-between mt-10">
                                     <h1>Pig</h1>
-                                    <div>
+                                    <div  style={{marginTop:"-28px"}}>
                                         <Image
                                             style={{
                                                 height: "auto",
@@ -91,7 +91,7 @@ function LivestockSelection() {
                             <Link href={`/dashboard/livestock/sheep`}>
                                 <div className="flex justify-between mt-10">
                                     <h1>Sheep</h1>
-                                    <div>
+                                    <div  style={{marginTop:"-28px"}}>
                                         <Image
                                             style={{
                                                 height: "auto",
@@ -109,7 +109,7 @@ function LivestockSelection() {
                         </div>
                     </div>
                     </div>
-            <div className=" md:mt-0 mt-32">
+            <div className=" md:mt-72 mt-32">
                 <Footer />
             </div>
                 </div>

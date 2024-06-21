@@ -27,7 +27,7 @@ export default function Home() {
 
         <Body />
 
-        <div className="mt-60 md:mt-64 ">
+        <div className="mt-60 md:mt-72">
           <Footer />
         </div>
       </div>
