@@ -45,6 +45,7 @@ function ModuleHeader() {
   const currentPath = router.asPath;
 
   function logOut() {
+    confirm("Are you sure you want to log out?")
     localStorage.removeItem("user");
     setUserFromLocalStorage(null);
     router.push("/");
@@ -60,26 +61,33 @@ function ModuleHeader() {
   return (
     <div>
       <div
-        className={`admin-header ${
+        className={`admin-header  ${
           currentPath === "/" ||
           currentPath === "/login" ||
           currentPath === "/signup"
             ? "border-none"
             : "border-[1px]"
-        }  border-gray-800 py-5    ${
+        } 
+        border-gray-800 py-5    ${
           currentPath === "/" ||
           currentPath === "/login" ||
           currentPath === "/signup"
             ? "bg-transparent"
             : "#008000"
-        }`}
+        }  fixed top-0 left-0 right-0 ${
+          currentPath !== "/" ||
+          currentPath !== "/login" ||
+          currentPath !== "/signup"
+        } 
+        `}
         style={{
           backgroundColor:
             currentPath === "/" ||
             currentPath === "/login" ||
             currentPath === "/signup"
               ? " "
-              : "black",
+              : "rgb(0, 0, 14)",
+              
         }}
       >
         <div>
@@ -102,7 +110,7 @@ function ModuleHeader() {
                 Home
               </Link>
             </li>
-            <li className={router.pathname === "/dashboard" ? "active" : ""}>
+            <li className={router.pathname === "/dashboard" || "/dashboard/livestock/" ? "active" : ""}>
               <Link
                 href={"/dashboard"}
                 className="menu-nav2"
@@ -168,7 +176,7 @@ function ModuleHeader() {
       </div>
 
       <div
-        className={`mobile-header z-50 relative top-0 right-0 left-0   ${
+        className={`mobile-header z-50 relative top-0 right-0 left-0    ${
           currentPath === "/" ||
           currentPath === "/login" ||
           currentPath === "/signup"

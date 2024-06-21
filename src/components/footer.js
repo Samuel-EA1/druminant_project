@@ -55,13 +55,22 @@ export const Footer = () => {
                     Help
                   </a>
                 </li>
-                <li>
+                <li className="mb-4">
                   <a
                     href="#"
                     target="_blank"
                     className="hover:underline text-gray-200"
                   >
                     Log out
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    target="_blank"
+                    className="hover:underline text-gray-200"
+                  >
+                    Profile
                   </a>
                 </li>
               </ul>

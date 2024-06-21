@@ -621,6 +621,27 @@ display: none;
   font-size: 15px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+.card4{
+  background-color: white;
+  height: 120px;
+  width: 100%;
+  border-radius: 15px;
+}
+.card4 h1 {
+  padding: 18px 0px 5px 10px;
+  font-weight: bold;
+  font-size: 18px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #005a06;
+}
+.card4 h1:hover {
+  text-decoration: underline;
+}
+.card4 p {
+  padding-left: 10px;
+  font-size: 15px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
 .mobile-dashboard{
   display: none;
 }
