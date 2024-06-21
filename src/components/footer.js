@@ -1,58 +1,80 @@
-<div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
+import Image from "next/image";
+import Link from "next/link";
 
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
+export const Footer = () => {
+  return (
+    <div className="  mx-auto">
+      <footer className="p-4    sm:p-6 bg-[#008000]">
+        <div className="md:flex md:justify-between">
+          <div className="mb-6 md:mb-0">
+            <Link href={"/"}>
+              <Image
+                src="/image/newlogo.png"
+                width={110}
+                height={110}
+                className=""
+              />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+            <div>
+              <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+                Contact us
+              </h3>
+              <ul>
+                <li className="mb-4">
+                  <a
+                    href="#"
+                    target="_blank"
+                    className="hover:underline text-gray-200"
+                  ></a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    target="_blank"
+                    rel="nofollow"
+                    className="hover:underline text-gray-200"
+                  >
+                    Email
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className=" mb-5">
+              <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+                Quick links
+              </h3>
+              <ul>
+                <li className="mb-4">
+                  <a
+                    href="#"
+                    target="_blank"
+                    className="hover:underline text-gray-200"
+                  >
+                    Help
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    target="_blank"
+                    className="hover:underline text-gray-200"
+                  >
+                    Log out
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
+
+        <div className="sm:flex sm:items-center sm:justify-between">
+          <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+            © {new Date().getFullYear()} Druminant All Rights Reserved.
+          </span>
+        </div>
+      </footer>
+    </div>
+  );
+};
