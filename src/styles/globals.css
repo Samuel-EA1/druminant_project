@@ -673,6 +673,16 @@ display: none;
   background-color: white;
   color: #020016;
 }
+.dashboard-main2 {
+  background-image: url("../../public/image/dashmain.jpg");
+  background-position: center; /* Ensures the image is centered */
+  background-size: cover; /* Ensures the image covers the entire background */
+  min-height: 100vh; /* At least full viewport height */
+  background-attachment: fixed; /* Keeps the background fixed while scrolling */
+  overflow-y: auto; /* Allows vertical scrolling */
+  width: 100%; /* Full width */
+  background-color: #63ee6c;
+}
 
 .menu {
   text-align: center;
@@ -1162,7 +1172,7 @@ display: none;
 .form-header {
   /* background-color: red; */
   text-align: center;
-  color: green;
+  color: white;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -2509,7 +2519,7 @@ display: none;
   }
   .up p {
     /* background-color: red; */
-    padding: 0px 0px 10px 7px;
+    padding: 0px 7px 10px 7px;
     font-size: 14px;
   }
 }

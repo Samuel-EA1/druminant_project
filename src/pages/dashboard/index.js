@@ -96,20 +96,20 @@ export default function Staff() {
                 </div>
                 <div className="card1 hover:scale-105 hover:animate-pulse">
                   <Link href={`/dashboard/incomeexpense`}>
-                    <h1>Income & Expense</h1>
+                    <h1>Income/Expense</h1>
                     <div className="flex justify-between">
                       <div>
                         <p>
-                          Cattle: <strong>3</strong>{" "}
+                          Cattle: <strong>3/5</strong>{" "}
                         </p>
                         <p>
-                          Goat: <strong>5</strong>{" "}
+                          Goat: <strong>5/6</strong>{" "}
                         </p>
                         <p>
-                          Pig: <strong>0</strong>{" "}
+                          Pig: <strong>0/5</strong>{" "}
                         </p>
                         <p>
-                          Sheep: <strong>10</strong>{" "}
+                          Sheep: <strong>2/3</strong>{" "}
                         </p>
                       </div>
                       <div>

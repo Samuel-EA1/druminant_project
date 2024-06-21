@@ -279,7 +279,6 @@ export default function Livestock() {
   function addProfile() {
     setFormModal(!formModal)
     settable(false)
-
   }
 
 
