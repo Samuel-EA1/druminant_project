@@ -25,6 +25,7 @@ import { IoIosMore, IoMdClose } from "react-icons/io";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { PiHouseBold, PiHouseLineLight } from "react-icons/pi";
 import Head from "next/head";
+import { Footer } from "@/components/footer";
 
 
 
@@ -313,7 +314,7 @@ export default function Livestock() {
 
       </div>
 
-      {table &&       <div>
+      {table && <div>
         <table className="w-full mt-0">
           <thead>
             <tr>
@@ -347,62 +348,62 @@ export default function Livestock() {
                 className="bg-white md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap mb-1 md:mb-0 shadow-sm shadow-gray-800 md:shadow-none"
               >
                 <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b  block md:table-cell relative md:static">
-                  <span className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#9be49b",color:"#01000D", fontSize: "11px" }}>
+                  <span className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#9be49b", color: "#01000D", fontSize: "11px" }}>
                     ID
                   </span>
-                  <div style={{ fontSize: "14px", color:"black"}} >
+                  <div style={{ fontSize: "14px", color: "black" }} >
                     {row.id}
                   </div>
 
                 </td>
                 <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                  <span className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase" style={{backgroundColor: "#9be49b",color:"#01000D", fontSize: "11px"  }}>
+                  <span className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#9be49b", color: "#01000D", fontSize: "11px" }}>
                     Breed
                   </span>
-                  <div style={{ fontSize: "14px", color:"black"}} >
+                  <div style={{ fontSize: "14px", color: "black" }} >
                     {row.breed}
                   </div>
 
                 </td>
                 <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
-                  <span className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase" style={{backgroundColor: "#9be49b",color:"#01000D", fontSize: "11px"  }}>
+                  <span className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#9be49b", color: "#01000D", fontSize: "11px" }}>
                     Tag ID
                   </span>
-                  <div style={{ fontSize: "14px", color:"black"}} >
+                  <div style={{ fontSize: "14px", color: "black" }} >
 
                     {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
                     <p>{row.tagId}</p>
                   </div>
                 </td>
                 <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                  <span className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#9be49b",color:"#01000D", fontSize: "11px" }}>
+                  <span className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#9be49b", color: "#01000D", fontSize: "11px" }}>
                     Sex
                   </span>
-                  <div style={{ fontSize: "14px", color:"black"}} >
+                  <div style={{ fontSize: "14px", color: "black" }} >
                     {row.sex}
                   </div>
 
                 </td>
                 <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                  <span className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#9be49b",color:"#01000D", fontSize: "11px" }}>
+                  <span className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#9be49b", color: "#01000D", fontSize: "11px" }}>
                     Birth Date
                   </span>
-                  <span style={{ fontSize: "14px", color:"black"}}>
+                  <span style={{ fontSize: "14px", color: "black" }}>
 
                     {row.birthDate}
                   </span>
                 </td>
                 <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                  <span className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#9be49b",color:"#01000D", fontSize: "11px" }}>
+                  <span className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#9be49b", color: "#01000D", fontSize: "11px" }}>
                     Weight
                   </span>
-                  <span style={{ fontSize: "14px", color:"black"}}>
+                  <span style={{ fontSize: "14px", color: "black" }}>
 
                     {row.weight}
                   </span>
                 </td>
                 <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
-                  <span className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#9be49b",color:"#01000D", fontSize: "11px" }}>
+                  <span className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#9be49b", color: "#01000D", fontSize: "11px" }}>
                     Actions
                   </span>
 
@@ -434,7 +435,7 @@ export default function Livestock() {
             ))}
           </tbody>
         </table>
-      </div> }
+      </div>}
 
 
 
@@ -442,7 +443,7 @@ export default function Livestock() {
       {//Livestock input form
 
         formModal && <div className="dashboard-main2" class=" py-12 bg-[#01000D]  transition overflow-y-auto  duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0" id="modal">
-          <p className="form-header pt-10 pb:0 md:pt-0" style={{color:"white"}}>Livestock Profile Details</p>
+          <p className="form-header pt-10 pb:0 md:pt-0" style={{ color: "white" }}>Livestock Profile Details</p>
 
           <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-xl">
             <div class="w-[auto] bg-white relative mt-4 md:mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
@@ -544,7 +545,7 @@ export default function Livestock() {
       {//Livestock EDIT form
 
         editFormModal && <div className="form-backdrop" class=" py-12 bg-[#01000D] overflow-y-auto  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
-          <p className="form-header pt-10 pb:0 md:pt-0" style={{color:"white"}}>Edit livestock profile</p>
+          <p className="form-header pt-10 pb:0 md:pt-0" style={{ color: "white" }}>Edit livestock profile</p>
 
           <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-xl">
             <div class="w-[auto] bg-white relative mt-4 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
@@ -736,7 +737,7 @@ export default function Livestock() {
         </div>
       }
 
-
     </div>
+
   );
 }

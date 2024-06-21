@@ -1088,7 +1088,17 @@ display: none;
   width: 150px;
   cursor: pointer;
 }
-
+.add-btn3 {
+  background-color: #009E0B;
+  color: white;
+  text-align: center;
+  padding: 9px 20px 9px 20px;
+  border-radius: 5px;
+  display: flex;
+  margin: 0px 0px 20px 17px;
+  width: 150px;
+  cursor: pointer;
+}
 .add-btn:hover {
   background-color: #008009;
 }
@@ -2521,6 +2531,17 @@ display: none;
     /* background-color: red; */
     padding: 0px 7px 10px 7px;
     font-size: 14px;
+  }
+  .add-btn3 {
+    background-color: #009E0B;
+    color: white;
+    text-align: center;
+    padding: 7px 16px 7px 19px;
+    border-radius: 5px;
+    display: flex;
+    font-size: 14px;
+    margin: -1px 0px 20px 8px;
+    width: 130px;
   }
 }
 
