@@ -1,7 +1,9 @@
 import { Footer } from "@/components/footer";
 import Header from "@/components/header";
+import axios from "axios";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import {
   AiFillMedicineBox,
@@ -13,10 +15,53 @@ import { GoKey } from "react-icons/go";
 import { MdMoney, MdRotateLeft } from "react-icons/md";
 import { PiPlantLight } from "react-icons/pi";
 import { RiAdminLine } from "react-icons/ri";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter()
+  const [formData, setformData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    farmland: "",
+    role: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setformData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+
+
+  async function signUp(e) {
+    e.preventDefault()
+    try {
+      console.log(formData)
+      const newUser = {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        farmland: formData.farmland
+      }
+      const res = await axios.post(`https://druminant-seven.vercel.app/api/v1/auth/${formData.role}/register`, newUser)
+
+      if (res) {
+        toast.success("Registration successful")
+        router.push("/login")
+      }
+    } catch (error) {
+      console.log(error)
+      if (error.response) {
+        toast.error(error.response.data.message)
+      }
+    }
+  }
+
+
+
   return (
     <div>
       <Head>
@@ -36,7 +81,7 @@ export default function Login() {
                   <FaUser className="md:text-[#008000] text-[#24c024]" />
                   <p className="text-white md:text-black">Sign Up</p>
                 </h2>
-                <form onSubmit={"handleSubmit"}>
+                <form onSubmit={signUp}>
                   <div className="grid grid-cols-1 w-11/12 gap-8 mx-auto md:grid-cols-2 md:gap-16 md:w-4/5">
                     <div className="mb-4">
                       <label htmlFor="username" className="text-s text-white md:text-black">
@@ -49,12 +94,13 @@ export default function Login() {
                         <input
                           type="text"
                           id="username"
+                          name="username"
                           className="w-full py-2 px-2 outline-none h-10 text-white md:text-black bg-transparent  "
                           placeholder="Enter your username"
                           required
                           maxLength={12}
-                          value={"username"}
-                          onChange={(e) => setUsername(e.target.value)}
+                          value={formData.username}
+                          onChange={(e) => handleChange(e)}
                         />
                       </div>
                     </div>
@@ -69,11 +115,12 @@ export default function Login() {
                         <input
                           type="email"
                           id="email"
+                          name="email"
                           className="w-full py-2 px-2 outline-none text-white md:text-black h-10 bg-transparent"
                           placeholder="Enter your email"
                           required
-                          value={"email"}
-                          onChange={(e) => setEmail(e.target.value)}
+                          value={formData.email}
+                          onChange={(e) => handleChange(e)}
                         />
                       </div>
                     </div>
@@ -91,10 +138,10 @@ export default function Login() {
                           id="password"
                           name="password"
                           className="w-full py-2 px-2 outline-none text-white md:text-black h-10 bg-transparent"
-                          placeholder="Enter your BNB wallet address"
+                          placeholder="Enter password"
                           required
-                          value={"wallet_address"}
-                          onChange={(e) => setWalletAddress(e.target.value)}
+                          value={formData.password}
+                          onChange={(e) => handleChange(e)}
                         />
                       </div>
                     </div>
@@ -109,11 +156,12 @@ export default function Login() {
                         <input
                           type="text"
                           id=""
+                          name="farmland"
                           className="w-full py-2 px-2 outline-none text-white md:text-black h-10 bg-transparent"
-                          placeholder="Enter your BNB wallet address"
+                          placeholder="Enter farmland name"
                           required
-                          value={"wallet_address"}
-                          onChange={(e) => setWalletAddress(e.target.value)}
+                          value={formData.farmland}
+                          onChange={(e) => handleChange(e)}
                         />
                       </div>
                     </div>
@@ -133,11 +181,12 @@ export default function Login() {
                           className="w-full py-2 px-2 outline-none h-10 text-white md:text-black bg-transparent"
                           placeholder="Enter your BNB wallet address"
                           required
-                          value={"wallet_address"}
-                          onChange={(e) => setWalletAddress(e.target.value)}
+                          value={formData.role}
+                          onChange={(e) => handleChange(e)}
                         >
-                          <option value={"Admin"}>Admin</option>
-                          <option value={"Staff"}>Staff</option>
+                          <option value={""}>Select role</option>
+                          <option value={"admin"}>Admin</option>
+                          <option value={"staff"}>Staff</option>
                         </select>
                       </div>
                     </div>
@@ -166,7 +215,7 @@ export default function Login() {
                     </button>
                   ) : (
                     <button
-                      type="submit"
+                      type="submit" onClick={signUp}
                       className="w-full bg-[#008000] hover:bg-[#00801ef1] text-white py-2 px-4 rounded"
                     >
                       Sign up

@@ -40,6 +40,7 @@ export default function Livestock() {
     tagId: "",
     deliveryDate: "",
     weight: "",
+    week: "",
     noOffSpring: "",
     observation: "",
     fat: "",
@@ -62,6 +63,7 @@ export default function Livestock() {
     tagId: "",
     deliveryDate: "",
     weight: "",
+    week: "",
     noOffSpring: "",
     observation: "",
     fat: "",
@@ -78,6 +80,7 @@ export default function Livestock() {
     tagId: "",
     deliveryDate: "",
     weight: "",
+    week: "",
     noOffSpring: "",
     observation: "",
     fat: "",
@@ -97,6 +100,7 @@ export default function Livestock() {
         tagId: selectedRecord.tagId,
         deliveryDate: selectedRecord.deliveryDate,
         weight: selectedRecord.weight,
+        week: selectedRecord.week,
         noOffSpring: selectedRecord.noOffSpring,
         observation: selectedRecord.observation,
         fat: selectedRecord.fat,
@@ -193,6 +197,7 @@ export default function Livestock() {
       tagId: selectedRecord.tagId,
       deliveryDate: selectedRecord.deliveryDate,
       weight: selectedRecord.weight,
+      week: selectedRecord.week,
       noOffSpring: selectedRecord.noOffSpring,
       observation: selectedRecord.observation,
       fat: selectedRecord.fat,
@@ -215,9 +220,9 @@ export default function Livestock() {
     []
     e.preventDefault();
 
-    const { milkYield, tagId, deliveryDate, weight, noOffSpring, observation, fat, snf, lactose, salt, protein, water, staff } = formInput;
+    const { milkYield, tagId, deliveryDate, weight, week, noOffSpring, observation, fat, snf, lactose, salt, protein, water, staff } = formInput;
 
-    if (milkYield == null || milkYield === "" || tagId == null || tagId === "" || deliveryDate == null || deliveryDate === "" || weight == null || weight === "" ||
+    if (milkYield == null || milkYield === "" || tagId == null || tagId === "" || deliveryDate == null || deliveryDate === "" || weight == null || weight === "" || week == null || week === "" ||
       noOffSpring == null || noOffSpring === "" || snf == null || snf === "" || lactose == null || lactose === "" || fat == null || fat === "" ||
       salt == null || salt === "" || protein == null || protein === "" || water == null || water === "" || staff == null || staff === "" || observation == null || observation === ""
     ) {
@@ -226,10 +231,7 @@ export default function Livestock() {
     }
     const isTagIdUsed = livestockData.some(record => record.tagId === tagId);
 
-    if (isTagIdUsed) {
-      alert(`Tag ID '${tagId}' is already used. Please choose a different Tag ID.`);
-      return;
-    }
+    
     const entryRecord = {
       ...formInput,
       id: 1,
@@ -250,6 +252,7 @@ export default function Livestock() {
       tagId: "",
       deliveryDate: "",
       weight: "",
+      week: "",
       noOffSpring: "",
       observation: "",
       fat: "",
@@ -269,7 +272,7 @@ export default function Livestock() {
     const { milkYield, tagId, deliveryDate, weight, noOffSpring, observation, fat, snf, lactose, salt, protein, water, staff } = editformInput;
 
     if (milkYield == null || milkYield === "" || tagId == null || tagId === "" || deliveryDate == null || deliveryDate === "" || weight == null || weight === "" ||
-      noOffSpring == null || noOffSpring === "" || staff == null || staff === "" || observation == null || observation === ""
+      noOffSpring == null || noOffSpring === "" || staff == null || week == null || week === "" || staff === "" || observation == null || observation === ""
     ) {
       alert('Please, ensure you fill in all fields.');
       return;
@@ -292,6 +295,7 @@ export default function Livestock() {
       tagId: "",
       deliveryDate: "",
       weight: "",
+      week: "",
       noOffSpring: "",
       observation: "",
       fat: "",
@@ -353,7 +357,7 @@ export default function Livestock() {
                   DELIVERY DATE
                 </th>
                 <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)" }}>
-                  Weight
+                  Week NO.
                 </th>
                 <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)" }}>
                   Actions
@@ -406,11 +410,11 @@ export default function Livestock() {
                   </td>
                   <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
                     <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
-                      Weight
+                      Week
                     </span>
                     <span style={{ fontSize: "14px" }}>
 
-                      {row.weight}
+                      {row.week}
                     </span>
                   </td>
                   <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
@@ -451,10 +455,10 @@ export default function Livestock() {
         {//Livestock input form
 
           formModal && <div className="form-backdrop" class="py-20 bg-[#01000D] overflow-y-auto h-screen  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
-            <p className="form-header" style={{ marginTop: "-20px" }}>Lactation Details</p>
+            <p className="form-header" style={{ marginTop: "-60px" }}>Lactation Details</p>
 
             <div role="alert" class="container bg-white rounded mx-auto w-11/12 md:w-2/3 max-w-xl">
-              <div class="w-[auto] relative mt-3 py-8 px-5 md:px-10  shadow-md rounded border border-green-700" >
+              <div class="w-[auto] relative mt-3 py-5 px-5 md:px-10  shadow-md rounded border border-green-700" >
                 <form >
                   <div className="general-form">
                     <div>
@@ -503,6 +507,8 @@ export default function Livestock() {
                       <input title="Name of staff creating this livestock profile" placeholder="e.g Mr. Ibharalu" id="staff" value={formInput.staff} onChange={handleChange} type="text" name="staff" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
                       <label className="input-label" for="name" >Observation</label>
                       <input id="observation" value={formInput.observation} onChange={handleChange} type="text" name="observation" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                      <label className="input-label" for="name" >Week No.</label>
+                      <input id="week" value={formInput.week} onChange={handleChange} type="number" name="week" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
 
                     </div>
                   </div>
@@ -550,7 +556,7 @@ export default function Livestock() {
         {//Livestock EDIT form
 
           editFormModal && <div className="form-backdrop" class="  py-20 bg-[#01000D] overflow-y-auto h-screen  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
-            <p className="form-header" style={{ marginTop: "-20px" }}>Edit lactation Details</p>
+            <p className="form-header" style={{ marginTop: "-60px" }}>Edit lactation Details</p>
 
             <div role="alert" class="container bg-white rounded mx-auto w-11/12 md:w-2/3 max-w-xl">
               <div class="w-[auto] relative mt-4 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
@@ -602,6 +608,8 @@ export default function Livestock() {
                       <input title="Name of staff creating this livestock profile" placeholder="e.g Mr. Ibharalu" id="staff" value={editformInput.staff} onChange={handleChange} type="text" name="staff" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
                       <label className="input-label" for="name" >Observation</label>
                       <input id="observation" value={editformInput.observation} onChange={handleChange} type="text" name="observation" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                      <label className="input-label" for="name" >Week</label>
+                      <input id="week" value={editformInput.week} onChange={handleChange} type="number" name="week" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
 
                     </div>
                   </div>

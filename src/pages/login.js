@@ -1,5 +1,7 @@
+import { userState } from "@/atom";
 import { Footer } from "@/components/footer";
 import Header from "@/components/header";
+import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,6 +13,8 @@ import { FaArrowRight, FaUser } from "react-icons/fa";
 import { GoKey } from "react-icons/go";
 import { PiPlantLight } from "react-icons/pi";
 import { RiAdminLine } from "react-icons/ri";
+import { toast } from "react-toastify";
+import { useRecoilValue } from "recoil";
 
 export default function Login() {
   const router = useRouter();
@@ -26,26 +30,51 @@ export default function Login() {
     setformData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  function login() {
-    if (formData.username.trim() === "" || formData.password.trim() === "") {
-      alert("Fill the form");
+  async function login(e) {
+    e.preventDefault()
+    // if (formData.username.trim() === "" || formData.password.trim() === "") {
+    //   alert("Fill the form");
+    // }
+    // //send form data to backend and expect a response
+
+    // const res = {
+    //   isAdmin: true,
+    //   username: formData.username,
+    //   farmland: "farmland1",
+    //   status: "pending",
+    //   token: "d7dsuhsudi",
+    // };
+    // //save response to local storage
+    // console.log(formData);
+
+    // localStorage.setItem("user", JSON.stringify(res));
+
+    // router.push(`/dashboard/`);
+
+    // https://druminant-seven.vercel.app/api/v1/auth/login
+
+    // const userFromLocalStorage = useRecoilValue(userState);
+
+    try {
+      console.log(formData)
+      setLoading(true)
+      const res = await axios.post("https://druminant-seven.vercel.app/api/v1/auth/login", formData)
+      localStorage.setItem('token', res.data.token)
+      setLoading(false)
+      router.push("/dashboard")
+
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+      if (error.code === "ERR_NETWORK") {
+        toast.error(error.message)
+      } else if (error.code === "ERR_BAD_REQUEST") {
+        toast.error(error.response.data.message)
+      }
+
     }
-    //send form data to backend and expect a response
-
-    const res = {
-      isAdmin: true,
-      username: formData.username,
-      farmland: "farmland1",
-      status: "pending",
-      token: "d7dsuhsudi",
-    };
-    //save response to local storage
-    console.log(formData);
-
-    localStorage.setItem("user", JSON.stringify(res));
-
-    router.push(`/dashboard/`);
   }
+
 
   return (
     <div>
@@ -82,7 +111,8 @@ export default function Login() {
                       placeholder="Enter your username"
                       required
                       maxLength={12}
-                      value={"username"}
+                      name="username"
+                      value={formData.username}
                       onChange={(e) => handleChange(e)}
                     />
                   </div>
@@ -101,9 +131,9 @@ export default function Login() {
                       id="password"
                       name="password"
                       className="w-full py-2 px-2 outline-none text-sm h-12 text-white md:text-black bg-transparent"
-                      placeholder="Enter your BNB wallet address"
+                      placeholder="Enter password"
                       required
-                      value={"wallet_address"}
+                      value={formData.password}
                       onChange={(e) => handleChange(e)}
                     />
                   </div>
@@ -115,7 +145,7 @@ export default function Login() {
                     className="w-full bg-[#008000] hover:bg-[#00801ef1] text-white py-2 px-4 rounded opacity-50 cursor-not-allowed"
                     disabled
                   >
-                    Registering...
+                    Processing
                   </button>
                 ) : (
                   <button

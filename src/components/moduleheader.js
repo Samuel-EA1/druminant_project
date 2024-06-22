@@ -63,10 +63,10 @@ function ModuleHeader() {
 
       <div
         className={`admin-header  ${currentPath === "/" ||
-            currentPath === "/login" ||
-            currentPath === "/signup"
-            ? "border-none"
-            : "border-[1px]"
+          currentPath === "/login" ||
+          currentPath === "/signup"
+          ? "border-none"
+          : "border-[1px]"
           } 
         border-gray-800 py-5    ${currentPath === "/" ||
             currentPath === "/login" ||
@@ -169,7 +169,7 @@ function ModuleHeader() {
         ) : (
           <div>
             <Link href={"/login"} className="log-out2">
-              Log In
+              Log in
             </Link>
           </div>
         )}
@@ -177,10 +177,10 @@ function ModuleHeader() {
 
       <div
         className={`mobile-header z-50 relative top-0 right-0 left-0    ${currentPath === "/" ||
-            currentPath === "/login" ||
-            currentPath === "/signup"
-            ? "rgba(9, 43, 0, 0.5)"
-            : "#008000"
+          currentPath === "/login" ||
+          currentPath === "/signup"
+          ? "rgba(9, 43, 0, 0.5)"
+          : "#008000"
           }`}
         style={{
           backgroundColor:
@@ -256,9 +256,13 @@ function ModuleHeader() {
                 </>
               )}
               <li style={{ borderBottom: "none", cursor: "pointer" }}>
-              <Link href={userFromLocalStorage === null ? "/login" : "/"}>
-              <p className="menu-nav2">{userFromLocalStorage === null ? "Log in" : "Log out"}</p>
-              </Link>
+
+
+                {userFromLocalStorage === null ? <Link href={"/login"}>
+                  Log in
+                </Link> : <p onClick={logOut}>
+                  {userFromLocalStorage === null ? "Log in" : "Log out"}
+                </p>}
               </li>
             </ul>
           </div>

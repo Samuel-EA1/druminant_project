@@ -457,7 +457,7 @@ function FinanceRecord() {
         <div className="livestock">
             <ModuleHeader />
             <div className="amount">
-                <h1>Finance Tracking (CATTLE)</h1>
+                <h1>Income/Expense (CATTLE)</h1>
                 <p>Track your income and expenses</p>
             </div>
 

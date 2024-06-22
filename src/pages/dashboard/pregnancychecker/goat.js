@@ -318,7 +318,7 @@ export default function Livestock() {
           <div className="up">
             <div>
               <h1 className="module-header">Pregnancy Checker (Goat)</h1>
-              <p>Keep track of the expected calving date for your livestock</p>
+              <p>Keep track of the expected kidding date for your livestock</p>
             </div>
           </div>
 
@@ -348,7 +348,7 @@ export default function Livestock() {
                   Breeding Date
                 </th>
                 <th className="p-0 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)" }}>
-                  Expected Calving Date (ECD)
+                  Expected Kidding Date (EKD)
                 </th>
                 <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)" }}>
                   Actions
@@ -399,7 +399,7 @@ export default function Livestock() {
                   </td>
                   <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
                     <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
-                      Expected Calving Date
+                      Expected Kidding Date
                     </span>
                     <span style={{ fontSize: "14px" }}>
 

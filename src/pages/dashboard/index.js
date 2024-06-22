@@ -14,34 +14,69 @@ import { GiCage, GiCow, GiGoat, GiPig, GiSheep } from "react-icons/gi";
 import { TbMilk } from "react-icons/tb";
 import { FaCow } from "react-icons/fa6";
 import { BsCalendar2Date } from "react-icons/bs";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 export default function Staff() {
+  const [farmlandName, setfarmlandName] = useState("")
   const [hamburgerState, setHamburgerState] = useState(false);
 
   function showHamburgerContent() {
     setHamburgerState(!hamburgerState);
   }
 
+
+
   // render the quarantine modulebased on the role of user
-  const [userFromLocalStorage, setUserFromLocalStorage] =
+  const [tokenFromLocalStorage, settokenFromLocalStorage] =
     useRecoilState(userState);
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      const parsedUser = JSON.parse(user);
-      setUserFromLocalStorage(parsedUser);
-      console.log("debugging");
-      toast(`Welcome ${parsedUser.username}`);
+    const token = localStorage.getItem("token");
+    if (token) {
+      settokenFromLocalStorage(token);
+      toast("welcome");
+
+      //get farmland details
+
+
     }
-  }, []);
-  console.log(userFromLocalStorage);
+    if (tokenFromLocalStorage) {
+      const decoded = jwtDecode(tokenFromLocalStorage)
+      const farmLand = decoded.farmland
+      setfarmlandName(farmLand)
+      console.log(tokenFromLocalStorage)
+      axios.get(`https://druminant-seven.vercel.app/api/v1/farmland/${farmLand}`, {
+        headers: {
+          'Authorization': `Bearer ${tokenFromLocalStorage}`,
+        }
+      })
+        .then(response => {
+          console.log('Protected data:', response.data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  }, [tokenFromLocalStorage]);
+
+
+
+
+
+
+
+
+
+
+
+
   //conditions
   //1. display everything for admin
   //2. display everything except admin roles only when the staff is accepted
   //3. display nothing except "please, wait for admin to accpt yur farmland request " when the staff status is pending or rejected
   //4 . display "join another farm", show a button on a text input to request to join anther farm, only if the status is rejected
 
-  //{userFromLocalStorage?.isAdmin &&
+  //{tokenFromLocalStorage?.isAdmin &&
   return (
     <div>
       <Head>
@@ -53,12 +88,12 @@ export default function Staff() {
       <div className="dashboard-main  mx-auto">
         <ModuleHeader />
 
-        {userFromLocalStorage ? (
+        {tokenFromLocalStorage ? (
           <>
             {" "}
             <div className="dashboard md:mt-0">
               <p className="first-letter:capitalize md:mt-16 mt-3">
-                {userFromLocalStorage && userFromLocalStorage.farmland}
+                {farmlandName}
                 <br className="break" /> Dashboard
               </p>
             </div>
@@ -87,7 +122,7 @@ export default function Staff() {
 
                           <div className="flex items-center">
                             <GiPig style={{ fontSize: "17px", marginTop: "0px", marginLeft: "5px", color: "#008000" }} />
-                           <p> Pig: <strong>0</strong>{" "}</p>
+                            <p> Pig: <strong>0</strong>{" "}</p>
                           </div>
 
                           <div className="flex items-center">
