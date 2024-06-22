@@ -4,12 +4,14 @@ import ModuleHeader from "@/components/moduleheader";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useRecoilState } from "recoil";
 
 function Profile() {
+  const router = useRouter();
   const [userFromLocalStorage, setUserFromLocalStorage] =
     useRecoilState(userState);
   useEffect(() => {
@@ -17,10 +19,22 @@ function Profile() {
     if (user) {
       const parsedUser = JSON.parse(user);
       setUserFromLocalStorage(parsedUser);
-      console.log("debugging");
-      toast(`Welcome ${parsedUser.username}`);
     }
   }, []);
+  const currentPath = router.asPath;
+  function logOut() {
+    confirm("Are you sure you want to log out?")
+    localStorage.removeItem("user");
+    setUserFromLocalStorage(null);
+    router.push("/");
+    toast("Bye!");
+    currentPath === "/" || currentPath === "/login" || currentPath === "/signup"
+      ? "bg-transparent"
+      : "";
+    currentPath !== "/" && currentPath !== "/login" && currentPath !== "/signup"
+      ? "#008000"
+      : "transparent";
+  }
 
   return (
     <div className="dashboard-main text-white">
@@ -45,24 +59,26 @@ function Profile() {
           </div>
         </div>
       ) : (
+       
         <div class="max-w-lg mx-auto  my-10 md:my-20  rounded-lg shadow-md p-5">
+           <h1 className=" text-white -mt-10 text-center mb-16 md:mt-0" style={{ fontFamily: "verdana", fontWeight: "bold", fontSize: "20px" }}>User Profile</h1>
           {/* <Image class="w-32 h-32 rounded-full mx-auto" width={100} height={100} src="https://picsum.photos/200" alt="Profile picture"/> */}
-          <FaUser class="w-32 h-32 text-[#008000] rounded-full mx-auto" />
+          <FaUser class="w-32 h-32 text-[white] mt-8 rounded-full mx-auto" />
           <h2 class="text-center text-2xl font-semibold mt-3">@Samuel</h2>
           <p class="text-center text-gray-200 mt-1">awunor@gmail.com</p>
-          {/* <div class="flex justify-center mt-5">
-                    <Link href="#" class="text-blue-500 hover:text-blue-700 mx-3">Twitter</Link>
-                    <Link href="#" class="text-blue-500 hover:text-blue-700 mx-3">LinkedIn</Link>
-                    <Link href="#" class="text-blue-500 hover:text-blue-700 mx-3">GitHub</Link>
-                </div> */}
-          {/* <div class="mt-5">
-                    <h3 class="text-xl font-semibold">Bio</h3>
-                    <p class="text-gray-600 mt-2">John is a software engineer with over 10 years of experience in developing web and mobile applications. He is skilled in JavaScript, React, and Node.js.</p>
-                </div> */}
+          <div className="text-center mt-16 flex  flex-col sm:flex-row justify-between">
+            <Link href={"/dashboard"}>
+              <p className="bg-[#008000] py-3 px-3 rounded mb-5 md:mb-0">Go to farm</p>
+            </Link>
+            <p className="bg-[#221c7a] py-3 cursor-pointer px-3 rounded mb-5  md:mb-0">Update profile</p>
+            <p onClick={logOut} className="bg-[red] cursor-pointer py-3 px-3 rounded mb-5  md:mb-0">Log out</p>
+          </div>
+
+
         </div>
       )}
 
-      <div className="mt-20 md:mt-96">
+      <div className="mt-28 md:mt-96">
         <Footer />
       </div>
 

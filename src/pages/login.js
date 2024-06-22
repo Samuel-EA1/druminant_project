@@ -59,7 +59,7 @@ export default function Login() {
       <div className="main">
 
         <Header />
-        <div className="mt-24">
+        <div className="mt-36">
           <div className="flex justify-center items-center    px-2  ">
             <div className="md:bg-white p-8 rounded shadow-md max-w-xl   w-full  ">
               <h2 className="text-2xl flex items-center space-x-3 font-bold mb-4">

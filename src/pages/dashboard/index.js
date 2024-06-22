@@ -10,7 +10,7 @@ import { AiOutlineDollarCircle } from "react-icons/ai";
 import { MdEventAvailable } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import { useRecoilState } from "recoil";
-import { GiCage } from "react-icons/gi";
+import { GiCage, GiCow, GiGoat, GiPig, GiSheep } from "react-icons/gi";
 import { TbMilk } from "react-icons/tb";
 import { FaCow } from "react-icons/fa6";
 import { BsCalendar2Date } from "react-icons/bs";
@@ -69,24 +69,31 @@ export default function Staff() {
                   <div className="card1 hover:scale-105 hover:animate-pulse ">
                     <Link href={`/dashboard/livestock`}>
                       <div className="flex items-center">
-                        <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
+                        {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
                         <h1>Livestock Profile</h1>
                       </div>
 
                       <div className="flex justify-between">
                         <div>
-                          <p>
-                            Cattle: <strong>3</strong>{" "}
-                          </p>
-                          <p>
-                            Goat: <strong>5</strong>{" "}
-                          </p>
-                          <p>
-                            Pig: <strong>0</strong>{" "}
-                          </p>
-                          <p>
-                            Sheep: <strong>10</strong>{" "}
-                          </p>
+                          <div className="flex items-center">
+                            <GiCow style={{ fontSize: "20px", marginTop: "0px", marginLeft: "5px", color: "#008000" }} />
+                            <p>Cattle: <strong>3</strong>{" "}</p>
+                          </div>
+
+                          <div className="flex items-center">
+                            <GiGoat style={{ fontSize: "17px", marginTop: "0px", marginLeft: "5px", color: "#008000" }} />
+                            <p>Goat: <strong>5</strong>{" "} </p>
+                          </div>
+
+                          <div className="flex items-center">
+                            <GiPig style={{ fontSize: "17px", marginTop: "0px", marginLeft: "5px", color: "#008000" }} />
+                           <p> Pig: <strong>0</strong>{" "}</p>
+                          </div>
+
+                          <div className="flex items-center">
+                            <GiSheep style={{ fontSize: "20px", marginTop: "0px", marginLeft: "5px", color: "#008000" }} />
+                            <p> Sheep: <strong>10</strong>{" "}</p>
+                          </div>
                         </div>
                         <div>
                           <Image
@@ -636,7 +643,7 @@ export default function Staff() {
                   </div>
                   <div className="card2">
                     <Link href={`/dashboard/pregnancychecker`}>
-                    <div className="flex items-center">
+                      <div className="flex items-center">
                         <BsCalendar2Date style={{ fontSize: "15px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Pregnancy Checker</h1>
                       </div>
                     </Link>
@@ -674,7 +681,7 @@ export default function Staff() {
                 <div className="row-2">
                   <div className="card2">
                     <Link href={`/dashboard/lactation`}>
-                    <div className="flex items-center">
+                      <div className="flex items-center">
                         <TbMilk style={{ fontSize: "20px", marginTop: "7px", marginLeft: "5px", color: "#030025" }} />
                         <h1>Lactation Tracker</h1>
                       </div>
@@ -711,7 +718,7 @@ export default function Staff() {
                   </div>
                   <div className="card2">
                     <Link href={`/dashboard/quarantine`}>
-                    <div className="flex items-center">
+                      <div className="flex items-center">
                         <GiCage style={{ fontSize: "19px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
                         <h1 className="m-0">Quarantine</h1>
                       </div>
