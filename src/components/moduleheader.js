@@ -228,7 +228,7 @@ function ModuleHeader() {
                 </Link>
               </li>
               <li className={router.pathname === "/profile" ? "active" : ""}>
-                <Link href={"profile"} className="menu-nav2">
+                <Link href={"/profile"} className="menu-nav2">
                   Profile
                 </Link>
               </li>

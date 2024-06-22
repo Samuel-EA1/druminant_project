@@ -6,8 +6,14 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { AiOutlineDollarCircle } from "react-icons/ai";
+import { MdEventAvailable } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import { useRecoilState } from "recoil";
+import { GiCage } from "react-icons/gi";
+import { TbMilk } from "react-icons/tb";
+import { FaCow } from "react-icons/fa6";
+import { BsCalendar2Date } from "react-icons/bs";
 
 export default function Staff() {
   const [hamburgerState, setHamburgerState] = useState(false);
@@ -62,7 +68,11 @@ export default function Staff() {
                 <div className="row-1 ">
                   <div className="card1 hover:scale-105 hover:animate-pulse ">
                     <Link href={`/dashboard/livestock`}>
-                      <h1>Livestock Profile</h1>
+                      <div className="flex items-center">
+                        <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
+                        <h1>Livestock Profile</h1>
+                      </div>
+
                       <div className="flex justify-between">
                         <div>
                           <p>
@@ -96,7 +106,9 @@ export default function Staff() {
                   </div>
                   <div className="card1 hover:scale-105 hover:animate-pulse">
                     <Link href={`/dashboard/incomeexpense`}>
-                      <h1>Income/Expense</h1>
+                      <div className="flex items-center">
+                        <AiOutlineDollarCircle style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Income/Expense</h1>
+                      </div>
                       <div className="flex justify-between">
                         <div>
                           <p>
@@ -130,7 +142,10 @@ export default function Staff() {
                   </div>
                   <div className="card1 hover:scale-105 hover:animate-pulse">
                     <Link href={`/dashboard/event`}>
-                      <h1>Event Tracker</h1>
+                      <div className="flex items-center">
+                        <MdEventAvailable style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> <h1>Event Tracker</h1>
+                      </div>
+
                       <div className="flex justify-between">
                         <div>
                           <p>
@@ -166,7 +181,10 @@ export default function Staff() {
                 <div className=" row-1 ">
                   <div className="card1 hover:scale-105 hover:animate-pulse">
                     <Link href={`/dashboard/pregnancychecker`}>
-                      <h1>Pregnancy Checker</h1>
+                      <div className="flex items-center">
+                        <BsCalendar2Date style={{ fontSize: "19px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Pregnancy Checker</h1>
+                      </div>
+
                       <div className="flex justify-between">
                         <div>
                           <p>
@@ -200,7 +218,11 @@ export default function Staff() {
                   </div>
                   <div className="card1 hover:scale-105 hover:animate-pulse">
                     <Link href={`/dashboard/lactation`}>
-                      <h1>Lactation Tracker</h1>
+                      <div className="flex items-center">
+                        <TbMilk style={{ fontSize: "22px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
+                        <h1>Lactation Tracker</h1>
+                      </div>
+
                       <div className="flex justify-between">
                         <div>
                           <p>
@@ -234,7 +256,11 @@ export default function Staff() {
                   </div>
                   <div className="card1 hover:scale-105 hover:animate-pulse">
                     <Link href={`/dashboard/quarantine`}>
-                      <h1>Quarantine</h1>
+                      <div className="flex items-center">
+                        <GiCage style={{ fontSize: "21px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
+                        <h1 className="m-0">Quarantine</h1>
+                      </div>
+
                       <div className="flex justify-between">
                         <div>
                           <p>
@@ -273,7 +299,9 @@ export default function Staff() {
                 <div className="row-3">
                   <div className="card3">
                     <Link href={`/dashboard/livestock`}>
-                      <h1>Livestock Profile</h1>
+                      <div className="flex items-center">
+                        <FaCow style={{ fontSize: "21px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Livestock Profile</h1>
+                      </div>
                     </Link>
                     <div className="flex justify-between">
                       <div>
@@ -307,7 +335,9 @@ export default function Staff() {
                   </div>
                   <div className="card3">
                     <Link href={`/dashboard/incomeexpense`}>
-                      <h1>Income/Expense</h1>
+                      <div className="flex items-center">
+                        <AiOutlineDollarCircle style={{ fontSize: "21px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Income/Expense</h1>
+                      </div>
                     </Link>
                     <div className="flex justify-between">
                       <div>
@@ -343,7 +373,9 @@ export default function Staff() {
                 <div className="row-3">
                   <div className="card3">
                     <Link href={`/dashboard/event`}>
-                      <h1>Event Tracker</h1>
+                      <div className="flex items-center">
+                        <MdEventAvailable style={{ fontSize: "21px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> <h1>Event Tracker</h1>
+                      </div>
                     </Link>
                     <div className="flex justify-between">
                       <div>
@@ -377,7 +409,9 @@ export default function Staff() {
                   </div>
                   <div className="card3">
                     <Link href={`/dashboard/pregnancychecker`}>
-                      <h1>Pregnancy Checker</h1>
+                      <div className="flex items-center">
+                        <BsCalendar2Date style={{ fontSize: "17px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Pregnancy Checker</h1>
+                      </div>
                     </Link>
                     <div className="flex justify-between">
                       <div>
@@ -413,7 +447,10 @@ export default function Staff() {
                 <div className="row-3">
                   <div className="card3">
                     <Link href={`/dashboard/lactation`}>
-                      <h1>Lactation Tracker</h1>
+                      <div className="flex items-center">
+                        <TbMilk style={{ fontSize: "20px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
+                        <h1>Lactation Tracker</h1>
+                      </div>
                     </Link>
                     <div className="flex justify-between">
                       <div>
@@ -447,7 +484,10 @@ export default function Staff() {
                   </div>
                   <div className="card3">
                     <Link href={`/dashboard/quarantine`}>
-                      <h1>Quarantine</h1>
+                      <div className="flex items-center">
+                        <GiCage style={{ fontSize: "19px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
+                        <h1 className="m-0">Quarantine</h1>
+                      </div>
                     </Link>
                     <div className="flex justify-between">
                       <div>
@@ -486,7 +526,9 @@ export default function Staff() {
                 <div className="row-2">
                   <div className="card2">
                     <Link href={`/dashboard/livestock`}>
-                      <h1>Livestock Profile</h1>
+                      <div className="flex items-center">
+                        <FaCow style={{ fontSize: "21px", marginTop: "8px", marginLeft: "5px", color: "#030025" }} /><h1>Livestock Profile</h1>
+                      </div>
                     </Link>
                     <div className="flex justify-between">
                       <div>
@@ -520,11 +562,13 @@ export default function Staff() {
                   </div>
                   <div className="card2">
                     <Link href={`/dashboard/incomeexpense`}>
-                      <h1>Income?Expense</h1>
+                      <div className="flex items-center">
+                        <AiOutlineDollarCircle style={{ fontSize: "20px", marginTop: "9px", marginLeft: "5px", color: "#030025" }} /><h1>Income/Expense</h1>
+                      </div>
                     </Link>
                     <div className="flex justify-between">
                       <div>
-                      <p>
+                        <p>
                           Cattle: <strong>3/5</strong>{" "}
                         </p>
                         <p>
@@ -556,7 +600,9 @@ export default function Staff() {
                 <div className="row-2">
                   <div className="card2">
                     <Link href={`/dashboard/event`}>
-                      <h1>Event Tracker</h1>
+                      <div className="flex items-center">
+                        <MdEventAvailable style={{ fontSize: "20px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> <h1>Event Tracker</h1>
+                      </div>
                     </Link>
                     <div className="flex justify-between">
                       <div>
@@ -590,7 +636,9 @@ export default function Staff() {
                   </div>
                   <div className="card2">
                     <Link href={`/dashboard/pregnancychecker`}>
-                      <h1>Pregnancy Checker</h1>
+                    <div className="flex items-center">
+                        <BsCalendar2Date style={{ fontSize: "15px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Pregnancy Checker</h1>
+                      </div>
                     </Link>
                     <div className="flex justify-between">
                       <div>
@@ -626,7 +674,10 @@ export default function Staff() {
                 <div className="row-2">
                   <div className="card2">
                     <Link href={`/dashboard/lactation`}>
-                      <h1>Lactation Tracker</h1>
+                    <div className="flex items-center">
+                        <TbMilk style={{ fontSize: "20px", marginTop: "7px", marginLeft: "5px", color: "#030025" }} />
+                        <h1>Lactation Tracker</h1>
+                      </div>
                     </Link>
                     <div className="flex justify-between">
                       <div>
@@ -660,7 +711,10 @@ export default function Staff() {
                   </div>
                   <div className="card2">
                     <Link href={`/dashboard/quarantine`}>
-                      <h1>Quarantine</h1>
+                    <div className="flex items-center">
+                        <GiCage style={{ fontSize: "19px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
+                        <h1 className="m-0">Quarantine</h1>
+                      </div>
                     </Link>
                     <div className="flex justify-between">
                       <div>
