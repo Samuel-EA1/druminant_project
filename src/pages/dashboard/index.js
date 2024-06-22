@@ -18,47 +18,41 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 export default function Staff() {
-  const [farmlandName, setfarmlandName] = useState("")
+  const [farmlandName, setFarmlandName] = useState('');
   const [hamburgerState, setHamburgerState] = useState(false);
 
-  function showHamburgerContent() {
-    setHamburgerState(!hamburgerState);
-  }
-
-
-
   // render the quarantine modulebased on the role of user
-  const [tokenFromLocalStorage, settokenFromLocalStorage] =
+  const [tokenFromLocalStorage, setTokenFromLocalStorage] =
     useRecoilState(userState);
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      settokenFromLocalStorage(token);
-      toast("welcome");
 
-      //get farmland details
-
-
-    }
-    if (tokenFromLocalStorage) {
-      const decoded = jwtDecode(tokenFromLocalStorage)
-      const farmLand = decoded.farmland
-      setfarmlandName(farmLand)
-      console.log(tokenFromLocalStorage)
-      axios.get(`https://druminant-seven.vercel.app/api/v1/farmland/${farmLand}`, {
-        headers: {
-          'Authorization': `Bearer ${tokenFromLocalStorage}`,
-        }
-      })
+    useEffect(() => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        setTokenFromLocalStorage(token);
+        toast('Welcome');
+      }
+    }, []);
+  
+    useEffect(() => {
+      if (tokenFromLocalStorage) {
+        const decoded = jwtDecode(tokenFromLocalStorage);
+        const farmLand = decoded.farmland;
+        setFarmlandName(farmLand);
+        console.log(tokenFromLocalStorage);
+  
+        axios.get(`https://druminant-seven.vercel.app/api/v1/farmland/${farmLand}`, {
+          headers: {
+            'Authorization': `Bearer ${tokenFromLocalStorage}`,
+          },
+        })
         .then(response => {
           console.log('Protected data:', response.data);
         })
         .catch(error => {
           console.error('Error:', error);
         });
-    }
-  }, [tokenFromLocalStorage]);
-
+      }
+    }, [tokenFromLocalStorage]);
 
 
 
