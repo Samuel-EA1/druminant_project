@@ -710,7 +710,7 @@ export default function Staff() {
           </div>
         )}
 
-        <div className="md:mt-48 mt-20">
+        <div className="md:mt-0 mt-20">
           <Footer />
         </div>
       </div>

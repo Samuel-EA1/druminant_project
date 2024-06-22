@@ -25,13 +25,8 @@ export default function Help() {
 
       <div className="flex p-2 justify-center  items-start my-2   md:mt-20">
         <div className="w-full sm:w-10/12  my-1 md:max-w-2xl">
-          <h2
-            className="text-2xl text-center  text-white  font-bold  my-2"
-          
-          >
-            Help
-          </h2>
-          <p className=" text-justify text-md px-1 text-vnet-blue text-white  mb-2">
+         <h1 className=" help">Help</h1>
+          <p className=" text-justify text-md px-1 text-vnet-blue text-white w-11/12 mx-auto  mb-2">
             D&apos;Ruminant livestock management system&apos;s help page
             provides detailed summaries for essential modules. Each summary
             offers clear instructions on accessing, recording, and managing
@@ -71,7 +66,7 @@ export default function Help() {
                   "The Quarantine module helps farmers manage quarantined livestock profiles, providing visibility and control over animals in quarantine. Accessible from the dashboard, users can select the Quarantine module and choose the livestock to check quarantined profiles. The module displays a table of records for livestock profiles moved from the Livestock Profile module to the Quarantine module. The table headers include Table ID, Tag ID, Quarantine Date, Release Date, and Actions. The actions column includes icons for viewing details of the selected quarantined record and releasing the quarantined livestock profile back to the Livestock Profile module. Each icon has a hover-over title for clarification.",
               },
             ].map((item, index) => (
-              <li key={index} className="bg-white my-2 shadow-lg">
+              <li key={index} className="bg-white my-2 shadow-neutral-50 rounded w-11/12 mx-auto" >
                 <h2
                   onClick={() => handleClick(index)}
                   className="flex flex-row justify-between items-center font-semibold p-3 cursor-pointer"
@@ -90,7 +85,7 @@ export default function Help() {
                   style={handleToggle(index)}
                   className="border-l-2 border-green-600 overflow-hidden max-h-0 duration-500 transition-all"
                 >
-                  <p className="p-3 bg-gray-50  text-gray-900">{item.answer}</p>
+                  <p className="p-3 bg-[#f5fff3]  text-gray-900">{item.answer}</p>
                 </div>
               </li>
             ))}
@@ -98,7 +93,7 @@ export default function Help() {
         </div>
       </div>
 
-      <div className=" mt-16 ">
+      <div className=" mt-44 ">
         <Footer />
       </div>
     </div>

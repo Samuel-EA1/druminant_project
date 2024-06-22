@@ -60,38 +60,35 @@ function ModuleHeader() {
 
   return (
     <div>
-      
+
       <div
-        className={`admin-header  ${
-          currentPath === "/" ||
-          currentPath === "/login" ||
-          currentPath === "/signup"
+        className={`admin-header  ${currentPath === "/" ||
+            currentPath === "/login" ||
+            currentPath === "/signup"
             ? "border-none"
             : "border-[1px]"
-        } 
-        border-gray-800 py-5    ${
-          currentPath === "/" ||
-          currentPath === "/login" ||
-          currentPath === "/signup"
+          } 
+        border-gray-800 py-5    ${currentPath === "/" ||
+            currentPath === "/login" ||
+            currentPath === "/signup"
             ? "bg-transparent"
             : "#008000"
-        }  fixed top-0 left-0 right-0 ${
-          currentPath !== "/" ||
+          }  fixed top-0 left-0 right-0 ${currentPath !== "/" ||
           currentPath !== "/login" ||
           currentPath !== "/signup"
-        } 
+          } 
         `}
         style={{
           backgroundColor:
             currentPath === "/" ||
-            currentPath === "/login" ||
-            currentPath === "/signup"
+              currentPath === "/login" ||
+              currentPath === "/signup"
               ? " "
               : "rgb(0, 0, 14)",
-              
+
         }}
-      
-        
+
+
       >
         <div>
           <Link href={"/"}>
@@ -113,7 +110,7 @@ function ModuleHeader() {
                 Home
               </Link>
             </li>
-            <li className={router.pathname === "/dashboard" || "/dashboard/livestock/" ? "active" : ""}>
+            <li className={router.pathname === "/dashboard" ? "active" : ""}>
               <Link
                 href={"/dashboard"}
                 className="menu-nav2"
@@ -179,18 +176,17 @@ function ModuleHeader() {
       </div>
 
       <div
-        className={`mobile-header z-50 relative top-0 right-0 left-0    ${
-          currentPath === "/" ||
-          currentPath === "/login" ||
-          currentPath === "/signup"
+        className={`mobile-header z-50 relative top-0 right-0 left-0    ${currentPath === "/" ||
+            currentPath === "/login" ||
+            currentPath === "/signup"
             ? "rgba(9, 43, 0, 0.5)"
             : "#008000"
-        }`}
+          }`}
         style={{
           backgroundColor:
             currentPath !== "/" &&
-            currentPath !== "/login" &&
-            currentPath !== "/signup"
+              currentPath !== "/login" &&
+              currentPath !== "/signup"
               ? "#008000"
               : "rgba(9, 43, 0, 0.5)",
         }}
@@ -260,9 +256,9 @@ function ModuleHeader() {
                 </>
               )}
               <li style={{ borderBottom: "none", cursor: "pointer" }}>
-                <p onClick={logOut} className="menu-nav2">
-                  Log out
-                </p>
+              <Link href={userFromLocalStorage === null ? "/login" : "/"}>
+              <p className="menu-nav2">{userFromLocalStorage === null ? "Log in" : "Log out"}</p>
+              </Link>
               </li>
             </ul>
           </div>

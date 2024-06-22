@@ -683,7 +683,9 @@ display: none;
   width: 100%; /* Full width */
   background-color: #63ee6c;
 }
-
+.lauchBtn{
+  margin: 30px 0px 10px 80px;
+}
 .menu {
   text-align: center;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -930,6 +932,15 @@ display: none;
   border: 2px solid green;
   width: 300px;
   height: 200px;
+}
+.help{
+  margin-top: -20px;
+  margin-bottom: 30px;
+  color: white;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .up p {
@@ -1601,7 +1612,9 @@ display: none;
     margin-top: 0px;
 
   }
-
+.lauchBtn{
+  margin: 30px 0px 10px 30px;
+}
   .dropDownList {
     position: absolute;
     background-color: #009E0B;
@@ -1943,7 +1956,15 @@ display: none;
     width: 95%;
     margin: 20px auto;
   }
-
+  .help{
+    margin-top: -80px;
+    margin-bottom: 30px;
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+  }
   .parent {
     margin-top: -40px;
     height: 90vh;
@@ -1979,6 +2000,15 @@ display: none;
   }
   .login-header p {
     font-size: 15px;
+  }
+  .help{
+    margin-top: 00px;
+    margin-bottom: 30px;
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
   }
 }
 
@@ -2670,5 +2700,8 @@ display: none;
     font-size: 22px;
     margin: 33px 0px 0px 15px;
     padding: 10px 25px 10px 25px;
+  }
+  .lauchBtn{
+    margin: 30px 0px 10px 18px;
   }
 }
