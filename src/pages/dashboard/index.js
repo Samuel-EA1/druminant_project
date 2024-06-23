@@ -18,43 +18,54 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 export default function Staff() {
-  const [farmlandName, setFarmlandName] = useState('');
   const [hamburgerState, setHamburgerState] = useState(false);
+  const [decodedData, setDecodedData] = useState({
+    isAdmin: "",
+    status: "",
+    farmland: "",
+
+  })
 
   // render the quarantine modulebased on the role of user
   const [tokenFromLocalStorage, setTokenFromLocalStorage] =
     useRecoilState(userState);
 
-    useEffect(() => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        setTokenFromLocalStorage(token);
-        toast('Welcome');
-      }
-    }, []);
-  
-    useEffect(() => {
-      if (tokenFromLocalStorage) {
-        const decoded = jwtDecode(tokenFromLocalStorage);
-        const farmLand = decoded.farmland;
-        setFarmlandName(farmLand);
-        console.log(tokenFromLocalStorage);
-  
-        axios.get(`https://druminant-seven.vercel.app/api/v1/farmland/${farmLand}`, {
-          headers: {
-            'Authorization': `Bearer ${tokenFromLocalStorage}`,
-          },
-        })
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setTokenFromLocalStorage(token);
+      toast('Welcome');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (tokenFromLocalStorage) {
+      const decoded = jwtDecode(tokenFromLocalStorage);
+      const { isAdmin, status, farmland } = decoded
+      setDecodedData({
+        isAdmin,
+        status,
+        farmland
+      })
+      console.log(decoded)
+
+      axios.get(`https://druminant-seven.vercel.app/api/v1/farmland/${decodedData.farmland}`, {
+        headers: {
+          'Authorization': `Bearer ${tokenFromLocalStorage}`,
+        },
+      })
         .then(response => {
           console.log('Protected data:', response.data);
         })
         .catch(error => {
-          console.error('Error:', error);
+          console.error('shsgshgssjhs', error);
+          if (error.code === "ERR_BAD_REQUEST") {
+            toast.error(error.response.data.message)
+
+          }
         });
-      }
-    }, [tokenFromLocalStorage]);
-
-
+    }
+  }, [tokenFromLocalStorage]);
 
 
 
@@ -82,47 +93,279 @@ export default function Staff() {
       <div className="dashboard-main  mx-auto">
         <ModuleHeader />
 
-        {tokenFromLocalStorage ? (
-          <>
-            {" "}
-            <div className="dashboard md:mt-0">
-              <p className="first-letter:capitalize md:mt-16 mt-3">
-                {farmlandName}
-                <br className="break" /> Dashboard
-              </p>
-            </div>
-            <div className="  text-gray-800">
-              {" "}
-              <div className="desktop-dashboard  mb-28 ">
-                <div className="row-1 ">
-                  <div className="card1 hover:scale-105 hover:animate-pulse ">
-                    <Link href={`/dashboard/livestock`}>
-                      <div className="flex items-center">
-                        {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
-                        <h1>Livestock Profile</h1>
-                      </div>
 
+        {tokenFromLocalStorage ? (
+          (decodedData.status === "Accept" || decodedData.isAdmin) ? (
+            <>
+              {" "}
+              <div className="dashboard md:mt-0">
+                <p className="first-letter:capitalize md:mt-16 mt-3">
+                  {decodedData.farmland}
+                  <br className="break" /> Dashboard
+                </p>
+              </div>
+              <div className="  text-gray-800">
+                {" "}
+                <div className="desktop-dashboard  mb-28 ">
+                  <div className="row-1 ">
+                    <div className="card1 hover:scale-105 hover:animate-pulse ">
+                      <Link href={`/dashboard/livestock`}>
+                        <div className="flex items-center">
+                          {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
+                          <h1>Livestock Profile</h1>
+                        </div>
+
+                        <div className="flex justify-between">
+                          <div>
+                            <div className="flex items-center">
+                              <GiCow style={{ fontSize: "20px", marginTop: "0px", marginLeft: "5px", color: "#008000" }} />
+                              <p>Cattle: <strong>3</strong>{" "}</p>
+                            </div>
+
+                            <div className="flex items-center">
+                              <GiGoat style={{ fontSize: "17px", marginTop: "0px", marginLeft: "5px", color: "#008000" }} />
+                              <p>Goat: <strong>5</strong>{" "} </p>
+                            </div>
+
+                            <div className="flex items-center">
+                              <GiPig style={{ fontSize: "17px", marginTop: "0px", marginLeft: "5px", color: "#008000" }} />
+                              <p> Pig: <strong>0</strong>{" "}</p>
+                            </div>
+
+                            <div className="flex items-center">
+                              <GiSheep style={{ fontSize: "20px", marginTop: "0px", marginLeft: "5px", color: "#008000" }} />
+                              <p> Sheep: <strong>10</strong>{" "}</p>
+                            </div>
+                          </div>
+                          <div>
+                            <Image
+                              style={{
+                                height: "auto",
+                                width: "60px",
+                                borderRadius: "50%",
+                                marginRight: "10px",
+                              }}
+                              src={"/image/sheep.jpg"}
+                              width={100}
+                              height={100}
+                            />
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                    <div className="card1 hover:scale-105 hover:animate-pulse">
+                      <Link href={`/dashboard/incomeexpense`}>
+                        <div className="flex items-center">
+                          <AiOutlineDollarCircle style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Income/Expense</h1>
+                        </div>
+                        <div className="flex justify-between">
+                          <div>
+                            <p>
+                              Cattle: <strong>3/5</strong>{" "}
+                            </p>
+                            <p>
+                              Goat: <strong>5/6</strong>{" "}
+                            </p>
+                            <p>
+                              Pig: <strong>0/5</strong>{" "}
+                            </p>
+                            <p>
+                              Sheep: <strong>2/3</strong>{" "}
+                            </p>
+                          </div>
+                          <div>
+                            <Image
+                              style={{
+                                height: "60px ",
+                                width: "60px",
+                                borderRadius: "50%",
+                                marginRight: "10px",
+                              }}
+                              src={"/image/finance.jpg"}
+                              width={100}
+                              height={100}
+                            />
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                    <div className="card1 hover:scale-105 hover:animate-pulse">
+                      <Link href={`/dashboard/event`}>
+                        <div className="flex items-center">
+                          <MdEventAvailable style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> <h1>Event Tracker</h1>
+                        </div>
+
+                        <div className="flex justify-between">
+                          <div>
+                            <p>
+                              Cattle: <strong>3</strong>{" "}
+                            </p>
+                            <p>
+                              Goat: <strong>5</strong>{" "}
+                            </p>
+                            <p>
+                              Pig: <strong>0</strong>{" "}
+                            </p>
+                            <p>
+                              Sheep: <strong>10</strong>{" "}
+                            </p>
+                          </div>
+                          <div>
+                            <Image
+                              style={{
+                                height: "60px",
+                                width: "60px",
+                                borderRadius: "50%",
+                                marginRight: "10px",
+                              }}
+                              src={"/image/event.jpg"}
+                              width={100}
+                              height={100}
+                            />
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                  <div className=" row-1 ">
+                    <div className="card1 hover:scale-105 hover:animate-pulse">
+                      <Link href={`/dashboard/pregnancychecker`}>
+                        <div className="flex items-center">
+                          <BsCalendar2Date style={{ fontSize: "19px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Pregnancy Checker</h1>
+                        </div>
+
+                        <div className="flex justify-between">
+                          <div>
+                            <p>
+                              Cattle: <strong>3</strong>{" "}
+                            </p>
+                            <p>
+                              Goat: <strong>5</strong>{" "}
+                            </p>
+                            <p>
+                              Pig: <strong>0</strong>{" "}
+                            </p>
+                            <p>
+                              Sheep: <strong>10</strong>{" "}
+                            </p>
+                          </div>
+                          <div>
+                            <Image
+                              style={{
+                                height: "60px",
+                                width: "60px",
+                                borderRadius: "50%",
+                                marginRight: "10px",
+                              }}
+                              src={"/image/pregnant.png"}
+                              width={100}
+                              height={100}
+                            />
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                    <div className="card1 hover:scale-105 hover:animate-pulse">
+                      <Link href={`/dashboard/lactation`}>
+                        <div className="flex items-center">
+                          <TbMilk style={{ fontSize: "22px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
+                          <h1>Lactation Tracker</h1>
+                        </div>
+
+                        <div className="flex justify-between">
+                          <div>
+                            <p>
+                              Cattle: <strong>3</strong>{" "}
+                            </p>
+                            <p>
+                              Goat: <strong>5</strong>{" "}
+                            </p>
+                            <p>
+                              Pig: <strong>0</strong>{" "}
+                            </p>
+                            <p>
+                              Sheep: <strong>10</strong>{" "}
+                            </p>
+                          </div>
+                          <div>
+                            <Image
+                              style={{
+                                height: "60px",
+                                width: "60px",
+                                borderRadius: "50%",
+                                marginRight: "10px",
+                              }}
+                              src={"/image/lactation2.jpg"}
+                              width={100}
+                              height={100}
+                            />
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                    <div className="card1 hover:scale-105 hover:animate-pulse">
+                      <Link href={`/dashboard/quarantine`}>
+                        <div className="flex items-center">
+                          <GiCage style={{ fontSize: "21px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
+                          <h1 className="m-0">Quarantine</h1>
+                        </div>
+
+                        <div className="flex justify-between">
+                          <div>
+                            <p>
+                              Cattle: <strong>3</strong>{" "}
+                            </p>
+                            <p>
+                              Goat: <strong>5</strong>{" "}
+                            </p>
+                            <p>
+                              Pig: <strong>0</strong>{" "}
+                            </p>
+                            <p>
+                              Sheep: <strong>10</strong>{" "}
+                            </p>
+                          </div>
+                          <div>
+                            <Image
+                              style={{
+                                height: "55px",
+                                width: "55px",
+                                borderRadius: "50%",
+                                marginRight: "10px",
+                              }}
+                              src={"/image/quaran.jpg"}
+                              width={100}
+                              height={100}
+                            />
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                {/* mobile 2*/}
+                <div className="mobile-dashboard2">
+                  <div className="row-3">
+                    <div className="card3">
+                      <Link href={`/dashboard/livestock`}>
+                        <div className="flex items-center">
+                          <FaCow style={{ fontSize: "21px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Livestock Profile</h1>
+                        </div>
+                      </Link>
                       <div className="flex justify-between">
                         <div>
-                          <div className="flex items-center">
-                            <GiCow style={{ fontSize: "20px", marginTop: "0px", marginLeft: "5px", color: "#008000" }} />
-                            <p>Cattle: <strong>3</strong>{" "}</p>
-                          </div>
-
-                          <div className="flex items-center">
-                            <GiGoat style={{ fontSize: "17px", marginTop: "0px", marginLeft: "5px", color: "#008000" }} />
-                            <p>Goat: <strong>5</strong>{" "} </p>
-                          </div>
-
-                          <div className="flex items-center">
-                            <GiPig style={{ fontSize: "17px", marginTop: "0px", marginLeft: "5px", color: "#008000" }} />
-                            <p> Pig: <strong>0</strong>{" "}</p>
-                          </div>
-
-                          <div className="flex items-center">
-                            <GiSheep style={{ fontSize: "20px", marginTop: "0px", marginLeft: "5px", color: "#008000" }} />
-                            <p> Sheep: <strong>10</strong>{" "}</p>
-                          </div>
+                          <p>
+                            Cattle: <strong>3</strong>{" "}
+                          </p>
+                          <p>
+                            Goat: <strong>5</strong>{" "}
+                          </p>
+                          <p>
+                            Pig: <strong>0</strong>{" "}
+                          </p>
+                          <p>
+                            Sheep: <strong>10</strong>{" "}
+                          </p>
                         </div>
                         <div>
                           <Image
@@ -138,13 +381,13 @@ export default function Staff() {
                           />
                         </div>
                       </div>
-                    </Link>
-                  </div>
-                  <div className="card1 hover:scale-105 hover:animate-pulse">
-                    <Link href={`/dashboard/incomeexpense`}>
-                      <div className="flex items-center">
-                        <AiOutlineDollarCircle style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Income/Expense</h1>
-                      </div>
+                    </div>
+                    <div className="card3">
+                      <Link href={`/dashboard/incomeexpense`}>
+                        <div className="flex items-center">
+                          <AiOutlineDollarCircle style={{ fontSize: "21px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Income/Expense</h1>
+                        </div>
+                      </Link>
                       <div className="flex justify-between">
                         <div>
                           <p>
@@ -174,14 +417,15 @@ export default function Staff() {
                           />
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   </div>
-                  <div className="card1 hover:scale-105 hover:animate-pulse">
-                    <Link href={`/dashboard/event`}>
-                      <div className="flex items-center">
-                        <MdEventAvailable style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> <h1>Event Tracker</h1>
-                      </div>
-
+                  <div className="row-3">
+                    <div className="card3">
+                      <Link href={`/dashboard/event`}>
+                        <div className="flex items-center">
+                          <MdEventAvailable style={{ fontSize: "21px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> <h1>Event Tracker</h1>
+                        </div>
+                      </Link>
                       <div className="flex justify-between">
                         <div>
                           <p>
@@ -211,16 +455,13 @@ export default function Staff() {
                           />
                         </div>
                       </div>
-                    </Link>
-                  </div>
-                </div>
-                <div className=" row-1 ">
-                  <div className="card1 hover:scale-105 hover:animate-pulse">
-                    <Link href={`/dashboard/pregnancychecker`}>
-                      <div className="flex items-center">
-                        <BsCalendar2Date style={{ fontSize: "19px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Pregnancy Checker</h1>
-                      </div>
-
+                    </div>
+                    <div className="card3">
+                      <Link href={`/dashboard/pregnancychecker`}>
+                        <div className="flex items-center">
+                          <BsCalendar2Date style={{ fontSize: "17px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Pregnancy Checker</h1>
+                        </div>
+                      </Link>
                       <div className="flex justify-between">
                         <div>
                           <p>
@@ -250,15 +491,16 @@ export default function Staff() {
                           />
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   </div>
-                  <div className="card1 hover:scale-105 hover:animate-pulse">
-                    <Link href={`/dashboard/lactation`}>
-                      <div className="flex items-center">
-                        <TbMilk style={{ fontSize: "22px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
-                        <h1>Lactation Tracker</h1>
-                      </div>
-
+                  <div className="row-3">
+                    <div className="card3">
+                      <Link href={`/dashboard/lactation`}>
+                        <div className="flex items-center">
+                          <TbMilk style={{ fontSize: "20px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
+                          <h1>Lactation Tracker</h1>
+                        </div>
+                      </Link>
                       <div className="flex justify-between">
                         <div>
                           <p>
@@ -288,15 +530,14 @@ export default function Staff() {
                           />
                         </div>
                       </div>
-                    </Link>
-                  </div>
-                  <div className="card1 hover:scale-105 hover:animate-pulse">
-                    <Link href={`/dashboard/quarantine`}>
-                      <div className="flex items-center">
-                        <GiCage style={{ fontSize: "21px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
-                        <h1 className="m-0">Quarantine</h1>
-                      </div>
-
+                    </div>
+                    <div className="card3">
+                      <Link href={`/dashboard/quarantine`}>
+                        <div className="flex items-center">
+                          <GiCage style={{ fontSize: "19px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
+                          <h1 className="m-0">Quarantine</h1>
+                        </div>
+                      </Link>
                       <div className="flex justify-between">
                         <div>
                           <p>
@@ -326,466 +567,256 @@ export default function Staff() {
                           />
                         </div>
                       </div>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-              {/* mobile 2*/}
-              <div className="mobile-dashboard2">
-                <div className="row-3">
-                  <div className="card3">
-                    <Link href={`/dashboard/livestock`}>
-                      <div className="flex items-center">
-                        <FaCow style={{ fontSize: "21px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Livestock Profile</h1>
-                      </div>
-                    </Link>
-                    <div className="flex justify-between">
-                      <div>
-                        <p>
-                          Cattle: <strong>3</strong>{" "}
-                        </p>
-                        <p>
-                          Goat: <strong>5</strong>{" "}
-                        </p>
-                        <p>
-                          Pig: <strong>0</strong>{" "}
-                        </p>
-                        <p>
-                          Sheep: <strong>10</strong>{" "}
-                        </p>
-                      </div>
-                      <div>
-                        <Image
-                          style={{
-                            height: "auto",
-                            width: "60px",
-                            borderRadius: "50%",
-                            marginRight: "10px",
-                          }}
-                          src={"/image/sheep.jpg"}
-                          width={100}
-                          height={100}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card3">
-                    <Link href={`/dashboard/incomeexpense`}>
-                      <div className="flex items-center">
-                        <AiOutlineDollarCircle style={{ fontSize: "21px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Income/Expense</h1>
-                      </div>
-                    </Link>
-                    <div className="flex justify-between">
-                      <div>
-                        <p>
-                          Cattle: <strong>3/5</strong>{" "}
-                        </p>
-                        <p>
-                          Goat: <strong>5/6</strong>{" "}
-                        </p>
-                        <p>
-                          Pig: <strong>0/5</strong>{" "}
-                        </p>
-                        <p>
-                          Sheep: <strong>2/3</strong>{" "}
-                        </p>
-                      </div>
-                      <div>
-                        <Image
-                          style={{
-                            height: "60px ",
-                            width: "60px",
-                            borderRadius: "50%",
-                            marginRight: "10px",
-                          }}
-                          src={"/image/finance.jpg"}
-                          width={100}
-                          height={100}
-                        />
-                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="row-3">
-                  <div className="card3">
-                    <Link href={`/dashboard/event`}>
-                      <div className="flex items-center">
-                        <MdEventAvailable style={{ fontSize: "21px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> <h1>Event Tracker</h1>
+                {/* mobile */}
+                <div className="mobile-dashboard">
+                  <div className="row-2">
+                    <div className="card2">
+                      <Link href={`/dashboard/livestock`}>
+                        <div className="flex items-center">
+                          <FaCow style={{ fontSize: "21px", marginTop: "8px", marginLeft: "5px", color: "#030025" }} /><h1>Livestock Profile</h1>
+                        </div>
+                      </Link>
+                      <div className="flex justify-between">
+                        <div>
+                          <p>
+                            Cattle: <strong>3</strong>{" "}
+                          </p>
+                          <p>
+                            Goat: <strong>5</strong>{" "}
+                          </p>
+                          <p>
+                            Pig: <strong>0</strong>{" "}
+                          </p>
+                          <p>
+                            Sheep: <strong>10</strong>{" "}
+                          </p>
+                        </div>
+                        <div>
+                          <Image
+                            style={{
+                              height: "auto",
+                              width: "60px",
+                              borderRadius: "50%",
+                              marginRight: "10px",
+                            }}
+                            src={"/image/sheep.jpg"}
+                            width={100}
+                            height={100}
+                          />
+                        </div>
                       </div>
-                    </Link>
-                    <div className="flex justify-between">
-                      <div>
-                        <p>
-                          Cattle: <strong>3</strong>{" "}
-                        </p>
-                        <p>
-                          Goat: <strong>5</strong>{" "}
-                        </p>
-                        <p>
-                          Pig: <strong>0</strong>{" "}
-                        </p>
-                        <p>
-                          Sheep: <strong>10</strong>{" "}
-                        </p>
-                      </div>
-                      <div>
-                        <Image
-                          style={{
-                            height: "60px",
-                            width: "60px",
-                            borderRadius: "50%",
-                            marginRight: "10px",
-                          }}
-                          src={"/image/event.jpg"}
-                          width={100}
-                          height={100}
-                        />
+                    </div>
+                    <div className="card2">
+                      <Link href={`/dashboard/incomeexpense`}>
+                        <div className="flex items-center">
+                          <AiOutlineDollarCircle style={{ fontSize: "20px", marginTop: "9px", marginLeft: "5px", color: "#030025" }} /><h1>Income/Expense</h1>
+                        </div>
+                      </Link>
+                      <div className="flex justify-between">
+                        <div>
+                          <p>
+                            Cattle: <strong>3/5</strong>{" "}
+                          </p>
+                          <p>
+                            Goat: <strong>5/6</strong>{" "}
+                          </p>
+                          <p>
+                            Pig: <strong>0/5</strong>{" "}
+                          </p>
+                          <p>
+                            Sheep: <strong>2/3</strong>{" "}
+                          </p>
+                        </div>
+                        <div>
+                          <Image
+                            style={{
+                              height: "60px ",
+                              width: "60px",
+                              borderRadius: "50%",
+                              marginRight: "10px",
+                            }}
+                            src={"/image/finance.jpg"}
+                            width={100}
+                            height={100}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="card3">
-                    <Link href={`/dashboard/pregnancychecker`}>
-                      <div className="flex items-center">
-                        <BsCalendar2Date style={{ fontSize: "17px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Pregnancy Checker</h1>
+                  <div className="row-2">
+                    <div className="card2">
+                      <Link href={`/dashboard/event`}>
+                        <div className="flex items-center">
+                          <MdEventAvailable style={{ fontSize: "20px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> <h1>Event Tracker</h1>
+                        </div>
+                      </Link>
+                      <div className="flex justify-between">
+                        <div>
+                          <p>
+                            Cattle: <strong>3</strong>{" "}
+                          </p>
+                          <p>
+                            Goat: <strong>5</strong>{" "}
+                          </p>
+                          <p>
+                            Pig: <strong>0</strong>{" "}
+                          </p>
+                          <p>
+                            Sheep: <strong>10</strong>{" "}
+                          </p>
+                        </div>
+                        <div>
+                          <Image
+                            style={{
+                              height: "60px",
+                              width: "60px",
+                              borderRadius: "50%",
+                              marginRight: "10px",
+                            }}
+                            src={"/image/event.jpg"}
+                            width={100}
+                            height={100}
+                          />
+                        </div>
                       </div>
-                    </Link>
-                    <div className="flex justify-between">
-                      <div>
-                        <p>
-                          Cattle: <strong>3</strong>{" "}
-                        </p>
-                        <p>
-                          Goat: <strong>5</strong>{" "}
-                        </p>
-                        <p>
-                          Pig: <strong>0</strong>{" "}
-                        </p>
-                        <p>
-                          Sheep: <strong>10</strong>{" "}
-                        </p>
-                      </div>
-                      <div>
-                        <Image
-                          style={{
-                            height: "60px",
-                            width: "60px",
-                            borderRadius: "50%",
-                            marginRight: "10px",
-                          }}
-                          src={"/image/pregnant.png"}
-                          width={100}
-                          height={100}
-                        />
+                    </div>
+                    <div className="card2">
+                      <Link href={`/dashboard/pregnancychecker`}>
+                        <div className="flex items-center">
+                          <BsCalendar2Date style={{ fontSize: "15px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Pregnancy Checker</h1>
+                        </div>
+                      </Link>
+                      <div className="flex justify-between">
+                        <div>
+                          <p>
+                            Cattle: <strong>3</strong>{" "}
+                          </p>
+                          <p>
+                            Goat: <strong>5</strong>{" "}
+                          </p>
+                          <p>
+                            Pig: <strong>0</strong>{" "}
+                          </p>
+                          <p>
+                            Sheep: <strong>10</strong>{" "}
+                          </p>
+                        </div>
+                        <div>
+                          <Image
+                            style={{
+                              height: "60px",
+                              width: "60px",
+                              borderRadius: "50%",
+                              marginRight: "10px",
+                            }}
+                            src={"/image/pregnant.png"}
+                            width={100}
+                            height={100}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="row-3">
-                  <div className="card3">
-                    <Link href={`/dashboard/lactation`}>
-                      <div className="flex items-center">
-                        <TbMilk style={{ fontSize: "20px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
-                        <h1>Lactation Tracker</h1>
-                      </div>
-                    </Link>
-                    <div className="flex justify-between">
-                      <div>
-                        <p>
-                          Cattle: <strong>3</strong>{" "}
-                        </p>
-                        <p>
-                          Goat: <strong>5</strong>{" "}
-                        </p>
-                        <p>
-                          Pig: <strong>0</strong>{" "}
-                        </p>
-                        <p>
-                          Sheep: <strong>10</strong>{" "}
-                        </p>
-                      </div>
-                      <div>
-                        <Image
-                          style={{
-                            height: "60px",
-                            width: "60px",
-                            borderRadius: "50%",
-                            marginRight: "10px",
-                          }}
-                          src={"/image/lactation2.jpg"}
-                          width={100}
-                          height={100}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card3">
-                    <Link href={`/dashboard/quarantine`}>
-                      <div className="flex items-center">
-                        <GiCage style={{ fontSize: "19px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
-                        <h1 className="m-0">Quarantine</h1>
-                      </div>
-                    </Link>
-                    <div className="flex justify-between">
-                      <div>
-                        <p>
-                          Cattle: <strong>3</strong>{" "}
-                        </p>
-                        <p>
-                          Goat: <strong>5</strong>{" "}
-                        </p>
-                        <p>
-                          Pig: <strong>0</strong>{" "}
-                        </p>
-                        <p>
-                          Sheep: <strong>10</strong>{" "}
-                        </p>
-                      </div>
-                      <div>
-                        <Image
-                          style={{
-                            height: "55px",
-                            width: "55px",
-                            borderRadius: "50%",
-                            marginRight: "10px",
-                          }}
-                          src={"/image/quaran.jpg"}
-                          width={100}
-                          height={100}
-                        />
+                  <div className="row-2">
+                    <div className="card2">
+                      <Link href={`/dashboard/lactation`}>
+                        <div className="flex items-center">
+                          <TbMilk style={{ fontSize: "20px", marginTop: "7px", marginLeft: "5px", color: "#030025" }} />
+                          <h1>Lactation Tracker</h1>
+                        </div>
+                      </Link>
+                      <div className="flex justify-between">
+                        <div>
+                          <p>
+                            Cattle: <strong>3</strong>{" "}
+                          </p>
+                          <p>
+                            Goat: <strong>5</strong>{" "}
+                          </p>
+                          <p>
+                            Pig: <strong>0</strong>{" "}
+                          </p>
+                          <p>
+                            Sheep: <strong>10</strong>{" "}
+                          </p>
+                        </div>
+                        <div>
+                          <Image
+                            style={{
+                              height: "60px",
+                              width: "60px",
+                              borderRadius: "50%",
+                              marginRight: "10px",
+                            }}
+                            src={"/image/lactation2.jpg"}
+                            width={100}
+                            height={100}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-              {/* mobile */}
-              <div className="mobile-dashboard">
-                <div className="row-2">
-                  <div className="card2">
-                    <Link href={`/dashboard/livestock`}>
-                      <div className="flex items-center">
-                        <FaCow style={{ fontSize: "21px", marginTop: "8px", marginLeft: "5px", color: "#030025" }} /><h1>Livestock Profile</h1>
-                      </div>
-                    </Link>
-                    <div className="flex justify-between">
-                      <div>
-                        <p>
-                          Cattle: <strong>3</strong>{" "}
-                        </p>
-                        <p>
-                          Goat: <strong>5</strong>{" "}
-                        </p>
-                        <p>
-                          Pig: <strong>0</strong>{" "}
-                        </p>
-                        <p>
-                          Sheep: <strong>10</strong>{" "}
-                        </p>
-                      </div>
-                      <div>
-                        <Image
-                          style={{
-                            height: "auto",
-                            width: "60px",
-                            borderRadius: "50%",
-                            marginRight: "10px",
-                          }}
-                          src={"/image/sheep.jpg"}
-                          width={100}
-                          height={100}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card2">
-                    <Link href={`/dashboard/incomeexpense`}>
-                      <div className="flex items-center">
-                        <AiOutlineDollarCircle style={{ fontSize: "20px", marginTop: "9px", marginLeft: "5px", color: "#030025" }} /><h1>Income/Expense</h1>
-                      </div>
-                    </Link>
-                    <div className="flex justify-between">
-                      <div>
-                        <p>
-                          Cattle: <strong>3/5</strong>{" "}
-                        </p>
-                        <p>
-                          Goat: <strong>5/6</strong>{" "}
-                        </p>
-                        <p>
-                          Pig: <strong>0/5</strong>{" "}
-                        </p>
-                        <p>
-                          Sheep: <strong>2/3</strong>{" "}
-                        </p>
-                      </div>
-                      <div>
-                        <Image
-                          style={{
-                            height: "60px ",
-                            width: "60px",
-                            borderRadius: "50%",
-                            marginRight: "10px",
-                          }}
-                          src={"/image/finance.jpg"}
-                          width={100}
-                          height={100}
-                        />
+                    <div className="card2">
+                      <Link href={`/dashboard/quarantine`}>
+                        <div className="flex items-center">
+                          <GiCage style={{ fontSize: "19px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
+                          <h1 className="m-0">Quarantine</h1>
+                        </div>
+                      </Link>
+                      <div className="flex justify-between">
+                        <div>
+                          <p>
+                            Cattle: <strong>3</strong>{" "}
+                          </p>
+                          <p>
+                            Goat: <strong>5</strong>{" "}
+                          </p>
+                          <p>
+                            Pig: <strong>0</strong>{" "}
+                          </p>
+                          <p>
+                            Sheep: <strong>10</strong>{" "}
+                          </p>
+                        </div>
+                        <div>
+                          <Image
+                            style={{
+                              height: "55px",
+                              width: "55px",
+                              borderRadius: "50%",
+                              marginRight: "10px",
+                            }}
+                            src={"/image/quaran.jpg"}
+                            width={100}
+                            height={100}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="row-2">
-                  <div className="card2">
-                    <Link href={`/dashboard/event`}>
-                      <div className="flex items-center">
-                        <MdEventAvailable style={{ fontSize: "20px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> <h1>Event Tracker</h1>
-                      </div>
-                    </Link>
-                    <div className="flex justify-between">
-                      <div>
-                        <p>
-                          Cattle: <strong>3</strong>{" "}
-                        </p>
-                        <p>
-                          Goat: <strong>5</strong>{" "}
-                        </p>
-                        <p>
-                          Pig: <strong>0</strong>{" "}
-                        </p>
-                        <p>
-                          Sheep: <strong>10</strong>{" "}
-                        </p>
-                      </div>
-                      <div>
-                        <Image
-                          style={{
-                            height: "60px",
-                            width: "60px",
-                            borderRadius: "50%",
-                            marginRight: "10px",
-                          }}
-                          src={"/image/event.jpg"}
-                          width={100}
-                          height={100}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card2">
-                    <Link href={`/dashboard/pregnancychecker`}>
-                      <div className="flex items-center">
-                        <BsCalendar2Date style={{ fontSize: "15px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /><h1>Pregnancy Checker</h1>
-                      </div>
-                    </Link>
-                    <div className="flex justify-between">
-                      <div>
-                        <p>
-                          Cattle: <strong>3</strong>{" "}
-                        </p>
-                        <p>
-                          Goat: <strong>5</strong>{" "}
-                        </p>
-                        <p>
-                          Pig: <strong>0</strong>{" "}
-                        </p>
-                        <p>
-                          Sheep: <strong>10</strong>{" "}
-                        </p>
-                      </div>
-                      <div>
-                        <Image
-                          style={{
-                            height: "60px",
-                            width: "60px",
-                            borderRadius: "50%",
-                            marginRight: "10px",
-                          }}
-                          src={"/image/pregnant.png"}
-                          width={100}
-                          height={100}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row-2">
-                  <div className="card2">
-                    <Link href={`/dashboard/lactation`}>
-                      <div className="flex items-center">
-                        <TbMilk style={{ fontSize: "20px", marginTop: "7px", marginLeft: "5px", color: "#030025" }} />
-                        <h1>Lactation Tracker</h1>
-                      </div>
-                    </Link>
-                    <div className="flex justify-between">
-                      <div>
-                        <p>
-                          Cattle: <strong>3</strong>{" "}
-                        </p>
-                        <p>
-                          Goat: <strong>5</strong>{" "}
-                        </p>
-                        <p>
-                          Pig: <strong>0</strong>{" "}
-                        </p>
-                        <p>
-                          Sheep: <strong>10</strong>{" "}
-                        </p>
-                      </div>
-                      <div>
-                        <Image
-                          style={{
-                            height: "60px",
-                            width: "60px",
-                            borderRadius: "50%",
-                            marginRight: "10px",
-                          }}
-                          src={"/image/lactation2.jpg"}
-                          width={100}
-                          height={100}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card2">
-                    <Link href={`/dashboard/quarantine`}>
-                      <div className="flex items-center">
-                        <GiCage style={{ fontSize: "19px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} />
-                        <h1 className="m-0">Quarantine</h1>
-                      </div>
-                    </Link>
-                    <div className="flex justify-between">
-                      <div>
-                        <p>
-                          Cattle: <strong>3</strong>{" "}
-                        </p>
-                        <p>
-                          Goat: <strong>5</strong>{" "}
-                        </p>
-                        <p>
-                          Pig: <strong>0</strong>{" "}
-                        </p>
-                        <p>
-                          Sheep: <strong>10</strong>{" "}
-                        </p>
-                      </div>
-                      <div>
-                        <Image
-                          style={{
-                            height: "55px",
-                            width: "55px",
-                            borderRadius: "50%",
-                            marginRight: "10px",
-                          }}
-                          src={"/image/quaran.jpg"}
-                          width={100}
-                          height={100}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              </div>
+            </>
+          ) : decodedData.status === "Reject" ? (
+            <div className="text-center text-gray-200 mx-0 h-screen flex items-center justify-center">
+              <div className="flex items-center justify-center flex-col">
+                <p className="dashboard-mssg">
+                  Your request has been denied!
+                </p>
               </div>
             </div>
-          </>
+          ) : (
+            <div className="text-center text-gray-200 mx-0 h-screen flex items-center justify-center">
+              <div className="flex items-center justify-center flex-col">
+                <p className="dashboard-mssg">
+                  You are not allowed to access the farmland  <br />
+                  Please, remind admin to accept your request
+                </p>
+              </div>
+            </div>
+          )
         ) : (
           <div className="text-center text-gray-200 mx-0 h-screen flex items-center justify-center">
             <div className="flex items-center justify-center flex-col">
@@ -798,7 +829,7 @@ export default function Staff() {
               </Link>
             </div>
           </div>
-        )}
+        )};
 
         <div className="md:mt-0 mt-20">
           <Footer />

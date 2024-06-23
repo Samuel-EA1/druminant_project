@@ -1,4 +1,6 @@
 import { userState } from "@/atom";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -14,6 +16,7 @@ function ModuleHeader() {
   const [hamburg, setHamburg] = useState(true);
   const [cancel, setCancel] = useState(false);
   const router = useRouter();
+  const [admin, setAdmin] = useState("")
 
   function dropNav() {
     setactivateIcon(true);
@@ -34,20 +37,30 @@ function ModuleHeader() {
 
   //change the link component to a p tag, create a fucntion that when a user clicks on the p tag, it clears the local storage and redirects the
   //user back to home page
-  const [userFromLocalStorage, setUserFromLocalStorage] =
-    useRecoilState(userState);
+  const [tokenFromLocalStorage, setTokenFromLocalStorage] =
+  useRecoilState(userState);
 
   useEffect(() => {
-    // This code runs only on the client side
-    const user = window.localStorage.getItem("user");
-    setUserFromLocalStorage(JSON.parse(user));
+    const token = localStorage.getItem('token');
+    if (token) {
+      setTokenFromLocalStorage(token);
+    }
   }, []);
+
+  useEffect(() => {
+    if (tokenFromLocalStorage) {
+      const decoded = jwtDecode(tokenFromLocalStorage);
+      setAdmin(decoded.isAdmin)
+      
+    }
+  }, [tokenFromLocalStorage]);
+
   const currentPath = router.asPath;
 
   function logOut() {
     confirm("Are you sure you want to log out?")
     localStorage.removeItem("user");
-    setUserFromLocalStorage(null);
+    setTokenFromLocalStorage(null);
     router.push("/");
     toast("Bye!");
     currentPath === "/" || currentPath === "/login" || currentPath === "/signup"
@@ -133,7 +146,7 @@ function ModuleHeader() {
                 Help
               </Link>
             </li>
-            {userFromLocalStorage?.isAdmin && (
+            {admin && (
               <>
                 <li className={router.pathname === "/request" ? "active" : ""}>
                   <Link
@@ -160,7 +173,7 @@ function ModuleHeader() {
           </ul>
         </div>
 
-        {userFromLocalStorage ? (
+        {tokenFromLocalStorage ? (
           <div>
             <p onClick={logOut}>
               <IoIosLogOut className="log-out" title="Log out" />
