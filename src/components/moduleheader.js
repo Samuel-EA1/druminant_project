@@ -16,7 +16,9 @@ function ModuleHeader() {
   const [hamburg, setHamburg] = useState(true);
   const [cancel, setCancel] = useState(false);
   const router = useRouter();
-  const [admin, setAdmin] = useState("")
+  const [admin, setAdmin] = useState("");
+
+  const currentPath = router.asPath;
 
   function dropNav() {
     setactivateIcon(true);
@@ -37,30 +39,27 @@ function ModuleHeader() {
 
   //change the link component to a p tag, create a fucntion that when a user clicks on the p tag, it clears the local storage and redirects the
   //user back to home page
-  const [tokenFromLocalStorage, setTokenFromLocalStorage] =
-  useRecoilState(userState);
+  const [userData, setUserData] = useRecoilState(userState);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
+
     if (token) {
-      setTokenFromLocalStorage(token);
+      const decoded = jwtDecode(token);
+      const { isAdmin, status, farmland, userToken } = decoded;
+      setUserData({
+        isAdmin,
+        status,
+        farmland,
+        token,
+      });
     }
   }, []);
 
-  useEffect(() => {
-    if (tokenFromLocalStorage) {
-      const decoded = jwtDecode(tokenFromLocalStorage);
-      setAdmin(decoded.isAdmin)
-      
-    }
-  }, [tokenFromLocalStorage]);
-
-  const currentPath = router.asPath;
-
   function logOut() {
-    confirm("Are you sure you want to log out?")
-    localStorage.removeItem("user");
-    setTokenFromLocalStorage(null);
+    confirm("Are you sure you want to log out?");
+    localStorage.removeItem("token");
+    setUserData(null);
     router.push("/");
     toast("Bye!");
     currentPath === "/" || currentPath === "/login" || currentPath === "/signup"
@@ -73,35 +72,34 @@ function ModuleHeader() {
 
   return (
     <div>
-
       <div
-        className={`admin-header  ${currentPath === "/" ||
+        className={`admin-header  ${
+          currentPath === "/" ||
           currentPath === "/login" ||
           currentPath === "/signup"
-          ? "border-none"
-          : "border-[1px]"
-          } 
-        border-gray-800 py-5    ${currentPath === "/" ||
-            currentPath === "/login" ||
-            currentPath === "/signup"
+            ? "border-none"
+            : "border-[1px]"
+        } 
+        border-gray-800 py-5    ${
+          currentPath === "/" ||
+          currentPath === "/login" ||
+          currentPath === "/signup"
             ? "bg-transparent"
             : "#008000"
-          }  fixed top-0 left-0 right-0 ${currentPath !== "/" ||
+        }  fixed top-0 left-0 right-0 ${
+          currentPath !== "/" ||
           currentPath !== "/login" ||
           currentPath !== "/signup"
-          } 
+        } 
         `}
         style={{
           backgroundColor:
             currentPath === "/" ||
-              currentPath === "/login" ||
-              currentPath === "/signup"
+            currentPath === "/login" ||
+            currentPath === "/signup"
               ? " "
               : "rgb(0, 0, 14)",
-
         }}
-
-
       >
         <div>
           <Link href={"/"}>
@@ -173,7 +171,7 @@ function ModuleHeader() {
           </ul>
         </div>
 
-        {tokenFromLocalStorage ? (
+        {userData ? (
           <div>
             <p onClick={logOut}>
               <IoIosLogOut className="log-out" title="Log out" />
@@ -189,17 +187,18 @@ function ModuleHeader() {
       </div>
 
       <div
-        className={`mobile-header z-50 relative top-0 right-0 left-0    ${currentPath === "/" ||
+        className={`mobile-header z-50 relative top-0 right-0 left-0    ${
+          currentPath === "/" ||
           currentPath === "/login" ||
           currentPath === "/signup"
-          ? "rgba(9, 43, 0, 0.5)"
-          : "#008000"
-          }`}
+            ? "rgba(9, 43, 0, 0.5)"
+            : "#008000"
+        }`}
         style={{
           backgroundColor:
             currentPath !== "/" &&
-              currentPath !== "/login" &&
-              currentPath !== "/signup"
+            currentPath !== "/login" &&
+            currentPath !== "/signup"
               ? "#008000"
               : "rgba(9, 43, 0, 0.5)",
         }}
@@ -250,7 +249,7 @@ function ModuleHeader() {
                   Help
                 </Link>
               </li>
-              {userFromLocalStorage?.isAdmin && (
+              {userData.isAdmin && (
                 <>
                   <li
                     className={router.pathname === "/request" ? "active" : ""}
@@ -269,13 +268,13 @@ function ModuleHeader() {
                 </>
               )}
               <li style={{ borderBottom: "none", cursor: "pointer" }}>
-
-
-                {userFromLocalStorage === null ? <Link href={"/login"}>
-                  Log in
-                </Link> : <p onClick={logOut}>
-                  {userFromLocalStorage === null ? "Log in" : "Log out"}
-                </p>}
+                {userData === null ? (
+                  <Link href={"/login"}>Log in</Link>
+                ) : (
+                  <p onClick={logOut}>
+                    {userData === null ? "Log in" : "Log out"}
+                  </p>
+                )}
               </li>
             </ul>
           </div>

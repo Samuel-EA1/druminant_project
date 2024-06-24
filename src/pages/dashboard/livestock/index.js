@@ -6,7 +6,18 @@ import Link from "next/link"
 
 
 function LivestockSelection() {
-    //dashboard/livestock/
+ 
+
+
+
+
+
+
+
+
+
+
+
     return <div>
         <Head>
             <title>druminant - Livestock profile</title>
@@ -24,7 +35,7 @@ function LivestockSelection() {
 
                     <div className="grid grid-cols-1 w-11/12 gap-8 mx-auto md:grid-cols-2 md:gap-16 md:w-4/5">
 
-                        <div className="card4 hover:scale-105 hover:animate-pulse">
+                        <div className="card4 transform duration-1000    hover:scale-105 hover:animate-pulse">
                             <Link href={`/dashboard/livestock/cattle`}>
                                 <div className="flex justify-between mt-10">
                                     <h1>Cattle</h1>
@@ -45,7 +56,7 @@ function LivestockSelection() {
                             </Link>
                         </div>
 
-                        <div className="card4 hover:scale-105 hover:animate-pulse">
+                        <div className="card4 transform duration-1000  hover:scale-105 hover:animate-pulse">
                             <Link href={`/dashboard/livestock/goat`}>
                                 <div className="flex justify-between mt-10">
                                     <h1>Goat</h1>
@@ -66,7 +77,7 @@ function LivestockSelection() {
                             </Link>
                         </div>
 
-                        <div className="card4 hover:scale-105 hover:animate-pulse">
+                        <div className="card4 transform duration-1000  hover:scale-105 hover:animate-pulse">
                             <Link href={`/dashboard/livestock/pig`}>
                                 <div className="flex justify-between mt-10">
                                     <h1>Pig</h1>
@@ -87,7 +98,7 @@ function LivestockSelection() {
                             </Link>
                         </div>
 
-                        <div className="card4 hover:scale-105 hover:animate-pulse">
+                        <div className="card4 transform duration-1000  hover:scale-105 hover:animate-pulse">
                             <Link href={`/dashboard/livestock/sheep`}>
                                 <div className="flex justify-between mt-10">
                                     <h1>Sheep</h1>
