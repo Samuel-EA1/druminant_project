@@ -118,7 +118,7 @@ export default function Login() {
                     <input
                       type="text"
                       id="username"
-                      className="w-full py-2 px-2 outline-none text-sm text-white h-12 md:text-black bg-transparent  "
+                      className="w-full py-2 px-2 outline-none text-base text-white h-12 md:text-black bg-transparent  "
                       placeholder="Enter your username"
                       required
                       maxLength={12}
@@ -144,7 +144,7 @@ export default function Login() {
                       type="password"
                       id="password"
                       name="password"
-                      className="w-full py-2 px-2 outline-none text-sm h-12 text-white md:text-black bg-transparent"
+                      className="w-full py-2 px-2 outline-none text-base h-12 text-white md:text-black bg-transparent"
                       placeholder="Enter password"
                       required
                       value={formData.password}
@@ -156,7 +156,7 @@ export default function Login() {
                 {/*   */}
                 {loading ? (
                   <button
-                    className="w-full flex justify-center items-center space-x-2 bg-[#008000] hover:bg-[#00801ef1] text-white py-2 px-4 rounded opacity-50 cursor-not-allowed"
+                    className="w-full flex justify-center items-center space-x-2 bg-[#008000] hover:bg-[#00801ef1] text-white py-2 px-4 rounded  cursor-not-allowed"
                     disabled
                   >
                     <AiOutlineLoading3Quarters className="text-white text-2xl animate-spin " />{" "}
@@ -165,7 +165,7 @@ export default function Login() {
                 ) : (
                   <button
                     type="submit"
-                    className="w-full bg-[#008000] hover:bg-[#00801ef1] text-white py-2 px-4 rounded"
+                    className="w-full bg-[#008000] hover:bg-[#00801ef1]  text-white py-2 px-4 rounded"
                   >
                     Log in
                   </button>

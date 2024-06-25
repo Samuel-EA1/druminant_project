@@ -208,7 +208,7 @@ export default function Login() {
                   </div> */}
                   {loading ? (
                     <button
-                      className="w-full bg-[#008000] hover:bg-[#00801ef1] text-white py-2 px-4 rounded opacity-50 cursor-not-allowed"
+                      className="w-full bg-[#008000] hover:bg-[#00801ef1] text-white py-2 px-4 rounded  cursor-not-allowed"
                       disabled
                     >
                       Registering...

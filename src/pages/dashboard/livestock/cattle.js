@@ -36,6 +36,9 @@ import { Footer } from "@/components/footer";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { userState } from "@/atom";
+import { toast } from "react-toastify";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import moment from "moment/moment";
 
 // import 'react-smart-data-table/dist/react-smart-data-table.css';
 
@@ -43,24 +46,23 @@ export default function Livestock() {
   const [formModal, setFormModal] = useState(false);
   const userData = useRecoilValue(userState);
   const [errors, setErrors] = useState({});
-  const [table, settable] = useState(true);
+
   const [editFormModal, setEditFormModal] = useState(false);
   const [editformInput, setEditFormInput] = useState({
     breed: "",
     tagId: "",
     tagLocation: "",
     sex: "",
-    birthdate: "",
+    birthDate: "",
     weight: "",
     status: "",
     origin: "",
     remark: "",
-    staff: "",
   });
 
   const [editId, setEditId] = useState("");
 
-  const [closeForm, setCloseForm] = useState(false);
+  const [creating, setCreating] = useState(false);
   const [viewLivestock, setviewLivestock] = useState(false);
   const [tagIdError, setTagIdError] = useState("");
   const [selected, setSelected] = useState({
@@ -68,12 +70,11 @@ export default function Livestock() {
     tagId: "",
     tagLocation: "",
     sex: "",
-    birthdate: "",
+    birthDate: "",
     weight: "",
     status: "",
     origin: "",
     remark: "",
-    staff: "",
   });
 
   const [formInput, setformInput] = useState({
@@ -81,12 +82,11 @@ export default function Livestock() {
     tagId: "",
     tagLocation: "",
     sex: "",
-    birthdate: "",
+    birthDate: "",
     weight: "",
     status: "",
     origin: "",
     remark: "",
-    staff: "",
   });
 
   const handleEdit = (tagId) => {
@@ -97,7 +97,7 @@ export default function Livestock() {
         tagId: selectedRecord.tagId,
         tagLocation: selectedRecord.tagLocation,
         sex: selectedRecord.sex,
-        birthdate: selectedRecord.birthdate,
+        birthDate: selectedRecord.birthDate,
         weight: selectedRecord.weight,
         status: selectedRecord.status,
         origin: selectedRecord.origin,
@@ -145,7 +145,6 @@ export default function Livestock() {
     if (confirm("Are you sure you want to close the form?") == true) {
       setFormModal(false);
       setformInput({});
-      settable(true);
     }
   }
 
@@ -153,7 +152,6 @@ export default function Livestock() {
     if (confirm("Are you sure you want to close the form?") == true) {
       setEditFormModal(false);
       setformInput({});
-      settable(true);
     }
   }
 
@@ -171,7 +169,7 @@ export default function Livestock() {
     breed: "Bosss",
     tagId: "EE11  ",
     sex: "Male",
-    birthdate: "July 30th 2022",
+    birthDate: "July 30th 2022",
   };
 
   console.log(tagIdError);
@@ -192,14 +190,14 @@ export default function Livestock() {
   function editBtnFn(id) {
     setEditId(id);
     setEditFormModal(true);
-    settable(false);
+
     const selectedRecord = livestockData.find((record) => record.id === id);
     setEditFormInput({
       breed: selectedRecord.breed,
       tagId: selectedRecord.tagId,
       tagLocation: selectedRecord.tagLocation,
       sex: selectedRecord.sex,
-      birthdate: selectedRecord.birthdate,
+      birthDate: selectedRecord.birthDate,
       weight: selectedRecord.weight,
       status: selectedRecord.status,
       origin: selectedRecord.origin,
@@ -208,63 +206,91 @@ export default function Livestock() {
     });
   }
 
-  const handleFormSubmit = (e) => {
-    [];
-    e.preventDefault();
+  const fetchLiveStocks = async () => {
+    try {
+      if (userData.token) {
+        const res = await axios.get(
+          `https://druminant-seven.vercel.app/api/v1/farmland/${userData.farmland}/livestock/cattle`,
 
-    const {
-      breed,
-      tagId,
-      sex,
-      birthdate,
-      weight,
-      status,
-      origin,
-      remark,
-      staff,
-    } = formInput;
+          {
+            headers: {
+              Authorization: `Bearer ${userData?.token}`,
+            },
+          }
+        );
 
-    if (
-      !breed ||
-      !tagId ||
-      !sex ||
-      !birthdate ||
-      !weight ||
-      !status ||
-      !origin ||
-      !remark ||
-      !staff
-    ) {
-      alert("Please, ensure you fill in all fields.");
-      return;
-    }
-
-    console.log(formInput);
-
-    axios.post(
-      `https://druminant-seven.vercel.app/api/v1/farmland/${userData.farmland}/livestock/cattle`,
-      formInput,
-      {
-        headers: {
-          Authorization: `Bearer ${userData?.token}`,
-        },
+        if (res.data) {
+          setLivestockData(res.data.message.reverse());
+        }
       }
-    );
+    } catch (error) {
+      console.log(error);
+      if (error.response) {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+  useEffect(() => {
+    fetchLiveStocks();
+  }, [creating, userData?.token]);
 
-    settable(true);
-    setFormModal(false);
-    // setformInput({
-    //   breed: "",
-    //   tagId: "",
-    //   tagLocation: "",
-    //   sex: "",
-    //   birthdate: "",
-    //   weight: "",
-    //   status: "",
-    //   origin: "",
-    //   remark: "",
-    //   staff: "",
-    // });
+  const handleFormSubmit = async (e) => {
+    setCreating(true);
+    try {
+      e.preventDefault();
+
+      const { breed, tagId, sex, birthDate, weight, status, origin, remark } =
+        formInput;
+
+      if (
+        !breed ||
+        !tagId ||
+        !sex ||
+        !birthDate ||
+        !weight ||
+        !status ||
+        !origin 
+       
+      ) {
+        setCreating(false);
+        alert("Please, ensure you fill in all fields.");
+        return;
+      }
+
+      const res = await axios.post(
+        `https://druminant-seven.vercel.app/api/v1/farmland/${userData.farmland}/livestock/cattle`,
+        formInput,
+        {
+          headers: {
+            Authorization: `Bearer ${userData?.token}`,
+          },
+        }
+      );
+
+      if (res.data) {
+        toast.success(res.data);
+
+        setCreating(false);
+        setFormModal(false);
+        // setformInput({
+        //   breed: "",
+        //   tagId: "",
+        //   tagLocation: "",
+        //   sex: "",
+        //   birthDate: "",
+        //   weight: "",
+        //   status: "",
+        //   origin: "",
+        //   remark: "",
+        //   staff: "",
+        // });
+      }
+    } catch (error) {
+      setCreating(false);
+       if (error.response) {
+         toast.error(error.response.data.message);
+       }
+    }
   };
 
   const handleEditFormSubmit = (e) => {
@@ -276,7 +302,7 @@ export default function Livestock() {
       tagId,
       tagLocation,
       sex,
-      birthdate,
+      birthDate,
       weight,
       status,
       origin,
@@ -290,7 +316,7 @@ export default function Livestock() {
       !tagId ||
       !tagLocation ||
       !sex ||
-      !birthdate ||
+      !birthDate ||
       !weight ||
       !status ||
       !origin ||
@@ -310,14 +336,14 @@ export default function Livestock() {
     });
 
     setLivestockData(newLivestockData);
-    settable(true);
+
     setEditFormModal(false);
     setEditFormInput({
       breed: "",
       tagId: "",
       tagLocation: "",
       sex: "",
-      birthdate: "",
+      birthDate: "",
       weight: "",
       status: "",
       origin: "",
@@ -328,7 +354,6 @@ export default function Livestock() {
 
   function addProfile() {
     setFormModal(!formModal);
-    settable(false);
   }
 
   return (
@@ -372,214 +397,211 @@ export default function Livestock() {
         </div>
       </div>
 
-      {table && (
-        <div>
-          <table className="w-full mt-0">
-            <thead>
-              <tr>
-                <th
-                  className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
-                  style={{ backgroundColor: "green" }}
-                >
-                  id
-                </th>
-                <th
-                  className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
-                  style={{ backgroundColor: "green" }}
-                >
-                  BREED
-                </th>
-                <th
-                  className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
-                  style={{ backgroundColor: "green" }}
-                >
-                  Tag ID
-                </th>
-                <th
-                  className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
-                  style={{ backgroundColor: "green" }}
-                >
-                  SEX
-                </th>
-                <th
-                  className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
-                  style={{ backgroundColor: "green" }}
-                >
-                  BIRTH Date
-                </th>
-                <th
-                  className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
-                  style={{ backgroundColor: "green" }}
-                >
-                  Weight
-                </th>
-                <th
-                  className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
-                  style={{ backgroundColor: "green" }}
-                >
-                  Actions
-                </th>
+      <div>
+        <table className="w-full mt-0">
+          <thead>
+            <tr>
+              <th
+                className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
+                style={{ backgroundColor: "green" }}
+              >
+                id
+              </th>
+              <th
+                className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
+                style={{ backgroundColor: "green" }}
+              >
+                BREED
+              </th>
+              <th
+                className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
+                style={{ backgroundColor: "green" }}
+              >
+                Tag ID
+              </th>
+              <th
+                className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
+                style={{ backgroundColor: "green" }}
+              >
+                SEX
+              </th>
+              <th
+                className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
+                style={{ backgroundColor: "green" }}
+              >
+                BIRTH Date
+              </th>
+              <th
+                className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
+                style={{ backgroundColor: "green" }}
+              >
+                Weight
+              </th>
+              <th
+                className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
+                style={{ backgroundColor: "green" }}
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody >
+            {livestockData.map((row, key) => (
+              <tr
+                key={key}
+                className="bg-white    md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap mb-1 md:mb-0 shadow-sm shadow-gray-800 md:shadow-none"
+              >
+                <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b  block md:table-cell relative md:static">
+                  <span
+                    className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                    style={{
+                      backgroundColor: "#9be49b",
+                      color: "#01000D",
+                      fontSize: "11px",
+                    }}
+                  >
+                    ID
+                  </span>
+                  <div style={{ fontSize: "14px", color: "black" }}>
+                    {key + 1}
+                  </div>
+                </td>
+                <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                  <span
+                    className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                    style={{
+                      backgroundColor: "#9be49b",
+                      color: "#01000D",
+                      fontSize: "11px",
+                    }}
+                  >
+                    Breed
+                  </span>
+                  <div style={{ fontSize: "14px", color: "black" }}>
+                    {row.breed}
+                  </div>
+                </td>
+                <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
+                  <span
+                    className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                    style={{
+                      backgroundColor: "#9be49b",
+                      color: "#01000D",
+                      fontSize: "11px",
+                    }}
+                  >
+                    Tag ID
+                  </span>
+                  <div style={{ fontSize: "14px", color: "black" }}>
+                    {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
+                    <p>{row.tagId}</p>
+                  </div>
+                </td>
+                <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                  <span
+                    className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                    style={{
+                      backgroundColor: "#9be49b",
+                      color: "#01000D",
+                      fontSize: "11px",
+                    }}
+                  >
+                    Sex
+                  </span>
+                  <div style={{ fontSize: "14px", color: "black" }}>
+                    {row.sex}
+                  </div>
+                </td>
+                <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                  <span
+                    className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                    style={{
+                      backgroundColor: "#9be49b",
+                      color: "#01000D",
+                      fontSize: "11px",
+                    }}
+                  >
+                    Birth Date
+                  </span>
+                  <span style={{ fontSize: "14px", color: "black" }}>
+                    {moment(row.birthDate).format("MMMM Do, YYYY, h:mm:ss A")}
+                  </span>
+                </td>
+                <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                  <span
+                    className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                    style={{
+                      backgroundColor: "#9be49b",
+                      color: "#01000D",
+                      fontSize: "11px",
+                    }}
+                  >
+                    Weight
+                  </span>
+                  <span style={{ fontSize: "14px", color: "black" }}>
+                    {row.weight}
+                  </span>
+                </td>
+                <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
+                  <span
+                    className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                    style={{
+                      backgroundColor: "#9be49b",
+                      color: "#01000D",
+                      fontSize: "11px",
+                    }}
+                  >
+                    Actions
+                  </span>
+
+                  <div className="">
+                    <button
+                      title="Edit"
+                      onClick={() => editBtnFn(row.id)}
+                      className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
+                    >
+                      {/* Edit */}
+                      <FaRegEdit style={{ fontSize: "14px" }} />
+                    </button>
+
+                    <button
+                      title="More info"
+                      onClick={() => handleViewLivestock(row.id)}
+                      className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
+                    >
+                      <MdRemoveRedEye style={{ fontSize: "14px" }} />
+                    </button>
+
+                    <button
+                      title="Delete"
+                      className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
+                      onClick={() => deleteRecord(row.id)}
+                    >
+                      {/* Delete */}
+                      <RiDeleteBin6Line style={{ fontSize: "14px" }} />
+                    </button>
+
+                    <button
+                      title="Quarantine"
+                      className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
+                    >
+                      {/* <PiHouseLineLight title="Quarantine" /> */}
+                      <PiHouseBold style={{ fontSize: "14px" }} />
+                    </button>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {livestockData.map((row, key) => (
-                <tr
-                  key={key}
-                  className="bg-white md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap mb-1 md:mb-0 shadow-sm shadow-gray-800 md:shadow-none"
-                >
-                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b  block md:table-cell relative md:static">
-                    <span
-                      className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
-                      style={{
-                        backgroundColor: "#9be49b",
-                        color: "#01000D",
-                        fontSize: "11px",
-                      }}
-                    >
-                      ID
-                    </span>
-                    <div style={{ fontSize: "14px", color: "black" }}>
-                      {row.id}
-                    </div>
-                  </td>
-                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                    <span
-                      className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
-                      style={{
-                        backgroundColor: "#9be49b",
-                        color: "#01000D",
-                        fontSize: "11px",
-                      }}
-                    >
-                      Breed
-                    </span>
-                    <div style={{ fontSize: "14px", color: "black" }}>
-                      {row.breed}
-                    </div>
-                  </td>
-                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
-                    <span
-                      className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
-                      style={{
-                        backgroundColor: "#9be49b",
-                        color: "#01000D",
-                        fontSize: "11px",
-                      }}
-                    >
-                      Tag ID
-                    </span>
-                    <div style={{ fontSize: "14px", color: "black" }}>
-                      {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                      <p>{row.tagId}</p>
-                    </div>
-                  </td>
-                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                    <span
-                      className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
-                      style={{
-                        backgroundColor: "#9be49b",
-                        color: "#01000D",
-                        fontSize: "11px",
-                      }}
-                    >
-                      Sex
-                    </span>
-                    <div style={{ fontSize: "14px", color: "black" }}>
-                      {row.sex}
-                    </div>
-                  </td>
-                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                    <span
-                      className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
-                      style={{
-                        backgroundColor: "#9be49b",
-                        color: "#01000D",
-                        fontSize: "11px",
-                      }}
-                    >
-                      Birth Date
-                    </span>
-                    <span style={{ fontSize: "14px", color: "black" }}>
-                      {row.birthdate}
-                    </span>
-                  </td>
-                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                    <span
-                      className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
-                      style={{
-                        backgroundColor: "#9be49b",
-                        color: "#01000D",
-                        fontSize: "11px",
-                      }}
-                    >
-                      Weight
-                    </span>
-                    <span style={{ fontSize: "14px", color: "black" }}>
-                      {row.weight}
-                    </span>
-                  </td>
-                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
-                    <span
-                      className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
-                      style={{
-                        backgroundColor: "#9be49b",
-                        color: "#01000D",
-                        fontSize: "11px",
-                      }}
-                    >
-                      Actions
-                    </span>
-
-                    <div className="">
-                      <button
-                        title="Edit"
-                        onClick={() => editBtnFn(row.id)}
-                        className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
-                      >
-                        {/* Edit */}
-                        <FaRegEdit style={{ fontSize: "14px" }} />
-                      </button>
-
-                      <button
-                        title="More info"
-                        onClick={() => handleViewLivestock(row.id)}
-                        className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
-                      >
-                        <MdRemoveRedEye style={{ fontSize: "14px" }} />
-                      </button>
-
-                      <button
-                        title="Delete"
-                        className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
-                        onClick={() => deleteRecord(row.id)}
-                      >
-                        {/* Delete */}
-                        <RiDeleteBin6Line style={{ fontSize: "14px" }} />
-                      </button>
-
-                      <button
-                        title="Quarantine"
-                        className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
-                      >
-                        {/* <PiHouseLineLight title="Quarantine" /> */}
-                        <PiHouseBold style={{ fontSize: "14px" }} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {
         //Livestock input form
 
         formModal && (
           <div
-            className="dashboard-main2"
-            class=" py-12 bg-[#01000D]  transition overflow-y-auto  duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
+            className="dashboard-main2 py-12 bg-[#01000D]  transition overflow-y-auto  duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
             id="modal"
           >
             <p
@@ -591,9 +613,9 @@ export default function Livestock() {
 
             <div
               role="alert"
-              class="container mx-auto w-11/12 md:w-2/3 max-w-xl"
+              className="container mx-auto w-11/12 md:w-2/3 max-w-xl"
             >
-              <div class="w-[auto] bg-white relative mt-4 md:mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
+              <div className="w-[auto] bg-white relative mt-4 md:mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
                 <form>
                   <div className="general-form">
                     <div>
@@ -609,7 +631,7 @@ export default function Livestock() {
                         onChange={handleChange}
                         name="breed"
                         id="breed"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
 
                       <label className="input-label" htmlFor="tag Id">
@@ -623,7 +645,7 @@ export default function Livestock() {
                         onChange={handleChange}
                         id="name"
                         name="tagId"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
                       {tagIdError && <span>{tagIdError}</span>}
                       <label className="input-label" for="name">
@@ -636,7 +658,7 @@ export default function Livestock() {
                         onChange={handleChange}
                         id="taglocation"
                         name="tagLocation"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -647,7 +669,7 @@ export default function Livestock() {
                         value={formInput.sex}
                         name="sex"
                         onChange={handleChange}
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       >
                         <option value={""}>Select a sex</option>
                         <option value={"Male"}>Male</option>
@@ -658,12 +680,12 @@ export default function Livestock() {
                         Birth Date
                       </label>
                       <input
-                        type="Date"
+                        type="datetime-local"
                         id="name"
-                        value={formInput.birthdate}
+                        value={formInput.birthDate}
                         onChange={handleChange}
-                        name="birthdate"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        name="birthDate"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
                     </div>
                     <div>
@@ -678,7 +700,7 @@ export default function Livestock() {
                         type="number"
                         name="weight"
                         id="name"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -689,7 +711,7 @@ export default function Livestock() {
                         value={formInput.status}
                         onChange={handleChange}
                         name="status"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       >
                         <option value={""}>Select a status</option>
                         <option>Sick</option>
@@ -707,7 +729,7 @@ export default function Livestock() {
                         value={formInput.origin}
                         onChange={handleChange}
                         name="origin"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       >
                         <option value={""}>Select origin</option>
                         <option>Purchased</option>
@@ -717,7 +739,7 @@ export default function Livestock() {
                         <option>Adopted</option>
                       </select>
 
-                      <label className="input-label" for="name">
+                      {/* <label className="input-label" for="name">
                         Staff in charge
                       </label>
                       <input
@@ -727,8 +749,8 @@ export default function Livestock() {
                         onChange={handleChange}
                         type="text"
                         name="staff"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      /> */}
                       <label className="input-label" for="name">
                         Remark
                       </label>
@@ -739,31 +761,44 @@ export default function Livestock() {
                         onChange={handleChange}
                         type="text"
                         name="remark"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
                     </div>
                   </div>
                 </form>
 
-                <div class="relative mb-5 mt-2">
-                  <div class="absolute text-gray-600 flex items-center px-4 border-r h-full"></div>
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute text-gray-600 flex items-center px-4 border-r h-full"></div>
                 </div>
-                {/* <label for="expiry" class="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
-                <div class="relative mb-5 mt-2">
-                  <div class="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
+                {/* <label for="expiry" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
                 </div>
-                {/* <label for="cvc" class="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
-                <div class="relative mb-5 mt-2">
-                  <div class="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
-                  {/* <input id="cvc" class="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
+                {/* <label for="cvc" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
+                  {/* <input id="cvc" className="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
                 </div>
                 <div className="form-btns">
-                  <button className="btn" onClick={(e) => handleFormSubmit(e)}>
-                    Submit
+                  <button
+                    className="btn"
+                    onClick={(e) => handleFormSubmit(e)}
+                    disabled={creating}
+                  >
+                    {creating ? (
+                      <div className="flex items-center space-x-2">
+                        <AiOutlineLoading3Quarters className="animate-spin" />{" "}
+                        <p>Processing...</p>
+                      </div>
+                    ) : (
+                      "    Submit"
+                    )}
                   </button>
-                  <button className="btn2" onClick={closeFormModal}>
-                    Cancel
-                  </button>
+                  {!creating && (
+                    <button className="btn2" onClick={closeFormModal}>
+                      Cancel
+                    </button>
+                  )}
                 </div>
                 <button
                   onClick={closeFormModal}
@@ -785,8 +820,7 @@ export default function Livestock() {
 
         editFormModal && (
           <div
-            className="form-backdrop"
-            class=" py-12 bg-[#01000D] overflow-y-auto  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
+            className="form-backdrop py-12 bg-[#01000D] overflow-y-auto  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
             id="modal"
           >
             <p
@@ -798,9 +832,9 @@ export default function Livestock() {
 
             <div
               role="alert"
-              class="container mx-auto w-11/12 md:w-2/3 max-w-xl"
+              className="container mx-auto w-11/12 md:w-2/3 max-w-xl"
             >
-              <div class="w-[auto] bg-white relative mt-4 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
+              <div className="w-[auto] bg-white relative mt-4 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
                 <form>
                   <div className="general-form">
                     <div>
@@ -815,7 +849,7 @@ export default function Livestock() {
                         onChange={handleChange}
                         name="breed"
                         id="breed"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -828,7 +862,7 @@ export default function Livestock() {
                         onChange={handleChange}
                         id="name"
                         name="tagId"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -841,7 +875,7 @@ export default function Livestock() {
                         onChange={handleChange}
                         id="taglocation"
                         name="tagLocation"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -852,7 +886,7 @@ export default function Livestock() {
                         value={editformInput.sex}
                         name="sex"
                         onChange={handleChange}
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       >
                         <option value={""}>Select a sex</option>
                         <option value={"Male"}>Male</option>
@@ -865,10 +899,10 @@ export default function Livestock() {
                       <input
                         type="Date"
                         id="name"
-                        value={editformInput.birthdate}
+                        value={editformInput.birthDate}
                         onChange={handleChange}
-                        name="birthdate"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        name="birthDate"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
                     </div>
                     <div>
@@ -883,7 +917,7 @@ export default function Livestock() {
                         type="number"
                         name="weight"
                         id="name"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -894,7 +928,7 @@ export default function Livestock() {
                         value={editformInput.status}
                         onChange={handleChange}
                         name="status"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       >
                         <option value={""}>Select a status</option>
                         <option>Sick</option>
@@ -912,7 +946,7 @@ export default function Livestock() {
                         value={editformInput.origin}
                         onChange={handleChange}
                         name="origin"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       >
                         <option value={""}>Select origin</option>
                         <option>Purchased</option>
@@ -931,7 +965,7 @@ export default function Livestock() {
                         onChange={handleChange}
                         type="text"
                         name="staff"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
                       <label className="input-label" for="name">
                         Remark
@@ -943,23 +977,23 @@ export default function Livestock() {
                         onChange={handleChange}
                         type="text"
                         name="remark"
-                        class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
                     </div>
                   </div>
                 </form>
 
-                <div class="relative mb-5 mt-2">
-                  <div class="absolute text-gray-600 flex items-center px-4 border-r h-full"></div>
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute text-gray-600 flex items-center px-4 border-r h-full"></div>
                 </div>
-                {/* <label for="expiry" class="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
-                <div class="relative mb-5 mt-2">
-                  <div class="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
+                {/* <label for="expiry" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
                 </div>
-                {/* <label for="cvc" class="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
-                <div class="relative mb-5 mt-2">
-                  <div class="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
-                  {/* <input id="cvc" class="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
+                {/* <label for="cvc" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
+                  {/* <input id="cvc" className="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
                 </div>
                 <div className="form-btns">
                   <button
@@ -989,91 +1023,91 @@ export default function Livestock() {
       }
 
       {viewLivestock && (
-        <div class="fixed inset-0 flex  items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex  items-center justify-center bg-gray-800 bg-opacity-50 z-50">
           <div
-            class="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3"
+            className="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3"
             style={{ marginTop: "10px" }}
           >
-            <div class="mt-2 mb-8 w-full">
-              <h4 class="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
+            <div className="mt-2 mb-8 w-full">
+              <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
                 Livestock Profile
               </h4>
             </div>
-            <div class="grid grid-cols-2 gap-4 px-1 w-full">
-              <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Breed</p>
-                <p class="text-base font-medium text-navy-700 dark:text-green-700">
+            <div className="grid grid-cols-2 gap-4 px-1 w-full">
+              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Breed</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700">
                   {selected.breed}
                 </p>
               </div>
 
-              <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Tag ID</p>
-                <p class="text-base font-medium text-navy-700 dark:text-green-700">
+              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Tag ID</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700">
                   {selected.tagId}
                 </p>
               </div>
 
-              <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Tag Location</p>
-                <p class="text-base font-medium text-navy-700 dark:text-green-700">
+              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Tag Location</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700">
                   {selected.tagLocation}
                 </p>
               </div>
 
-              <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Sex</p>
-                <p class="text-base font-medium text-navy-700 dark:text-green-700">
+              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Sex</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700">
                   {selected.sex}
                 </p>
               </div>
 
-              <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Birth Date</p>
-                <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.birthdate}
+              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Birth Date</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                  {selected.birthDate}
                 </p>
               </div>
 
-              <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Weight</p>
-                <p class="text-base font-medium text-navy-700 dark:text-green-700">
+              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Weight</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700">
                   {selected.weight}
                 </p>
               </div>
 
-              <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Status</p>
-                <p class="text-base font-medium text-navy-700 dark:text-green-700">
+              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Status</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700">
                   {selected.status}
                 </p>
               </div>
 
-              <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Origin</p>
-                <p class="text-base font-medium text-navy-700 dark:text-green-700">
+              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Origin</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700">
                   {selected.origin}
                 </p>
               </div>
 
-              <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Staff in charge</p>
-                <p class="text-base font-medium text-navy-700  dark:text-green-700">
+              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Staff in charge</p>
+                <p className="text-base font-medium text-navy-700  dark:text-green-700">
                   {selected.staff}
                 </p>
               </div>
 
-              <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Entry Date</p>
-                <p class="text-base font-medium text-navy-700  dark:text-green-700">
+              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Entry Date</p>
+                <p className="text-base font-medium text-navy-700  dark:text-green-700">
                   {selected.entryDate}
                 </p>
               </div>
 
-              <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">Remark</p>
+              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Remark</p>
                 <p
-                  class="text-base font-medium text-navy-700  dark:text-green-700"
+                  className="text-base font-medium text-navy-700  dark:text-green-700"
                   style={{ width: "100%", overflow: "auto" }}
                 >
                   {selected.remark}
