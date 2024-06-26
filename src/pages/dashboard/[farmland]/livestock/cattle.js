@@ -39,13 +39,16 @@ import { userState } from "@/atom";
 import { toast } from "react-toastify";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import moment from "moment/moment";
+import { deleteRecord, viewRecord } from "@/helpterFunctions/handleRecord";
+import { GiStorkDelivery } from "react-icons/gi";
 
 // import 'react-smart-data-table/dist/react-smart-data-table.css';
 
 export default function Livestock() {
   const [formModal, setFormModal] = useState(false);
+  const [fetching, setFetching] = useState(false);
   const userData = useRecoilValue(userState);
-  const [errors, setErrors] = useState({});
+  const [deleting, setdelete] = useState(false);
 
   const [editFormModal, setEditFormModal] = useState(false);
   const [editformInput, setEditFormInput] = useState({
@@ -121,23 +124,32 @@ export default function Livestock() {
     return localISOTime;
   };
 
-  const deleteRecord = (id) => {
+  const handledeleteRecord = async (id) => {
+    setdelete(true);
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this profile?"
     );
     if (confirmDelete) {
-      const updatedLivestockData = livestockData.filter(
-        (record) => record.id !== id
-      );
-      // Reassign IDs to the remaining records
-      const reassignedLivestockData = updatedLivestockData.map(
-        (record, index) => ({
-          ...record,
-          id: index + 1,
-        })
-      );
-      setLivestockData(reassignedLivestockData);
-      setIdCounter(reassignedLivestockData.length + 1);
+      try {
+        const response = await deleteRecord(
+          userData.token,
+          userData.farmland,
+          "livestock",
+          "cattle",
+          id
+        );
+
+        setdelete(false);
+        toast.success(response);
+      } catch (error) {
+        setdelete(false);
+        console.log(error);
+        if (error.code === "ERR_BAD_REQUEST") {
+          toast.error(error.response.data.message);
+        }
+      }
+    } else {
+      setdelete(false);
     }
   };
 
@@ -155,14 +167,25 @@ export default function Livestock() {
     }
   }
 
-  function handleViewLivestock(id) {
-    const selectedRecord = livestockData.find((record) => record.id === id);
-    if (!selectedRecord) {
-      console.error("Record not found for id:", id);
-      return;
+  async function handleViewLivestock(id) {
+    try {
+      const selectedRecord = await viewRecord(
+        userData.token,
+        userData.farmland,
+        "livestock",
+        "cattle",
+        id
+      );
+
+      console.log(selectedRecord);
+      setSelected(selectedRecord);
+      setviewLivestock(true);
+    } catch (error) {
+      console.log(error);
+      if (error.code === "ERR_BAD_REQUEST") {
+        toast.error(error.response.data.message);
+      }
     }
-    setSelected(selectedRecord);
-    setviewLivestock(true);
   }
 
   const dummy = {
@@ -207,8 +230,9 @@ export default function Livestock() {
   }
 
   const fetchLiveStocks = async () => {
+    setFetching(true);
     try {
-      if (userData.token) {
+      if (userData?.token) {
         const res = await axios.get(
           `https://druminant-seven.vercel.app/api/v1/farmland/${userData.farmland}/livestock/cattle`,
 
@@ -220,10 +244,12 @@ export default function Livestock() {
         );
 
         if (res.data) {
+          setFetching(false);
           setLivestockData(res.data.message.reverse());
         }
       }
     } catch (error) {
+      setFetching(false);
       console.log(error);
       if (error.response) {
         toast.error(error.response.data.message);
@@ -232,7 +258,7 @@ export default function Livestock() {
   };
   useEffect(() => {
     fetchLiveStocks();
-  }, [creating, userData?.token]);
+  }, [creating, userData?.token, deleting]);
 
   const handleFormSubmit = async (e) => {
     setCreating(true);
@@ -249,16 +275,17 @@ export default function Livestock() {
         !birthDate ||
         !weight ||
         !status ||
-        !origin 
-       
+        !origin
       ) {
         setCreating(false);
         alert("Please, ensure you fill in all fields.");
         return;
       }
 
+      console.log(formInput)
+
       const res = await axios.post(
-        `https://druminant-seven.vercel.app/api/v1/farmland/${userData.farmland}/livestock/cattle`,
+        `http://localhost:5000/api/v1/farmland/${userData.farmland}/livestock/cattle`,
         formInput,
         {
           headers: {
@@ -287,9 +314,9 @@ export default function Livestock() {
       }
     } catch (error) {
       setCreating(false);
-       if (error.response) {
-         toast.error(error.response.data.message);
-       }
+      if (error.response) {
+        toast.error(error.response.data.message);
+      }
     }
   };
 
@@ -397,7 +424,7 @@ export default function Livestock() {
         </div>
       </div>
 
-      <div>
+      <div className="flex flex-col justify-between h-screen">
         <table className="w-full mt-0">
           <thead>
             <tr>
@@ -445,155 +472,184 @@ export default function Livestock() {
               </th>
             </tr>
           </thead>
-          <tbody >
-            {livestockData.map((row, key) => (
-              <tr
-                key={key}
-                className="bg-white    md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap mb-1 md:mb-0 shadow-sm shadow-gray-800 md:shadow-none"
-              >
-                <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b  block md:table-cell relative md:static">
-                  <span
-                    className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
-                    style={{
-                      backgroundColor: "#9be49b",
-                      color: "#01000D",
-                      fontSize: "11px",
-                    }}
-                  >
-                    ID
-                  </span>
-                  <div style={{ fontSize: "14px", color: "black" }}>
-                    {key + 1}
-                  </div>
-                </td>
-                <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                  <span
-                    className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
-                    style={{
-                      backgroundColor: "#9be49b",
-                      color: "#01000D",
-                      fontSize: "11px",
-                    }}
-                  >
-                    Breed
-                  </span>
-                  <div style={{ fontSize: "14px", color: "black" }}>
-                    {row.breed}
-                  </div>
-                </td>
-                <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
-                  <span
-                    className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
-                    style={{
-                      backgroundColor: "#9be49b",
-                      color: "#01000D",
-                      fontSize: "11px",
-                    }}
-                  >
-                    Tag ID
-                  </span>
-                  <div style={{ fontSize: "14px", color: "black" }}>
-                    {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                    <p>{row.tagId}</p>
-                  </div>
-                </td>
-                <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                  <span
-                    className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
-                    style={{
-                      backgroundColor: "#9be49b",
-                      color: "#01000D",
-                      fontSize: "11px",
-                    }}
-                  >
-                    Sex
-                  </span>
-                  <div style={{ fontSize: "14px", color: "black" }}>
-                    {row.sex}
-                  </div>
-                </td>
-                <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                  <span
-                    className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
-                    style={{
-                      backgroundColor: "#9be49b",
-                      color: "#01000D",
-                      fontSize: "11px",
-                    }}
-                  >
-                    Birth Date
-                  </span>
-                  <span style={{ fontSize: "14px", color: "black" }}>
-                    {moment(row.birthDate).format("MMMM Do, YYYY, h:mm:ss A")}
-                  </span>
-                </td>
-                <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                  <span
-                    className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
-                    style={{
-                      backgroundColor: "#9be49b",
-                      color: "#01000D",
-                      fontSize: "11px",
-                    }}
-                  >
-                    Weight
-                  </span>
-                  <span style={{ fontSize: "14px", color: "black" }}>
-                    {row.weight}
-                  </span>
-                </td>
-                <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
-                  <span
-                    className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
-                    style={{
-                      backgroundColor: "#9be49b",
-                      color: "#01000D",
-                      fontSize: "11px",
-                    }}
-                  >
-                    Actions
-                  </span>
-
-                  <div className="">
-                    <button
-                      title="Edit"
-                      onClick={() => editBtnFn(row.id)}
-                      className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
+          {!fetching && (
+            <tbody>
+              {livestockData.map((row, key) => (
+                <tr
+                  key={key}
+                  className="bg-white    md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap mb-1 md:mb-0 shadow-sm shadow-gray-800 md:shadow-none"
+                >
+                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b  block md:table-cell relative md:static">
+                    <span
+                      className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                      style={{
+                        backgroundColor: "#9be49b",
+                        color: "#01000D",
+                        fontSize: "11px",
+                      }}
                     >
-                      {/* Edit */}
-                      <FaRegEdit style={{ fontSize: "14px" }} />
-                    </button>
-
-                    <button
-                      title="More info"
-                      onClick={() => handleViewLivestock(row.id)}
-                      className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
+                      ID
+                    </span>
+                    <div style={{ fontSize: "14px", color: "black" }}>
+                      {key + 1}
+                    </div>
+                  </td>
+                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                    <span
+                      className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                      style={{
+                        backgroundColor: "#9be49b",
+                        color: "#01000D",
+                        fontSize: "11px",
+                      }}
                     >
-                      <MdRemoveRedEye style={{ fontSize: "14px" }} />
-                    </button>
-
-                    <button
-                      title="Delete"
-                      className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
-                      onClick={() => deleteRecord(row.id)}
+                      Breed
+                    </span>
+                    <div style={{ fontSize: "14px", color: "black" }}>
+                      {row.breed}
+                    </div>
+                  </td>
+                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
+                    <span
+                      className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                      style={{
+                        backgroundColor: "#9be49b",
+                        color: "#01000D",
+                        fontSize: "11px",
+                      }}
                     >
-                      {/* Delete */}
-                      <RiDeleteBin6Line style={{ fontSize: "14px" }} />
-                    </button>
-
-                    <button
-                      title="Quarantine"
-                      className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
+                      Tag ID
+                    </span>
+                    <div style={{ fontSize: "14px", color: "black" }}>
+                      {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
+                      <p>{row.tagId}</p>
+                    </div>
+                  </td>
+                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                    <span
+                      className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                      style={{
+                        backgroundColor: "#9be49b",
+                        color: "#01000D",
+                        fontSize: "11px",
+                      }}
                     >
-                      {/* <PiHouseLineLight title="Quarantine" /> */}
-                      <PiHouseBold style={{ fontSize: "14px" }} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+                      Sex
+                    </span>
+                    <div style={{ fontSize: "14px", color: "black" }}>
+                      {row.sex}
+                    </div>
+                  </td>
+                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                    <span
+                      className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                      style={{
+                        backgroundColor: "#9be49b",
+                        color: "#01000D",
+                        fontSize: "11px",
+                      }}
+                    >
+                      Birth Date
+                    </span>
+                    <span style={{ fontSize: "14px", color: "black" }}>
+                      {moment(row.birthDate).format("MMMM Do, YYYY, h:mm:ss A")}
+                    </span>
+                  </td>
+                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                    <span
+                      className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                      style={{
+                        backgroundColor: "#9be49b",
+                        color: "#01000D",
+                        fontSize: "11px",
+                      }}
+                    >
+                      Weight
+                    </span>
+                    <span style={{ fontSize: "14px", color: "black" }}>
+                      {row.weight}
+                    </span>
+                  </td>
+                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
+                    <span
+                      className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                      style={{
+                        backgroundColor: "#9be49b",
+                        color: "#01000D",
+                        fontSize: "11px",
+                      }}
+                    >
+                      Actions
+                    </span>
+
+                    <div className="">
+                      <button
+                        title="Edit"
+                        onClick={() => editBtnFn(row.id)}
+                        className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
+                      >
+                        {/* Edit */}
+                        <FaRegEdit style={{ fontSize: "14px" }} />
+                      </button>
+
+                      <button
+                        title="More info"
+                        onClick={() => handleViewLivestock(row.tagId)}
+                        className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
+                      >
+                        <MdRemoveRedEye style={{ fontSize: "14px" }} />
+                      </button>
+
+                      {deleting ? (
+                        <AiOutlineLoading3Quarters />
+                      ) : (
+                        <button
+                          title="Delete"
+                          className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
+                          onClick={() => handledeleteRecord(row.tagId)}
+                        >
+                          {/* Delete */}
+                          <RiDeleteBin6Line style={{ fontSize: "14px" }} />
+                        </button>
+                      )}
+
+                      <button
+                        title="Quarantine"
+                        className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
+                      >
+                        {/* <PiHouseLineLight title="Quarantine" /> */}
+                        <PiHouseBold style={{ fontSize: "14px" }} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          )}
         </table>
+        {fetching && (
+          <div className="text-center  mx-0   text-black h-[80vh] flex items-center justify-center">
+            <div className="flex items-center justify-center flex-col">
+              <AiOutlineLoading3Quarters className="text-4xl  animate-spin" />
+            </div>
+          </div>
+        )}
+
+        {!fetching && livestockData.length == 0 && (
+          <div className="text-center  mx-0  flex flex-col  text-black h-[80vh] flex items-center justify-center">
+            <div className="flex items-center justify-center flex-col">
+              Sorry no livestock Record found!
+            </div>
+            <div className="cursor">
+              <p className="px-10 py-2 cursor-pointer hover:bg-green-800 mt-5 text-white bg-[#008000] rounded-md justify-center" onClick={addProfile}>
+                Create
+              </p>
+            </div>
+          </div>
+        )}
+        <div className="md:mt-0 mt-20  ">
+          <Footer />
+        </div>
       </div>
 
       {
@@ -1093,7 +1149,7 @@ export default function Livestock() {
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Staff in charge</p>
                 <p className="text-base font-medium text-navy-700  dark:text-green-700">
-                  {selected.staff}
+                  {selected.inCharge}
                 </p>
               </div>
 

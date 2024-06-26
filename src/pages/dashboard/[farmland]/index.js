@@ -6,7 +6,11 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { AiOutlineDollarCircle, AiOutlineLoading, AiOutlineLoading3Quarters } from "react-icons/ai";
+import {
+  AiOutlineDollarCircle,
+  AiOutlineLoading,
+  AiOutlineLoading3Quarters,
+} from "react-icons/ai";
 import { MdEventAvailable } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -16,6 +20,7 @@ import { FaCow } from "react-icons/fa6";
 import { BsCalendar2Date } from "react-icons/bs";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { useRouter } from "next/router";
 
 export default function Staff() {
   const [hamburgerState, setHamburgerState] = useState(false);
@@ -24,102 +29,61 @@ export default function Staff() {
     status: "",
     farmland: "",
   });
-  const [livestockCount, setLiveStockCount] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [eventCount, setEventCount] = useState([]);
   const [pregnancyCount, setPregnancyCount] = useState([]);
   const [lactationCount, setLactationCount] = useState([]);
   const [quarantineCount, setQuarantineCount] = useState([]);
   const [expenseCount, setExpenseCount] = useState([]);
   const [incomeCount, setIncomeCount] = useState([]);
+  const [moduleCounts, setModuleCounts] = useState([]);
+  const [farmlandError, setfarmlandError] = useState("");
+  const router = useRouter();
   // render the quarantine modulebased on the role of user
   const userData = useRecoilValue(userState);
 
   useEffect(() => {
     toast("Welcome!");
   }, []);
-  const livestockNames = ["cattle", "goat", "pig", "sheep"];
 
   useEffect(() => {
-    if (userData?.token) {
-      const fetchData = async (type, financeType = "") => {
-        const resultsArray = [];
+    const farmland = router.query.farmland;
 
-        const results = await Promise.allSettled(
-          livestockNames.map(async (livestockName) => {
-            try {
-              const response = await axios.get(
-                `https://druminant-seven.vercel.app/api/v1/farmland/${userData.farmland}/${type}/${livestockName}/${financeType}`,
-                {
-                  headers: {
-                    Authorization: `Bearer ${userData.token}`,
-                  },
-                }
-              );
-              return {
-                name: livestockName,
-                data: response.data.message.length,
-              };
-            } catch (error) {
-              console.error(`Error fetching data for ${livestockName}`, error);
-              if (error.response && error.response.status === 400) {
-                toast.error(error.response.data.message);
-              }
-              return { name: livestockName, data: null };
+    console.log(farmland)
+    setLoading(true);
+    if (userData?.token && farmland) {
+      const fetchAllCounts = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:5000/api/v1/farmland/${farmland}/moduleCount`,
+            {
+              headers: {
+                Authorization: `Bearer ${userData.token}`,
+              },
             }
-          })
-        );
-
-        results.forEach((result) => {
-          if (result.status === "fulfilled") {
-            resultsArray.push(result.value);
-          } else {
-            console.error(`Request failed: ${result.reason}`);
-          }
-        });
-
-        return resultsArray;
-      };
-
-      // IIFE to fetch data
-      (async () => {
-        const livestockCountArray = await fetchData("livestock");
-        const eventCountArray = await fetchData("event");
-        const pregnancyTrackerArray = await fetchData("pregnancy");
-        const lactationArray = await fetchData("pregnancy");
-        const quarantineArray = await fetchData("quarantine");
-        const incomeArray = await fetchData("finance", "income");
-        const expenseArray = await fetchData("finance", "expense");
-
-        setExpenseCount(expenseArray);
-        setLiveStockCount(livestockCountArray);
-        setIncomeCount(incomeArray);
-        setQuarantineCount(quarantineArray);
-        setLactationCount(lactationArray);
-        setPregnancyCount(pregnancyTrackerArray);
-        setEventCount(eventCountArray);
-      })();
-
-      // Additional axios request
-      axios
-        .get(
-          `https://druminant-seven.vercel.app/api/v1/farmland/${userData.farmland}`,
-          {
-            headers: {
-              Authorization: `Bearer ${userData?.token}`,
-            },
-          }
-        )
-        .then((response) => {
-          console.log("Protected data:", response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching farmland data", error);
+          );
+          setLoading(false);
+          setModuleCounts(response.data.message);
+        } catch (error) {
+          setLoading(false);
+          console.error("Error fetching data", error);
           if (error.response && error.response.status === 400) {
+            setfarmlandError(error.response.data.message);
             toast.error(error.response.data.message);
           }
-        });
+        }
+      };
+
+      fetchAllCounts();
     }
-  }, [userData?.token]);
+  }, [userData?.token, router]);
+
+  const getModuleCount = (moduleType, liveStockType) => {
+    const match = moduleCounts.find(
+      (item) => item.livestockCount.name === liveStockType
+    );
+    return match[moduleType].data;
+  };
 
   return (
     <div>
@@ -139,7 +103,7 @@ export default function Staff() {
         {userData?.token ? (
           userData.status === "Accept" || userData?.isAdmin ? (
             <div>
-              {eventCount.length   ? (
+              {moduleCounts.length && !loading ? (
                 <>
                   {" "}
                   <div className="dashboard md:mt-0">
@@ -152,7 +116,7 @@ export default function Staff() {
                     {" "}
                     {/* livestock */}
                     <div className="p-2 basis-80 lg:basis-96 md:m-5  ">
-                      <Link href={`/dashboard/livestock`}>
+                      <Link href={`/dashboard/${userData.farmland}/livestock`}>
                         <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto transform duration-1000 hover:scale-[1.02] hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
@@ -167,19 +131,9 @@ export default function Staff() {
                                 <GiCow className=" text-[#008000]   border-[1px] border-gray-400  rounded-full   text-xl" />
                                 <p className="font-semibold">
                                   Cattle:{" "}
-                                  {livestockCount.length ? (
-                                    <strong>
-                                      {
-                                        livestockCount.find(
-                                          (e) => e.name === "cattle"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("livestockCount", "cattle")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -187,19 +141,9 @@ export default function Staff() {
                                 <GiGoat className=" text-[#008000]   border-[1px] border-gray-400  rounded-full   text-xl" />
                                 <p className="font-semibold">
                                   Goat:{" "}
-                                  {livestockCount.length ? (
-                                    <strong>
-                                      {
-                                        livestockCount.find(
-                                          (e) => e.name === "goat"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("livestockCount", "goat")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -209,19 +153,9 @@ export default function Staff() {
                                 <p className="font-semibold">
                                   {" "}
                                   Pig:{" "}
-                                  {livestockCount.length ? (
-                                    <strong>
-                                      {
-                                        livestockCount.find(
-                                          (e) => e.name === "pig"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("livestockCount", "pig")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -230,19 +164,9 @@ export default function Staff() {
                                 <p className="font-semibold">
                                   {" "}
                                   Sheep:{" "}
-                                  {livestockCount.length ? (
-                                    <strong>
-                                      {
-                                        livestockCount.find(
-                                          (e) => e.name === "sheep"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("livestockCount", "sheep")}
+                                  </strong>
                                 </p>
                               </div>
                             </div>
@@ -276,33 +200,13 @@ export default function Staff() {
                                 <GiCow className=" text-[#008000]   border-[1px] border-gray-400  rounded-full   text-xl" />
                                 <p className="font-semibold">
                                   Cattle:{" "}
-                                  {incomeCount.length ? (
-                                    <strong>
-                                      {
-                                        incomeCount.find(
-                                          (e) => e.name === "cattle"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("incomeCount", "cattle")}
+                                  </strong>
                                   /
-                                  {expenseCount.length ? (
-                                    <strong>
-                                      {
-                                        expenseCount.find(
-                                          (e) => e.name === "cattle"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("expenseCount", "cattle")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -310,33 +214,13 @@ export default function Staff() {
                                 <GiGoat className=" text-[#008000]   border-[1px] border-gray-400  rounded-full   text-xl" />
                                 <p className="font-semibold">
                                   Goat:{" "}
-                                  {incomeCount.length ? (
-                                    <strong>
-                                      {
-                                        incomeCount.find(
-                                          (e) => e.name === "goat"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("incomeCount", "goat")}
+                                  </strong>
                                   /
-                                  {expenseCount.length ? (
-                                    <strong>
-                                      {
-                                        expenseCount.find(
-                                          (e) => e.name === "goat"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("expenseCount", "goat")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -346,33 +230,13 @@ export default function Staff() {
                                 <p className="font-semibold">
                                   {" "}
                                   Pig:{" "}
-                                  {incomeCount.length ? (
-                                    <strong>
-                                      {
-                                        incomeCount.find(
-                                          (e) => e.name === "pig"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("incomeCount", "pig")}
+                                  </strong>
                                   /
-                                  {expenseCount.length ? (
-                                    <strong>
-                                      {
-                                        expenseCount.find(
-                                          (e) => e.name === "pig"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("expenseCount", "pig")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -381,33 +245,13 @@ export default function Staff() {
                                 <p className="font-semibold">
                                   {" "}
                                   Sheep:{" "}
-                                  {incomeCount.length ? (
-                                    <strong>
-                                      {
-                                        incomeCount.find(
-                                          (e) => e.name === "sheep"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("incomeCount", "sheep")}
+                                  </strong>
                                   /
-                                  {expenseCount.length ? (
-                                    <strong>
-                                      {
-                                        expenseCount.find(
-                                          (e) => e.name === "sheep"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("expenseCount", "sheep")}
+                                  </strong>
                                 </p>
                               </div>
                             </div>
@@ -440,19 +284,9 @@ export default function Staff() {
                                 <GiCow className=" text-[#008000]   border-[1px] border-gray-400  rounded-full   text-xl" />
                                 <p className="font-semibold">
                                   Cattle:{" "}
-                                  {eventCount.length ? (
-                                    <strong>
-                                      {
-                                        eventCount.find(
-                                          (e) => e.name === "cattle"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("eventCount", "cattle")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -460,19 +294,9 @@ export default function Staff() {
                                 <GiGoat className=" text-[#008000]   border-[1px] border-gray-400  rounded-full   text-xl" />
                                 <p className="font-semibold">
                                   Goat:{" "}
-                                  {eventCount.length ? (
-                                    <strong>
-                                      {
-                                        eventCount.find(
-                                          (e) => e.name === "goat"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("eventCount", "goat")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -480,20 +304,10 @@ export default function Staff() {
                                 <GiPig className=" text-[#008000]   border-[1px] border-gray-400  rounded-full   text-xl" />
 
                                 <p className="font-semibold">
-                                  {" "}
                                   Pig:{" "}
-                                  {eventCount.length ? (
-                                    <strong>
-                                      {
-                                        eventCount.find((e) => e.name === "pig")
-                                          ?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("eventCount", "pig")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -502,19 +316,9 @@ export default function Staff() {
                                 <p className="font-semibold">
                                   {" "}
                                   Sheep:{" "}
-                                  {eventCount.length ? (
-                                    <strong>
-                                      {
-                                        eventCount.find(
-                                          (e) => e.name === "sheep"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("eventCount", "sheep")}
+                                  </strong>
                                 </p>
                               </div>
                             </div>
@@ -546,19 +350,9 @@ export default function Staff() {
                                 <GiCow className=" text-[#008000]   border-[1px] border-gray-400  rounded-full   text-xl" />
                                 <p className="font-semibold">
                                   Cattle:{" "}
-                                  {pregnancyCount.length ? (
-                                    <strong>
-                                      {
-                                        pregnancyCount.find(
-                                          (e) => e.name === "cattle"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("pregnancyCount", "cattle")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -566,19 +360,9 @@ export default function Staff() {
                                 <GiGoat className=" text-[#008000]   border-[1px] border-gray-400  rounded-full   text-xl" />
                                 <p className="font-semibold">
                                   Goat:{" "}
-                                  {pregnancyCount.length ? (
-                                    <strong>
-                                      {
-                                        pregnancyCount.find(
-                                          (e) => e.name === "goat"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("pregnancyCount", "goat")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -588,19 +372,9 @@ export default function Staff() {
                                 <p className="font-semibold">
                                   {" "}
                                   Pig:{" "}
-                                  {pregnancyCount.length ? (
-                                    <strong>
-                                      {
-                                        pregnancyCount.find(
-                                          (e) => e.name === "pig"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("pregnancyCount", "pig")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -609,19 +383,9 @@ export default function Staff() {
                                 <p className="font-semibold">
                                   {" "}
                                   Sheep:{" "}
-                                  {pregnancyCount.length ? (
-                                    <strong>
-                                      {
-                                        pregnancyCount.find(
-                                          (e) => e.name === "sheep"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("pregnancyCount", "sheep")}
+                                  </strong>
                                 </p>
                               </div>
                             </div>
@@ -654,19 +418,9 @@ export default function Staff() {
                                 <GiCow className=" text-[#008000]   border-[1px] border-gray-400  rounded-full   text-xl" />
                                 <p className="font-semibold">
                                   Cattle:{" "}
-                                  {lactationCount.length ? (
-                                    <strong>
-                                      {
-                                        lactationCount.find(
-                                          (e) => e.name === "cattle"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("lactationCount", "cattle")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -674,19 +428,9 @@ export default function Staff() {
                                 <GiGoat className=" text-[#008000]   border-[1px] border-gray-400  rounded-full   text-xl" />
                                 <p className="font-semibold">
                                   Goat:{" "}
-                                  {lactationCount.length ? (
-                                    <strong>
-                                      {
-                                        lactationCount.find(
-                                          (e) => e.name === "goat"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("lactationCount", "goat")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -696,19 +440,9 @@ export default function Staff() {
                                 <p className="font-semibold">
                                   {" "}
                                   Pig:{" "}
-                                  {lactationCount.length ? (
-                                    <strong>
-                                      {
-                                        lactationCount.find(
-                                          (e) => e.name === "pig"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("lactationCount", "pig")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -717,19 +451,9 @@ export default function Staff() {
                                 <p className="font-semibold">
                                   {" "}
                                   Sheep:{" "}
-                                  {lactationCount.length ? (
-                                    <strong>
-                                      {
-                                        lactationCount.find(
-                                          (e) => e.name === "sheep"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("lactationCount", "sheep")}
+                                  </strong>
                                 </p>
                               </div>
                             </div>
@@ -761,19 +485,12 @@ export default function Staff() {
                                 <GiCow className=" text-[#008000]   border-[1px] border-gray-400  rounded-full   text-xl" />
                                 <p className="font-semibold">
                                   Cattle:{" "}
-                                  {quarantineCount.length ? (
-                                    <strong>
-                                      {
-                                        quarantineCount.find(
-                                          (e) => e.name === "cattle"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount(
+                                      "quarantineCount",
+                                      "cattle"
+                                    )}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -781,19 +498,9 @@ export default function Staff() {
                                 <GiGoat className=" text-[#008000]   border-[1px] border-gray-400  rounded-full   text-xl" />
                                 <p className="font-semibold">
                                   Goat:{" "}
-                                  {quarantineCount.length ? (
-                                    <strong>
-                                      {
-                                        quarantineCount.find(
-                                          (e) => e.name === "goat"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("quarantineCount", "goat")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -803,19 +510,9 @@ export default function Staff() {
                                 <p className="font-semibold">
                                   {" "}
                                   Pig:{" "}
-                                  {quarantineCount.length ? (
-                                    <strong>
-                                      {
-                                        quarantineCount.find(
-                                          (e) => e.name === "pig"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("quarantineCount", "pig")}
+                                  </strong>
                                 </p>
                               </div>
 
@@ -824,19 +521,9 @@ export default function Staff() {
                                 <p className="font-semibold">
                                   {" "}
                                   Sheep:{" "}
-                                  {quarantineCount.length ? (
-                                    <strong>
-                                      {
-                                        quarantineCount.find(
-                                          (e) => e.name === "sheep"
-                                        )?.data
-                                      }
-                                    </strong>
-                                  ) : (
-                                    <span className="font-extrabold text-[#008000] animate-pulse text-lg">
-                                      ...
-                                    </span>
-                                  )}
+                                  <strong>
+                                    {getModuleCount("quarantineCount", "sheep")}
+                                  </strong>
                                 </p>
                               </div>
                             </div>
@@ -854,6 +541,12 @@ export default function Staff() {
                     </div>
                   </div>
                 </>
+              ) : !loading && moduleCounts.length == 0 ? (
+                <div className="text-center text-gray-200 mx-0 h-screen flex items-center justify-center">
+                  <div className="flex items-center justify-center flex-col md:text-2xl">
+                    {farmlandError}
+                  </div>
+                </div>
               ) : (
                 <div className="text-center text-gray-200 mx-0 h-screen flex items-center justify-center">
                   <div className="flex items-center justify-center flex-col">

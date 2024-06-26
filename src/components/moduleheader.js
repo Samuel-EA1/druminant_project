@@ -43,6 +43,7 @@ function ModuleHeader() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    console.log('from here', token)
 
     if (token) {
       const decoded = jwtDecode(token);
@@ -123,7 +124,7 @@ function ModuleHeader() {
             </li>
             <li className={router.pathname === "/dashboard" ? "active" : ""}>
               <Link
-                href={"/dashboard"}
+                href={`/dashboard/${userData?.farmland}`}
                 className="menu-nav2"
                 title="View dashboard"
               >
@@ -235,7 +236,10 @@ function ModuleHeader() {
                 </Link>
               </li>
               <li className={router.pathname === "/dashboard" ? "active" : ""}>
-                <Link href={"/dashboard"} className="menu-nav2">
+                <Link
+                  href={`/dashboard/${userData.farmland}`}
+                  className="menu-nav2"
+                >
                   Dashboard
                 </Link>
               </li>
@@ -249,7 +253,7 @@ function ModuleHeader() {
                   Help
                 </Link>
               </li>
-              {userData.isAdmin && (
+              {userData?.isAdmin && (
                 <>
                   <li
                     className={router.pathname === "/request" ? "active" : ""}

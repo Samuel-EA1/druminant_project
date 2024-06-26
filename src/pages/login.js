@@ -2,6 +2,7 @@ import { userState } from "@/atom";
 import { Footer } from "@/components/footer";
 import Header from "@/components/header";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -67,8 +68,10 @@ export default function Login() {
         formData
       );
       localStorage.setItem("token", res.data.token);
+      const decoded = jwtDecode(res.data.token);
+       
       setLoading(false);
-      router.push("/dashboard");
+      router.push(`/dashboard/${decoded.farmland}`);
     } catch (error) {
       console.log(error);
       setLoading(false);
