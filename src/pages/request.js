@@ -303,28 +303,8 @@ export default function Livestock() {
   };
 
   useEffect(() => {
-    if (userData) {
-      
-  axios
-    .get(
-      `https://druminant-seven.vercel.app/api/v1/farmland/${userData.farmland}/requests/pending`,
-      {
-        headers: {
-          Authorization: `Bearer ${userData.userToken}`,
-        },
-      }
-    )
-    .then((response) => {
-      console.log("Protected data:", response.data);
-    })
-    .catch((error) => {
-      console.error("shsgshgssjhs", error);
-      if (error.code === "ERR_BAD_REQUEST") {
-        toast.error(error.response.data.message);
-      }
-    });
-    }
-  }, [userData]);
+    
+  }, [userData?.token]);
 
   return (
     <div className="livestock">

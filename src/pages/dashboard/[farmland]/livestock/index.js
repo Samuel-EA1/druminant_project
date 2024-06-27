@@ -4,14 +4,17 @@ import ModuleHeader from "@/components/moduleheader";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
- 
+import { useRouter } from "next/router";
+
 import { useRecoilValue } from "recoil";
 
 function LivestockSelection() {
   const userData = useRecoilValue(userState);
+  const router = useRouter();
 
+  console.log(userData);
+  const currentPath = router.asPath;
 
- 
   return (
     <div>
       <Head>
@@ -48,7 +51,7 @@ function LivestockSelection() {
           <div className="mx-auto mt-12 md:mt-36">
             <div className="grid grid-cols-1 w-11/12 gap-8 mx-auto md:grid-cols-2 md:gap-16 md:w-4/5">
               <div className="card4 transform duration-1000    hover:scale-105 hover:animate-pulse">
-                <Link href={`/dashboard/${userData.farmland}/livestock/cattle`}>
+                <Link href={`/dashboard/${userData?.farmland}/livestock/cattle`}>
                   <div className="flex justify-between mt-10">
                     <h1>Cattle</h1>
                     <div style={{ marginTop: "-28px" }}>

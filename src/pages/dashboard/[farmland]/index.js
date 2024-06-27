@@ -49,7 +49,7 @@ export default function Staff() {
   useEffect(() => {
     const farmland = router.query.farmland;
 
-    console.log(farmland)
+   
     setLoading(true);
     if (userData?.token && farmland) {
       const fetchAllCounts = async () => {
@@ -565,7 +565,7 @@ export default function Staff() {
             <div className="text-center text-gray-200 mx-0 h-screen flex items-center justify-center">
               <div className="flex items-center justify-center flex-col">
                 <p className="dashboard-mssg">
-                  You are not allowed to access the farmland <br />
+                  You are not allowed to access this farmland. <br />
                   Please, remind admin to accept your request
                 </p>
               </div>

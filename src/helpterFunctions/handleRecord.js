@@ -40,3 +40,24 @@ export const deleteRecord = async (
 
   return res.data.message;
 };
+
+export const editRecord = async (
+  token,
+  farmland,
+  moduleType,
+  livestockType,
+  id,
+  data
+) => {
+  const res = await axios.patch(
+    `http://localhost:5000/api/v1/farmland/${farmland}/${moduleType}/${livestockType}/${id}`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return res.data.message;
+};

@@ -16,7 +16,7 @@ function ModuleHeader() {
   const [hamburg, setHamburg] = useState(true);
   const [cancel, setCancel] = useState(false);
   const router = useRouter();
-  const [admin, setAdmin] = useState("");
+ 
 
   const currentPath = router.asPath;
 
@@ -145,7 +145,7 @@ function ModuleHeader() {
                 Help
               </Link>
             </li>
-            {admin && (
+            {userData?.isAdmin && (
               <>
                 <li className={router.pathname === "/request" ? "active" : ""}>
                   <Link
