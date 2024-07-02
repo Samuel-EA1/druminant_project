@@ -60,11 +60,15 @@ export default function Staff() {
           setLoading(false);
           setModuleCounts(response.data.message);
         } catch (error) {
+          console.log(error);
           setLoading(false);
-          if (error.response.data.message === "Invalid token") {
-            localStorage.removeItem("token");
-            router.push('/login')
+          if (error.code === "ERR_NETWORK"){
+           return  toast.error('Something went wrong, please try again later!');
           }
+            if (error.response.data.message === "Invalid token") {
+              localStorage.removeItem("token");
+              router.push("/login");
+            }
           console.error("Error fetching data", error);
           if (error.response && error.response.status === 400) {
             setfarmlandError(error.response.data.message);

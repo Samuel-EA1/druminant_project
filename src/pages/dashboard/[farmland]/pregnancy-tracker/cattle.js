@@ -16,7 +16,14 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { FaEdit, FaEye, FaRegEdit, FaSearch, FaTag, FaWarehouse } from "react-icons/fa";
+import {
+  FaEdit,
+  FaEye,
+  FaRegEdit,
+  FaSearch,
+  FaTag,
+  FaWarehouse,
+} from "react-icons/fa";
 import { HiAtSymbol, HiHashtag, HiTag } from "react-icons/hi2";
 import { MdDelete, MdOutlineHelp, MdRemoveRedEye } from "react-icons/md";
 import { MdAdd } from "react-icons/md";
@@ -25,657 +32,1011 @@ import { IoIosMore, IoMdClose } from "react-icons/io";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { PiHouseBold, PiHouseLineLight } from "react-icons/pi";
 import Head from "next/head";
-
-
+import { Footer } from "@/components/footer";
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userState } from "@/atom";
+import { toast } from "react-toastify";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import moment from "moment/moment";
+import {
+  createRecord,
+  deleteRecord,
+  editRecord,
+  fetchAllRecords,
+  viewRecord,
+} from "@/helpterFunctions/handleRecord";
+import { formatDateString } from "@/helpterFunctions/formatTime";
+import { GiStorkDelivery } from "react-icons/gi";
+import { fail } from "assert";
+import { HiDotsHorizontal } from "react-icons/hi";
 
 // import 'react-smart-data-table/dist/react-smart-data-table.css';
 
-export default function Livestock() {
-  const [formModal, setFormModal] = useState(false)
-  const [errors, setErrors] = useState({});
-  const [table, settable] = useState(true)
+export default function PregnancyTracker() {
+  const [formModal, setFormModal] = useState(false);
+  const [viewId, setviewId] = useState(null);
+  const [deleteId, setdeleteId] = useState(null);
+  const [fetching, setFetching] = useState(false);
+  const userData = useRecoilValue(userState);
+  const [deleting, setdelete] = useState(false);
+  const [edittagId, setEditTagId] = useState("");
   const [editFormModal, setEditFormModal] = useState(false);
   const [editformInput, setEditFormInput] = useState({
-    breed: '',
-    tagId: '',
-    pregStatus: '',
-    breedDate: '',
-    gestationPeriod: 283,
-    entryDate: '',
-    dueDate: '',
-    remark: '',
-    staff: ''
+    entryPregnancyId: "",
+    breedingDate: "",
+    status: "",
+    breed: "",
+    gestationPeriod: null,
+    remark: "",
+  });
+  const [viewing, setViewing] = useState(false);
+  const [fetchError, setFetchError] = useState("");
+  const [editting, setEditting] = useState(false);
+
+  const [creating, setCreating] = useState(false);
+  const [viewPregnancy, setviewPregnancy] = useState(false);
+  const [tagIdError, setTagIdError] = useState("");
+  const [selected, setSelected] = useState({
+    entryPregnancyId: "",
+    breedingDate: "",
+    status: "",
+    breed: "",
+    gestationPeriod: null,
+    remark: "",
   });
 
-  const [editId, setEditId] = useState("")
-
-  const [closeForm, setCloseForm] = useState(false)
-  const [viewLivestock, setviewLivestock] = useState(false)
-  const [tagIdError, setTagIdError] = useState("")
-  const [selected, setSelected] = useState({
-    breed: '',
-    tagId: '',
-    pregStatus: '',
-    breedDate: '',
-    gestationPeriod: '',
-    entryDate: '',
-    dueDate: '',
-    remark: '',
-    staff: ''
-  })
-
   const [formInput, setformInput] = useState({
-    breed: '',
-    tagId: '',
-    pregStatus: '',
-    breedDate: '',
-    gestationPeriod: 283,
-    dueDate: '',
-    remark: '',
-    staff: ''
-  })
+    entryPregnancyId: "",
+    status: "",
+    breed: "",
+    gestationPeriod: null,
+    remark: "",
+    breedingDate: "",
+  });
 
-  function addNewRecord() {
-    setFormModal(true)
-    settable(false)
-    setformInput({
-      breed: '',
-      tagId: '',
-      pregStatus: '',
-      breedDate: '',
-      gestationPeriod: 283,
-      dueDate: '',
-      remark: '',
-      staff: ''
-    })
-
-
-  }
+  const [quarantinTagId, setQuarantinTagId] = useState(null);
 
   const handleEdit = (tagId) => {
     // Fetch the record with `id` from your data source
     const selectedRecord = // Logic to fetch the record based on `id`
       setEditFormInput({
+        entryPregnancyId: selectedRecord.entryPregnancyId,
+        breedingDate: selectedRecord.breedingDate,
         breed: selectedRecord.breed,
-        tagId: selectedRecord.tagId,
-        pregStatus: selectedRecord.pregStatus,
-        breedDate: selectedRecord.breedDate,
-        gestationPeriod: selectedRecord.gestationPeriod,
-        dueDate: selectedRecord.dueDate,
-        remark: selectedRecord.remark,
-        staff: selectedRecord.staff
+        staff: selectedRecord.inCharge,
       });
     setEditId(tagId);
     setEditFormModal(true);
   };
 
-  const [livestockData, setLivestockData] = useState([]);
-  const [idCounter, setIdCounter] = useState(1);
+  const [pregnancyData, setpregnancyData] = useState([]);
+  const [idCounter, setIdCounter] = useState("");
 
-  const deleteRecord = (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this profile?");
+  // fetch pregnancy
+  // fetch pregnancy
+  const fetchpregnancys = async () => {
+    setFetching(true);
+    try {
+      if (userData?.token) {
+        const res = await fetchAllRecords(
+          userData.token,
+          userData.farmland,
+          "pregnancy",
+          "cattle",
+          ""
+        );
+
+        if (res.data) {
+          setFetching(false);
+          setpregnancyData(res.data.message.reverse());
+        }
+      } else {
+        setFetching(false);
+        setIdCounter("done");
+      }
+
+      setIdCounter("done");
+    } catch (error) {
+      setFetching(false);
+      if (error.code === "ERR_NETWORK") {
+        toast.error("Please check your internet connection!");
+      }
+
+      console.log(error);
+      if (error.response) {
+        setFetchError(error.response.statusText);
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+  useEffect(() => {
+    fetchpregnancys();
+  }, [creating, userData?.token, deleting, editting]);
+
+  console.log(pregnancyData.length, fetching);
+
+  const handledeleteRecord = async (id) => {
+    setdeleteId(id);
+    setdelete(true);
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this profile?"
+    );
     if (confirmDelete) {
-      const updatedLivestockData = livestockData.filter(record => record.id !== id);
-      // Reassign IDs to the remaining records
-      const reassignedLivestockData = updatedLivestockData.map((record, index) => ({
-        ...record,
-        id: index + 1
-      }));
-      setLivestockData(reassignedLivestockData);
-      setIdCounter(reassignedLivestockData.length + 1);
+      try {
+        const response = await deleteRecord(
+          userData.token,
+          userData.farmland,
+          "pregnancy",
+          "cattle",
+          id
+        );
+
+        setdelete(false);
+        toast.success(response);
+      } catch (error) {
+        setdelete(false);
+        console.log(error);
+        if (error.code === "ERR_BAD_REQUEST") {
+          toast.error(error.response.data.message);
+        }
+      }
+    } else {
+      setdelete(false);
     }
   };
 
   function closeFormModal() {
     if (confirm("Are you sure you want to close the form?") == true) {
-      setFormModal(false)
-      setformInput({})
-      settable(true)
+      setFormModal(false);
+      setformInput({});
     }
   }
 
   function closeEditFormModal() {
     if (confirm("Are you sure you want to close the form?") == true) {
-      setEditFormModal(false)
-      setformInput({})
-      settable(true)
+      setEditFormModal(false);
+      setformInput({});
     }
   }
 
-  function handleViewLivestock(id) {
-    const selectedRecord = livestockData.find(record => record.id === id);
-    if (!selectedRecord) {
-      console.error("Record not found for id:", id);
-      return;
+  async function handleViewPregnancy(id) {
+    setviewId(id);
+    setViewing(true);
+    try {
+      const selectedRecord = await viewRecord(
+        userData.token,
+        userData.farmland,
+        "pregnancy",
+        "cattle",
+        id
+      );
+
+      setViewing(false);
+      setSelected(selectedRecord.data.message);
+      setviewPregnancy(true);
+    } catch (error) {
+      setViewing(false);
+      console.log(error);
+      if (error.code === "ERR_BAD_REQUEST") {
+        toast.error(error.response.data.message);
+      }
     }
-    setSelected(selectedRecord);
-    setviewLivestock(true);
   }
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
+
     if (formModal) {
       setformInput((prevData) => ({ ...prevData, [name]: value }));
     } else if (editFormModal) {
       setEditFormInput((prevData) => ({ ...prevData, [name]: value }));
     }
-  }
+  };
 
-  function editBtnFn(id) {
-    setEditId(id);
+  // edit pregnancy
+  function editBtnFn(tagId) {
+    setEditTagId(tagId);
     setEditFormModal(true);
-    settable(false)
-    const selectedRecord = livestockData.find((record) => record.id === id);
+    const selectedRecord = pregnancyData.find(
+      (record) => record.entryPregnancyId === tagId
+    );
+
     setEditFormInput({
+      entryPregnancyId: selectedRecord.entryPregnancyId,
+      breedingDate: selectedRecord.breedingDate,
       breed: selectedRecord.breed,
-      tagId: selectedRecord.tagId,
-      pregStatus: selectedRecord.pregStatus,
-      breedDate: selectedRecord.breedDate,
+      status: selectedRecord.status,
       gestationPeriod: selectedRecord.gestationPeriod,
-      dueDate: selectedRecord.dueDate,
       remark: selectedRecord.remark,
-      staff: selectedRecord.staff
     });
   }
 
-  const getCurrentDateTime = () => {
-    const now = new Date();
-    const offset = now.getTimezoneOffset() * 60000; // offset in milliseconds
-    const localISOTime = new Date(now - offset).toISOString().slice(0, 19).replace('T', ' ');
-    return localISOTime;
-  };
-
-
-  const calculateECD = (breedDate, gestationPeriod) => {
-    // Validate input and convert breedDate to a Date object
-    const breedDateObj = new Date(breedDate);
-    if (isNaN(breedDateObj.getTime())) {
-      console.error('Invalid breed date format. Expected format: YYYY-MM-DD');
-      return '';
-    }
-
-    // Calculate ECD
-    const gestationDays = parseInt(gestationPeriod, 10);
-    if (isNaN(gestationDays)) {
-      console.error('Invalid gestation period. Expected a number of days.');
-      return '';
-    }
-
-    const ecdTimestamp = breedDateObj.getTime() + gestationDays * 24 * 60 * 60 * 1000; // Add gestation period in milliseconds
-    const ecdDate = new Date(ecdTimestamp);
-
-    // Format ECD as "Month Day, Year" format
-    const options = { month: 'long', day: 'numeric', year: 'numeric' };
-    const formattedECD = ecdDate.toLocaleDateString('en-US', options);
-
-    return formattedECD;
-  };
-
-
-  const handleFormSubmit = (e) => {
-    []
+  // create pregnancy
+  const handleCreate = async (e) => {
     e.preventDefault();
+    setCreating(true);
+    try {
+      const { entryPregnancyId, breed, breedingDate, gestationPeriod, status } =
+        formInput;
 
-    const { breed, tagId, pregStatus, breedDate, gestationPeriod, remark, staff } = formInput;
-
-    if (!breed || !tagId || !pregStatus || !breedDate || !gestationPeriod || !remark || !staff) {
-      alert('Please, ensure you fill in all fields.');
-      return;
-    }
-    const isTagIdUsed = livestockData.some(record => record.tagId === tagId);
-
-    if (isTagIdUsed) {
-      alert(`Tag ID '${tagId}' is already used. Please choose a different Tag ID.`);
-      return;
-    }
-
-
-    const entryRecord = {
-      ...formInput,
-      id: 1,
-      entryDate: getCurrentDateTime(), // Generate dynamic entryDate
-      dueDate: calculateECD(formInput.breedDate, formInput.gestationPeriod)  // Calculate ECD
-    };
-    // Proceed with form submission
-    console.log('Form submitted:', formInput);
-
-    const updatedLivestockData = [entryRecord, ...livestockData.map(record => ({
-      ...record,
-      id: record.id + 1
-    }))];
-
-    setLivestockData(updatedLivestockData);
-    settable(true)
-
-
-    // Reset form input and close modal
-    setFormModal(false);
-    setformInput({
-      breed: '',
-      tagId: '',
-      pregStatus: '',
-      breedDate: '',
-      gestationPeriod: 283,
-      dueDate: '',
-      remark: '',
-      staff: ''
-    });
-  };
-
-  const handleEditFormSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-
-    // Destructure the editformInput object for validation
-    const { breed, tagId, pregStatus, breedDate, gestationPeriod, dueDate, remark, staff } = editformInput;
-
-    // Validate required fields
-    if (!breed || !tagId || !pregStatus || !breedDate || !gestationPeriod || !dueDate || !remark || !staff) {
-      alert('Please, ensure you fill in all fields.');
-      return;
-    }
-
-    // Update livestock data with the edited form input
-    const newLivestockData = livestockData.map((row) => {
-      if (row.id === editId) {
-        return { ...row, ...editformInput, dueDate: calculateECD(editformInput.breedDate, editformInput.gestationPeriod) };
+      console.log(formInput);
+      if (
+        !entryPregnancyId ||
+        !breed ||
+        !breedingDate ||
+        !gestationPeriod ||
+        !status
+      ) {
+        setCreating(false);
+        alert("Please, ensure you fill in all fields.");
+        return;
       }
-      return row;
-    });
 
-    // Set the updated livestock data
-    setLivestockData(newLivestockData);
-    setEditFormModal(false);
-    settable(true)
-    setEditFormInput({
-      breed: '',
-      tagId: '',
-      pregStatus: '',
-      breedDate: '',
-      gestationPeriod: '',
-      dueDate: '',
-      remark: '',
-      staff: ''
-    });
+      const res = await createRecord(
+        userData.token,
+        userData.farmland,
+        "pregnancy",
+        "cattle",
+        formInput
+      );
+
+      if (res.data) {
+        toast.success(res.data);
+        setCreating(false);
+        setFormModal(false);
+        setformInput({});
+      }
+    } catch (error) {
+      setCreating(false);
+      if (error.code === "ERR_NETWORK") {
+        toast.error("Please check your internet connection!");
+      }
+
+      console.log(error);
+      if (error.response) {
+        toast.error(error.response.data.message);
+      }
+    }
   };
 
+  const handleEditFormSubmit = async (e) => {
+    setEditting(true);
+    e.preventDefault(); // Prpregnancy default form submission behavior
 
+    try {
+      const formdata = editformInput;
 
+      const editResponse = await editRecord(
+        userData.token,
+        userData.farmland,
+        "pregnancy",
+        "cattle",
+        edittagId,
+        formdata
+      );
 
+      if (editResponse) {
+        setEditting(false);
+        setEditFormModal(false);
+        setEditFormInput({
+          entryPregnancyId: "",
+          tagId: "",
+          tagLocation: "",
+          sex: "",
+          breedingDate: "",
+          weight: "",
+          status: "",
+          origin: "",
+          remark: "",
+          staff: "",
+        });
+      }
+      toast.success("Record updated!");
+    } catch (error) {
+      if (error.code === "ERR_NETWORK") {
+        toast.error("Please check your internet connection!");
+      }
 
+      setEditting(false);
+      console.log(error);
+      if (error.code === "ERR_BAD_REQUEST") {
+        toast.error(error.response.data.message);
+      }
+      if (error.code === "ERR_BAD_RESPONSE") {
+        toast.error(error.response.data.error.codeName);
+      }
+    }
+  };
+
+  function addProfile() {
+    setFormModal(!formModal);
+  }
 
   return (
     <div className="livestock">
       <Head>
-        <title>Druminant - Pregnancy Checker (Cattle)</title>
+        <title>Druminant - pregnancy Profile (Cattle)</title>
         <meta name="description" content="Generated by create next app" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/image/mobilelogo.png" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/image/mobilelogo.png"
+        />
       </Head>
-      <div className="relative">
 
-        <ModuleHeader />
-        <div>
-          <div className="up">
-            <div>
-              <h1 className="module-header">Pregnancy Checker (Cattle)</h1>
-              <p>Keep track of the expected calving date for your livestock</p>
-            </div>
-          </div>
+      <ModuleHeader />
 
-          <div className="add-search-div">
-            <div className="cursor">
-              <p className="add-btn3" onClick={addNewRecord}><span> <MdAdd style={{ marginTop: "4px", color: "white" }} /> </span> Add Record</p>
-            </div>
-            <input type="text" className="search-input" maxLength={15} placeholder="Search here (Tag id)" />
-            {/* <GoSearch className="search-icon" style={{ cursor: "pointer" }} /> */}
-          </div>
+      <>
+        {" "}
+        <div className="">
+          {userData?.token && !fetchError && (
+            <>
+              <div className="up">
+                <div>
+                  <h1 className="module-header md:mt-0  mt-0 ">
+                    pregnancy Profile (Cattle)
+                  </h1>
+                  <p>Keep track of your pregnancy profile</p>
+                </div>
+              </div>
 
+              <div className="add-search-div">
+                <div className="cursor">
+                  <p className="add-btn" onClick={addProfile}>
+                    <span>+ </span> Add Profile
+                  </p>
+                </div>
+                {/* <input
+              type="text"
+              className="search-input"
+              maxLength={15}
+              placeholder="Search here (pregnancy Id)"
+            /> */}
+              </div>
+            </>
+          )}
         </div>
-        {table && <div>
-          <table className="w-full mt-0">
-            <thead>
-              <tr>
-                <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)" }}>
-                  id
-                </th>
-                <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)" }}>
-                  Tag ID
-                </th>
-                <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)" }}>
-                  Gestation Period
-                </th>
-                <th className="p-0 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)" }}>
-                  Breeding Date
-                </th>
-                <th className="p-0 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)" }}>
-                  Expected Calving Date (ECD)
-                </th>
-                <th className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell" style={{ backgroundColor: "rgb(7, 78, 0)" }}>
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {livestockData.map((row, key) => (
-                <tr
-                  key={key}
-                  className="bg-white md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap mb-10 md:mb-0 shadow-sm shadow-gray-800 md:shadow-none"
-                >
-                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                    <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
-                      id
-                    </span>
-                    <div style={{ fontSize: "14px" }} >
-                      {row.id}
-                    </div>
+        {userData?.token && !fetchError ? (
+          <div
+            className={`flex  flex-col justify-between h-screen ${
+              editFormModal && "hidden"
+            }`}
+          >
+            <table className="w-full mt-0">
+              <thead>
+                <tr>
+                  <th
+                    className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
+                    style={{ backgroundColor: "green" }}
+                  >
+                    N/A
+                  </th>
+                  <th
+                    className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
+                    style={{ backgroundColor: "green" }}
+                  >
+                    pregnancy Id
+                  </th>
+                  <th
+                    className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
+                    style={{ backgroundColor: "green" }}
+                  >
+                    Breed
+                  </th>
 
-                  </td>
-                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                    <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
-                      Tag ID
-                    </span>
-                    <div style={{ fontSize: "14px" }} >
-                      {row.tagId}
-                    </div>
+                  <th
+                    className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
+                    style={{ backgroundColor: "green" }}
+                  >
+                    Breeding Date
+                  </th>
 
-                  </td>
-                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
-                    <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
-                      Gestation Period
-                    </span>
-                    <div style={{ fontSize: "14px" }} >
-                      <p>{row.gestationPeriod} days</p>
-                    </div>
-                  </td>
-
-                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                    <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
-                      Breeding Date
-                    </span>
-                    <div style={{ fontSize: "14px" }} >
-                      {row.breedDate}
-                    </div>
-
-                  </td>
-                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                    <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
-                      Expected Calving Date
-                    </span>
-                    <span style={{ fontSize: "14px" }}>
-
-                      {row.dueDate}
-                    </span>
-                  </td>
-
-                  <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
-                    <span className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase" style={{ backgroundColor: "#c1ffb4", fontSize: "11px" }}>
-                      Actions
-                    </span>
-
-
-                    <div className="">
-                      <button title="Edit" onClick={() => editBtnFn(row.id)} className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md">
-                        {/* Edit */}
-                        <FaRegEdit style={{ fontSize: "14px" }} />
-                      </button>
-
-                      <button title="More info" onClick={() => handleViewLivestock(row.id)} className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md">
-                        <MdRemoveRedEye style={{ fontSize: "14px" }} />
-                      </button>
-
-                      <button title="Delete" className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md" onClick={() => deleteRecord(row.id)}>
-                        {/* Delete */}
-                        <RiDeleteBin6Line style={{ fontSize: "14px" }} />
-                      </button>
-
-
-                    </div>
-                  </td>
+                  <th
+                    className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
+                    style={{ backgroundColor: "green" }}
+                  >
+                    Actions
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>}
+              </thead>
+              {!fetching && pregnancyData.length > 0 && (
+                <tbody>
+                  {pregnancyData.map((row, key) => (
+                    <tr
+                      key={key}
+                      className="bg-white      md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap mb-1 md:mb-0 shadow-sm shadow-gray-800 md:shadow-none"
+                    >
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b  block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          N/A
+                        </span>
+                        <div style={{ fontSize: "14px", color: "black" }}>
+                          {key + 1}
+                        </div>
+                      </td>
 
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          pregnancy Id
+                        </span>
+                        <div style={{ fontSize: "14px", color: "black" }}>
+                          {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
+                          <p>{row.entryPregnancyId}</p>
+                        </div>
+                      </td>
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          pregnancy Breed
+                        </span>
+                        <div style={{ fontSize: "14px", color: "black" }}>
+                          {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
+                          <p>{row.breed}</p>
+                        </div>
+                      </td>
 
-        {//Livestock input form
+                      <td className="w-full md:w-auto   justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Breeding Date
+                        </span>
+                        <span style={{ fontSize: "14px", color: "black" }}>
+                          {moment(row.breedingDate).format(
+                            "MMMM Do, YYYY, h:mm:ss A"
+                          )}
+                        </span>
+                      </td>
 
-          formModal && <div className="form-backdrop" class=" py-14 bg-[#01000D] overflow-y-auto h-screen  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
-            <p className="form-header pt-10 pb:0 md:pt-0">Due Date Details</p>
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
+                        <span
+                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Actions
+                        </span>
 
-            <div role="alert" class="container bg-white rounded mx-auto w-11/12 md:w-2/3 max-w-xl">
-              <div class="w-[auto] relative mt-4 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
-                <form >
+                        <div className="">
+                          <button
+                            title="Edit"
+                            onClick={() => editBtnFn(row.entryPregnancyId)}
+                            className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
+                          >
+                            {/* Edit */}
+                            <FaRegEdit style={{ fontSize: "14px" }} />
+                          </button>
+
+                          {viewing && viewId === row.entryPregnancyId ? (
+                            <button
+                              title="More info"
+                              className=" px-3 py-1 ml-2 animate-pulse   hover:bg-green-600 text-white bg-green-500 rounded-md"
+                            >
+                              <HiDotsHorizontal style={{ fontSize: "14px" }} />
+                            </button>
+                          ) : (
+                            <button
+                              title="More info"
+                              onClick={() =>
+                                handleViewPregnancy(row.entryPregnancyId)
+                              }
+                              className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
+                            >
+                              <MdRemoveRedEye style={{ fontSize: "14px" }} />
+                            </button>
+                          )}
+                          {deleting ? (
+                            <button
+                              className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
+                              onClick={() =>
+                                handledeleteRecord(row.entryPregnancyId)
+                              }
+                            >
+                              {/* Delete */}
+                              <AiOutlineLoading3Quarters
+                                className={`${
+                                  row.tagId === deleteId && "animate-spin"
+                                } `}
+                                style={{ fontSize: "14px" }}
+                              />
+                            </button>
+                          ) : (
+                            <button
+                              title="Delete"
+                              className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
+                              onClick={() =>
+                                handledeleteRecord(row.entryPregnancyId)
+                              }
+                            >
+                              {/* Delete */}
+                              <RiDeleteBin6Line style={{ fontSize: "14px" }} />
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
+            </table>
+            {fetching && (
+              <div className="text-center  mx-0   text-black h-[80vh] flex items-center justify-center">
+                <div className="flex items-center justify-center flex-col">
+                  <AiOutlineLoading3Quarters className="text-4xl  animate-spin" />
+                </div>
+              </div>
+            )}
+
+            {!fetching &&
+              pregnancyData.length === 0 &&
+              userData?.token &&
+              idCounter === "done" && (
+                <div className="text-center mx-0  flex-col text-black h-[100vh] flex items-center justify-center">
+                  <div className="flex items-center justify-center flex-col">
+                    Sorry no pregnancy Record found!
+                  </div>
+                  <div className="cursor">
+                    <p
+                      className="px-10 py-2 cursor-pointer hover:bg-green-800 mt-5 text-white bg-[#008000] rounded-md justify-center"
+                      onClick={addProfile}
+                    >
+                      Create
+                    </p>
+                  </div>
+                </div>
+              )}
+          </div>
+        ) : (
+          userData &&
+          fetchError === "Unauthorized" && (
+            <div className="livestock text-center border-2 p-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
+              <div className="flex items-center justify-center flex-col">
+                <p className="dashboard-mssg">
+                  You are not allowed to access this Farmland pregnancy
+                </p>
+                <Link
+                  href={`/dashboard/${userData.farmland}`}
+                  className="mss-login"
+                >
+                  Go back to dashboard
+                </Link>
+              </div>
+            </div>
+          )
+        )}
+      </>
+
+      {!userData?.token && !fetching && (
+        <div className="text-center border-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
+          <div className="flex items-center justify-center flex-col">
+            <p className="dashboard-mssg">
+              You are not logged in! <br />
+              Please, log in to access this profile
+            </p>
+            <Link href={"/login"} className="mss-login">
+              login
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {
+        //pregnancy input form
+
+        formModal && (
+          <div
+            className="dashboard-main2 py-12 bg-[#01000D]  transition overflow-y-auto  duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
+            id="modal"
+          >
+            <p
+              className="form-header pt-10 pb:0 md:pt-0"
+              style={{ color: "white" }}
+            >
+              pregnancy Profile Details
+            </p>
+
+            <div
+              role="alert"
+              className="container mx-auto w-11/12 md:w-2/3 max-w-xl"
+            >
+              <div className="w-[auto] bg-white relative mt-4 md:mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
+                <form>
                   <div className="general-form">
-                    <div>
-                      <label className="input-label" htmlFor="breed" >Breed</label>
-                      <input title="Enter the breed of the cattle" maxLength={25} required value={formInput.breed} onChange={handleChange} name="breed" id="breed" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                    <div className=" w-full">
+                      <label className="input-label" htmlFor="entryPregnancyId">
+                        Pregnancy Id
+                      </label>
+                      <input
+                        title="Enter the entryPregnancyId of the pregnancy here."
+                        placeholder="Cattle294"
+                        maxLength={20}
+                        required
+                        value={formInput.entryPregnancyId}
+                        onChange={handleChange}
+                        name="entryPregnancyId"
+                        id="entryPregnancyId"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
+                      <label className="input-label" htmlFor="breed">
+                        Breed
+                      </label>
+                      <input
+                        title="Input the unique identification number assigned to the pregnancy tag."
+                        maxLength={10}
+                        required
+                        value={formInput.breed}
+                        onChange={handleChange}
+                        id="breed"
+                        name="breed"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
+                      <label className="input-label" for="breedingDate">
+                        Breeding Date
+                      </label>
+                      <input
+                        type="datetime-local"
+                        id="breedingDate"
+                        value={formInput.breedingDate}
+                        onChange={handleChange}
+                        name="breedingDate"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
 
-
-                      <label className="input-label" htmlFor="tag Id" >Tag ID</label>
-                      <input title="Input the unique identification number assigned to the livestock tag." maxLength={20} required value={formInput.tagId} onChange={handleChange} id="name" name="tagId" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-
-                      <label className="input-label" for="name" >Pregnancy Confirmation</label>
-                      <select id="name" value={formInput.pregStatus} name="pregStatus" onChange={handleChange} class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border">
-                        <option value={""}>Select pregnancy status</option>
-                        <option value={"Pregnant"}>Pregnant</option>
-                        <option value={"Not Pregnant"}>Not pregnant</option>
+                      <label className="input-label" for="gestationPeriod">
+                        Gestation Period
+                      </label>
+                      <input
+                        type="number"
+                        id="gestationPeriod"
+                        value={formInput.gestationPeriod}
+                        onChange={handleChange}
+                        name="gestationPeriod"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
+                      <label className="input-label" for="status">
+                        Status
+                      </label>
+                      <select
+                        id="name"
+                        value={formInput.status}
+                        name="status"
+                        onChange={handleChange}
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      >
+                        <option value={""}>Select status</option>
+                        <option>Yes</option>
+                        <option>No</option>
                       </select>
-
-                      <label className="input-label" for="name">Breeding Date</label>
-                      <input type="Date" id="name" value={formInput.breedDate} onChange={handleChange} name="breedDate" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-                    </div>
-                    <div>
-                      <label className="input-label" for="name" >Gestation Period</label>
-                      <input title="Average gestation period" readOnly placeholder="283 days" maxLength={10} value={formInput.gestationPeriod} onChange={handleChange} type="number" name="gestationPeriod" id="name" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-
-                      <label className="input-label" for="name" >Staff in charge</label>
-                      <input title="Name of staff creating this record" placeholder="Enter your name" maxLength={20} id="name" value={formInput.staff} onChange={handleChange} type="text" name="staff" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-
-                      <label className="input-label" for="name" >Remark</label>
-                      <input title="Add additional remarks about the livestock here. Make it brief for easy readablility." id="name" value={formInput.remark} onChange={handleChange} type="text" name="remark" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-
+                      <label className="input-label" for="name">
+                        Remark
+                      </label>
+                      <input
+                        title="Add additional remarks about the pregnancy here. Make it brief for easy readablility."
+                        id="name"
+                        value={formInput.remark}
+                        onChange={handleChange}
+                        type="text"
+                        name="remark"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
                     </div>
                   </div>
                 </form>
 
-
-
-                <div class="relative mb-5 mt-2">
-                  <div class="absolute text-gray-600 flex items-center px-4 border-r h-full">
-
-                  </div>
-
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute text-gray-600 flex items-center px-4 border-r h-full"></div>
                 </div>
-                {/* <label for="expiry" class="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
-                <div class="relative mb-5 mt-2">
-                  <div class="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer">
-
-                  </div>
-
+                {/* <label for="expiry" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
                 </div>
-                {/* <label for="cvc" class="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
-                <div class="relative mb-5 mt-2">
-                  <div class="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer">
-
-                  </div>
-                  {/* <input id="cvc" class="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
+                {/* <label for="cvc" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
+                  {/* <input id="cvc" className="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
                 </div>
-                <div className="form-btns" >
-                  <button className="btn" onClick={(e) => handleFormSubmit(e)}>Submit</button>
-                  <button className="btn2" onClick={closeFormModal} >Cancel</button>
+                <div className="form-btns">
+                  <button
+                    className="btn"
+                    onClick={(e) => handleCreate(e)}
+                    disabled={creating}
+                  >
+                    {creating ? (
+                      <div className="flex items-center space-x-2">
+                        <AiOutlineLoading3Quarters className="animate-spin" />{" "}
+                        <p>Processing...</p>
+                      </div>
+                    ) : (
+                      "    Submit"
+                    )}
+                  </button>
+                  {!creating && (
+                    <button className="btn2" onClick={closeFormModal}>
+                      Cancel
+                    </button>
+                  )}
                 </div>
-                <button onClick={closeFormModal} className="cursor-pointer text-xl absolute top-0 right-0 mt-4 mr-5 text-gray-700 hover:text-gray-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600" aria-label="close modal" role="button">
-
+                <button
+                  onClick={closeFormModal}
+                  className="cursor-pointer text-xl absolute top-0 right-0 mt-4 mr-5 text-gray-700 hover:text-gray-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
+                  aria-label="close modal"
+                  role="button"
+                >
                   <IoMdClose />
                 </button>
               </div>
               {/* <button className="close-btn" onClick={show()}>hsh</button> */}
             </div>
           </div>
-        }
+        )
+      }
 
+      {
+        //pregnancy EDIT form
 
+        editFormModal && (
+          <div
+            className="form-backdrop py-12 bg-[#01000D] overflow-y-auto  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
+            id="modal"
+          >
+            <p
+              className="form-header pt-10 pb:0 md:pt-0"
+              style={{ color: "white" }}
+            >
+              Edit pregnancy profile
+            </p>
 
-
-        {//Livestock EDIT form
-
-          editFormModal && <div className="form-backdrop" class=" py-12 bg-[#01000D] overflow-y-auto h-screen  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
-            <p className="form-header pt-10 pb:0 md:pt-0">Edit Due Date Details</p>
-
-            <div role="alert" class="container bg-white rounded mx-auto w-11/12 md:w-2/3 max-w-xl">
-              <div class="w-[auto] relative mt-4 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
-                <form >
+            <div className="container mx-auto w-11/12 md:w-2/3 max-w-xl">
+              <div className="w-[auto] bg-white relative mt-4 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
+                <form>
                   <div className="general-form">
-                    <div>
-                      <label className="input-label" for="name" >Breed</label>
-                      <input title="Enter the breed of the livestock (e.g., Angus, Holstein) here." maxLength={25} value={editformInput.breed} onChange={handleChange} name="breed" id="breed" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
+                    <div className="w-full">
+                      <label className="input-label" for="entryPregnancyId">
+                        pregnancy Id
+                      </label>
+                      <input
+                        title="Enter the entryPregnancyId of the pregnancy here."
+                        placeholder="Cattle294"
+                        maxLength={20}
+                        value={editformInput.entryPregnancyId}
+                        onChange={handleChange}
+                        name="entryPregnancyId"
+                        id="entryPregnancyId"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
 
-                      <label className="input-label" for="name" >Tag ID</label>
-                      <input title="Input the unique identification number assigned to the livestock tag." maxLength={20} value={editformInput.tagId} onChange={handleChange} id="name" name="tagId" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-                      <label className="input-label" for="name" >Pregnancy Confirmation</label>
-                      <select id="name" value={editformInput.pregStatus} name="pregStatus" onChange={handleChange} class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border">
-                        <option value={""}>Select pregnancy status</option>
-                        <option value={"Pregnant"}>Pregnant</option>
-                        <option value={"Not Pregnant"}>Not pregnant</option>
+                      <label className="input-label" for="breed">
+                        Breed
+                      </label>
+                      <input
+                        title="Input the unique identification number assigned to the pregnancy tag."
+                        maxLength={15}
+                        value={editformInput.breed}
+                        onChange={handleChange}
+                        id="breed"
+                        name="breed"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
+
+                      <label className="input-label" for="breedingDate">
+                        Breeding Date
+                      </label>
+                      <input
+                        type="Datetime-local"
+                        id="breedingDate"
+                        value={formatDateString(editformInput.breedingDate)}
+                        onChange={handleChange}
+                        name="breedingDate"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
+
+                      <label className="input-label" for="gestationPeriod">
+                        Gestation Period
+                      </label>
+                      <input
+                        title="Input the unique identification number assigned to the pregnancy tag."
+                        maxLength={15}
+                        value={editformInput.gestationPeriod}
+                        onChange={handleChange}
+                        id="gestationPeriod"
+                        name="gestationPeriod"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
+
+                      <label className="input-label" for="status">
+                        Status
+                      </label>
+                      <select
+                        id="name"
+                        value={editformInput.status}
+                        name="status"
+                        onChange={handleChange}
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      >
+                        <option value={""}>Select status</option>
+                        <option>Yes</option>
+                        <option>No</option>
                       </select>
 
-                      <label className="input-label" for="name">Breeding Date</label>
-                      <input type="Date" id="name" value={editformInput.breedDate} onChange={handleChange} name="breedDate" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-                    </div>
-                    <div>
-                      <label className="input-label" for="name" >Gestation Period</label>
-                      <input title="Enter the weight of the livestock in kilograms (kg)." maxLength={10} readOnly value={editformInput.gestationPeriod} onChange={handleChange} type="number" name="gestationPeriod" id="name" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-
-                      <label className="input-label" for="name" >Staff in charge</label>
-                      <input title="Name of staff creating this livestock profile" placeholder="e.g Mr. Ibharalu" maxLength={20} id="name" value={editformInput.staff} onChange={handleChange} type="text" name="staff" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-
-                      <label className="input-label" for="name" >Remark</label>
-                      <input title="Add additional remarks about the livestock here. Make it brief for easy readablility." id="name" value={editformInput.remark} onChange={handleChange} type="text" name="remark" class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border" />
-
-
+                      <label className="input-label" for="remark">
+                        Remark
+                      </label>
+                      <input
+                        title="Input the unique identification number assigned to the pregnancy tag."
+                        maxLength={15}
+                        value={editformInput.remark}
+                        onChange={handleChange}
+                        id="remark"
+                        name="remark"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
                     </div>
                   </div>
                 </form>
 
-
-
-                <div class="relative mb-5 mt-2">
-                  <div class="absolute text-gray-600 flex items-center px-4 border-r h-full">
-
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute text-gray-600 flex items-center px-4 border-r h-full"></div>
+                </div>
+                {/* <label for="expiry" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
+                </div>
+                {/* <label for="cvc" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
+                  {/* <input id="cvc" className="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
+                </div>
+                {!editting ? (
+                  <div className="form-btns">
+                    <button
+                      className="btn"
+                      onClick={(e) => handleEditFormSubmit(e)}
+                      style={{ width: "80px" }}
+                    >
+                      Save
+                    </button>
+                    <button className="btn2" onClick={closeEditFormModal}>
+                      Cancel
+                    </button>
                   </div>
-
-                </div>
-                {/* <label for="expiry" class="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
-                <div class="relative mb-5 mt-2">
-                  <div class="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer">
-
+                ) : (
+                  <div className="form-btns">
+                    <button
+                      disabled={editting}
+                      className=" bg-[#008000]  text-white px-5 py-2 rounded-md  w-full       flex justify-center space-x-2 items-center"
+                      onClick={(e) => handleEditFormSubmit(e)}
+                    >
+                      <AiOutlineLoading3Quarters className="animate-spin" />{" "}
+                      <p>Processing...</p>
+                    </button>
                   </div>
-
-                </div>
-                {/* <label for="cvc" class="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
-                <div class="relative mb-5 mt-2">
-                  <div class="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer">
-
-                  </div>
-                  {/* <input id="cvc" class="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
-                </div>
-                <div className="form-btns" >
-                  <button className="btn" onClick={(e) => handleEditFormSubmit(e, editId)} style={{ width: "80px" }}>Save</button>
-                  <button className="btn2" onClick={closeEditFormModal} >Cancel</button>
-                </div>
-                <button onClick={closeEditFormModal} className="cursor-pointer text-xl absolute top-0 right-0 mt-4 mr-5 text-gray-700 hover:text-gray-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600" aria-label="close modal" role="button">
-
+                )}
+                <button
+                  onClick={closeEditFormModal}
+                  className="cursor-pointer text-xl absolute top-0 right-0 mt-4 mr-5 text-gray-700 hover:text-gray-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
+                  aria-label="close modal"
+                  role="button"
+                >
                   <IoMdClose />
                 </button>
               </div>
               {/* <button className="close-btn" onClick={show()}>hsh</button> */}
             </div>
           </div>
-        }
+        )
+      }
 
-
-        {
-          viewLivestock && <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-            <div class="relative flex flex-col mt-4 items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3">
-              <div class="mt-2 mb-8 w-full">
-                <h4 class="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
-                  ECD Details
-                </h4>
+      {viewPregnancy && (
+        <div className="fixed inset-0 flex  items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+          <div
+            className="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3"
+            style={{ marginTop: "10px" }}
+          >
+            <div className="mt-2 mb-8 w-full">
+              <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
+                Pregnancy tracker Profile
+              </h4>
+            </div>
+            <div className="grid grid-cols-2 gap-4 px-1 w-full">
+              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Pregnancy Id</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                  {selected.entryPregnancyId}
+                </p>
               </div>
-              <div class="grid grid-cols-2 gap-4 px-1 w-full">
-                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                  <p class="text-sm text-gray-600">Breed</p>
-                  <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                    {selected.breed}
-                  </p>
 
-                </div>
+              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Breeding Date</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                  {moment(selected.breedingDate).format(
+                    "MMM Do, YYYY, h:mm:ss A"
+                  )}
+                </p>
+              </div>
+              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Status</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                  {selected.status}
+                </p>
+              </div>
 
-                <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                  <p class="text-sm text-gray-600">Tag ID</p>
-                  <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                    {selected.tagId}
-                  </p>
-                </div>
+              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">ECD</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                  {moment(selected.ecd).format("MMM Do, YYYY, h:mm:ss A")}
+                </p>
+              </div>
 
-                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                  <p class="text-sm text-gray-600">Pregnancy Status</p>
-                  <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                    {selected.pregStatus}
-                  </p>
-                </div>
+              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Remark</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                  {selected.remark}
+                </p>
+              </div>
 
-                <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                  <p class="text-sm text-gray-600">Gestation Period</p>
-                  <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                    {selected.gestationPeriod}
-                  </p>
-                </div>
+              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Staff in charge</p>
+                <p className="text-base font-medium text-navy-700  dark:text-green-700">
+                  {selected.inCharge}
+                </p>
+              </div>
 
-                <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                  <p class="text-sm text-gray-600">Breeding Date</p>
-                  <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                    {selected.breedDate}
-                  </p>
-                </div>
+              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Entry Date</p>
+                <p className="text-base font-medium text-navy-700  dark:text-green-700">
+                  {moment(selected.createdAt).format("MMM Do, YYYY, h:mm:ss A")}
+                </p>
+              </div>
 
-                <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                  <p class="text-sm text-gray-600">ECD</p>
-                  <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                    {selected.dueDate}
-                  </p>
-                </div>
-
-                <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                  <p class="text-sm text-gray-600">Entry Date & Time</p>
-                  <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                    {selected.entryDate}
-                  </p>
-                </div>
-
-                <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                  <p class="text-sm text-gray-600">Staff in charge</p>
-                  <p class="text-base font-medium text-navy-700  dark:text-green-700">
-                    {selected.staff}
-                  </p>
-                </div>
-
-                <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                  <p class="text-sm text-gray-600">Remark</p>
-                  <p class="text-base font-medium text-navy-700  dark:text-green-700" style={{ width: "100%", overflow: "auto" }} >
-                    {selected.remark}
-                  </p>
-                </div>
-
-                <div className="btn-div" style={{ width: "100%" }}>
-                  <button className="close-btn" onClick={() => setviewLivestock(false)}>Close</button>
-                </div>
+              <div className="btn-div" style={{ width: "100%" }}>
+                <button
+                  className="close-btn"
+                  onClick={() => setviewPregnancy(false)}
+                >
+                  Close
+                </button>
               </div>
             </div>
-
           </div>
-        }
+        </div>
+      )}
+      {/* <div className="md:mt-0 mt-20  md:hidden ">
+        <Footer />
+      </div> */}
+
+      <div className="md:mt-0 mt-20   hidden md:block ">
+        <Footer />
       </div>
     </div>
   );
