@@ -40,18 +40,23 @@ import { toast } from "react-toastify";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import moment from "moment/moment";
 import {
+  createRecord,
   deleteRecord,
   editRecord,
+  fetchAllRecords,
   viewRecord,
 } from "@/helpterFunctions/handleRecord";
 import { formatDateString } from "@/helpterFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
+import { HiDotsHorizontal } from "react-icons/hi";
 
 // import 'react-smart-data-table/dist/react-smart-data-table.css';
 
 export default function Livestock() {
   const [formModal, setFormModal] = useState(false);
+  const [viewId, setviewId] = useState(null);
+  const [deleteId, setdeleteId] = useState(null);
   const [fetching, setFetching] = useState(false);
   const userData = useRecoilValue(userState);
   const [deleting, setdelete] = useState(false);
@@ -68,7 +73,7 @@ export default function Livestock() {
     origin: "",
     remark: "",
   });
-
+  const [viewing, setViewing] = useState(false);
   const [quarantinFormData, setQuarantinForm] = useState({
     quarantineDate: "",
     reason: "",
@@ -127,7 +132,49 @@ export default function Livestock() {
   };
 
   const [livestockData, setLivestockData] = useState([]);
-  const [idCounter, setIdCounter] = useState(1);
+  const [idCounter, setIdCounter] = useState("");
+
+  // fetch livestock
+  // fetch livestock
+  const fetchLiveStocks = async () => {
+    setFetching(true);
+    try {
+      if (userData?.token) {
+        const res = await fetchAllRecords(
+          userData.token,
+          userData.farmland,
+          "livestock",
+          "cattle",
+          ""
+        );
+
+        if (res.data) {
+          setFetching(false);
+          setLivestockData(res.data.message.reverse());
+        }
+      } else {
+        setFetching(false);
+        setIdCounter("done");
+      }
+
+      setIdCounter("done");
+    } catch (error) {
+      setFetching(false);
+      if (error.code === "ERR_NETWORK") {
+        toast.error("Please check your internet connection!");
+      }
+
+      console.log(error);
+      if (error.response) {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+  useEffect(() => {
+    fetchLiveStocks();
+  }, [creating, userData?.token, deleting, editting, quarantining]);
+
+  console.log(livestockData.length, fetching);
 
   const getCurrentDateTime = () => {
     const now = new Date();
@@ -140,6 +187,7 @@ export default function Livestock() {
   };
 
   const handledeleteRecord = async (id) => {
+    setdeleteId(id);
     setdelete(true);
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this profile?"
@@ -190,6 +238,8 @@ export default function Livestock() {
   }
 
   async function handleViewLivestock(id) {
+    setviewId(id);
+    setViewing(true);
     try {
       const selectedRecord = await viewRecord(
         userData.token,
@@ -199,10 +249,11 @@ export default function Livestock() {
         id
       );
 
-      console.log(selectedRecord);
+      setViewing(false);
       setSelected(selectedRecord);
       setviewLivestock(true);
     } catch (error) {
+      setViewing(false);
       console.log(error);
       if (error.code === "ERR_BAD_REQUEST") {
         toast.error(error.response.data.message);
@@ -234,38 +285,6 @@ export default function Livestock() {
     }
   };
 
-  // fetch livestock
-  const fetchLiveStocks = async () => {
-    setFetching(true);
-    try {
-      if (userData?.token) {
-        const res = await axios.get(
-          `https://druminant-seven.vercel.app/api/v1/farmland/${userData.farmland}/livestock/cattle`,
-
-          {
-            headers: {
-              Authorization: `Bearer ${userData?.token}`,
-            },
-          }
-        );
-
-        if (res.data) {
-          setFetching(false);
-          setLivestockData(res.data.message.reverse());
-        }
-      }
-    } catch (error) {
-      setFetching(false);
-      console.log(error);
-      if (error.response) {
-        toast.error(error.response.data.message);
-      }
-    }
-  };
-  useEffect(() => {
-    fetchLiveStocks();
-  }, [creating, userData?.token, deleting, editting]);
-
   // edit livestock
   function editBtnFn(tagId) {
     setEditTagId(tagId);
@@ -287,11 +306,10 @@ export default function Livestock() {
   }
 
   // create livestock
-  const handleFormSubmit = async (e) => {
+  const handleCreate = async (e) => {
+    e.preventDefault();
     setCreating(true);
     try {
-      e.preventDefault();
-
       const {
         breed,
         tagId,
@@ -319,25 +337,27 @@ export default function Livestock() {
         return;
       }
 
-      const res = await axios.post(
-        `http://localhost:5000/api/v1/farmland/${userData.farmland}/livestock/cattle`,
-        formInput,
-        {
-          headers: {
-            Authorization: `Bearer ${userData?.token}`,
-          },
-        }
+      const res = await createRecord(
+        userData.token,
+        userData.farmland,
+        "livestock",
+        "cattle",
+        formInput
       );
 
       if (res.data) {
         toast.success(res.data);
-
         setCreating(false);
         setFormModal(false);
         setformInput({});
       }
     } catch (error) {
       setCreating(false);
+      if (error.code === "ERR_NETWORK") {
+        toast.error("Please check your internet connection!");
+      }
+
+      console.log(error);
       if (error.response) {
         toast.error(error.response.data.message);
       }
@@ -378,6 +398,10 @@ export default function Livestock() {
       }
       toast.success("Record updated!");
     } catch (error) {
+      if (error.code === "ERR_NETWORK") {
+        toast.error("Please check your internet connection!");
+      }
+
       setEditting(false);
       console.log(error);
       if (error.code === "ERR_BAD_REQUEST") {
@@ -399,11 +423,10 @@ export default function Livestock() {
     setQuarantineModal(true);
   };
 
+  console.log(fetching);
   const handleQuarantine = async () => {
     setquarantining(true);
     try {
-      console.log(quarantinFormData, quarantinTagId);
-
       const res = await axios.post(
         `http://localhost:5000/api/v1/farmland/${userData.farmland}/livestock/cattle/${quarantinTagId}`,
         quarantinFormData,
@@ -418,10 +441,16 @@ export default function Livestock() {
         toast.success(res.data);
         setquarantining(false);
         setQuarantineModal(false);
+        toast.success("Quarantined!");
+        setQuarantinForm({ action: "Quarantine" });
       }
     } catch (error) {
-      console.log(error);
       setquarantining(false);
+      if (error.code === "ERR_NETWORK") {
+        toast.error("Please check your internet connection!");
+      }
+
+      console.log(error);
       if (error.response) {
         toast.error(error.response.data.message);
       }
@@ -443,36 +472,40 @@ export default function Livestock() {
       </Head>
 
       <ModuleHeader />
-      {userData?.token ? (
-        <>
-          {" "}
-          <div className="">
-            <div className="up">
-              <div>
-                <h1 className="module-header md:mt-0  mt-0 ">
-                  Livestock Profile (Cattle)
-                </h1>
-                <p>Keep track of your livestock profile</p>
-              </div>
-            </div>
 
-            <div className="add-search-div">
-              <div className="cursor">
-                <p className="add-btn" onClick={addProfile}>
-                  <span>+ </span> Add Profile
-                </p>
+      <>
+        {" "}
+        <div className="">
+          {userData?.token && (
+            <>
+              <div className="up">
+                <div>
+                  <h1 className="module-header md:mt-0  mt-0 ">
+                    Livestock Profile (Cattle)
+                  </h1>
+                  <p>Keep track of your livestock profile</p>
+                </div>
               </div>
-              <input
-                type="text"
-                className="search-input"
-                maxLength={15}
-                placeholder="Search here (Tag id)"
-              />
-              {/* <GoSearch className="search-icon" style={{ cursor: "pointer" }} /> */}
-            </div>
-          </div>
+
+              <div className="add-search-div">
+                <div className="cursor">
+                  <p className="add-btn" onClick={addProfile}>
+                    <span>+ </span> Add Profile
+                  </p>
+                </div>
+                {/* <input
+              type="text"
+              className="search-input"
+              maxLength={15}
+              placeholder="Search here (Tag id)"
+            /> */}
+              </div>
+            </>
+          )}
+        </div>
+        {userData?.token && (
           <div
-            className={`flex flex-col justify-between h-screen ${
+            className={`flex  flex-col justify-between h-screen ${
               (editFormModal || quarantineModal) && "hidden"
             }`}
           >
@@ -523,7 +556,7 @@ export default function Livestock() {
                   </th>
                 </tr>
               </thead>
-              {!fetching && (
+              {!fetching && livestockData.length > 0 && (
                 <tbody>
                   {livestockData.map((row, key) => (
                     <tr
@@ -645,16 +678,35 @@ export default function Livestock() {
                             <FaRegEdit style={{ fontSize: "14px" }} />
                           </button>
 
-                          <button
-                            title="More info"
-                            onClick={() => handleViewLivestock(row.tagId)}
-                            className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
-                          >
-                            <MdRemoveRedEye style={{ fontSize: "14px" }} />
-                          </button>
-
+                          {viewing && viewId === row.tagId ? (
+                            <button
+                              title="More info"
+                              className=" px-3 py-1 ml-2 animate-pulse   hover:bg-green-600 text-white bg-green-500 rounded-md"
+                            >
+                              <HiDotsHorizontal style={{ fontSize: "14px" }} />
+                            </button>
+                          ) : (
+                            <button
+                              title="More info"
+                              onClick={() => handleViewLivestock(row.tagId)}
+                              className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
+                            >
+                              <MdRemoveRedEye style={{ fontSize: "14px" }} />
+                            </button>
+                          )}
                           {deleting ? (
-                            <AiOutlineLoading3Quarters />
+                            <button
+                              className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
+                              onClick={() => handledeleteRecord(row.tagId)}
+                            >
+                              {/* Delete */}
+                              <AiOutlineLoading3Quarters
+                                className={`${
+                                  row.tagId === deleteId && "animate-spin"
+                                } `}
+                                style={{ fontSize: "14px" }}
+                              />
+                            </button>
                           ) : (
                             <button
                               title="Delete"
@@ -665,7 +717,6 @@ export default function Livestock() {
                               <RiDeleteBin6Line style={{ fontSize: "14px" }} />
                             </button>
                           )}
-
                           <button
                             onClick={() => prepareQurantine(row.tagId)}
                             title="Quarantine"
@@ -688,29 +739,34 @@ export default function Livestock() {
               </div>
             )}
 
-            {!fetching && livestockData.length == 0 && (
-              <div className="text-center  mx-0  flex flex-col  text-black h-[80vh] flex items-center justify-center">
-                <div className="flex items-center justify-center flex-col">
-                  Sorry no livestock Record found!
+            {!fetching &&
+              livestockData.length === 0 &&
+              userData?.token &&
+              idCounter === "done" && (
+                <div className="text-center mx-0  flex-col text-black h-[100vh] flex items-center justify-center">
+                  <div className="flex items-center justify-center flex-col">
+                    Sorry no livestock Record found!
+                  </div>
+                  <div className="cursor">
+                    <p
+                      className="px-10 py-2 cursor-pointer hover:bg-green-800 mt-5 text-white bg-[#008000] rounded-md justify-center"
+                      onClick={addProfile}
+                    >
+                      Create
+                    </p>
+                  </div>
                 </div>
-                <div className="cursor">
-                  <p
-                    className="px-10 py-2 cursor-pointer hover:bg-green-800 mt-5 text-white bg-[#008000] rounded-md justify-center"
-                    onClick={addProfile}
-                  >
-                    Create
-                  </p>
-                </div>
-              </div>
-            )}
+              )}
           </div>
-        </>
-      ) : (
-        <div className="text-center text-gray-800 mx-0 h-screen flex items-center justify-center">
+        )}
+      </>
+
+      {!userData?.token && !fetching && (
+        <div className="text-center border-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
           <div className="flex items-center justify-center flex-col">
             <p className="dashboard-mssg">
               You are not logged in! <br />
-              Please, log in to access profile
+              Please, log in to access this profile
             </p>
             <Link href={"/login"} className="mss-login">
               login
@@ -719,6 +775,9 @@ export default function Livestock() {
         </div>
       )}
 
+      <div className="md:mt-0 mt-20   hidden md:block ">
+        <Footer />
+      </div>
       {
         //Livestock input form
 
@@ -905,7 +964,7 @@ export default function Livestock() {
                 <div className="form-btns">
                   <button
                     className="btn"
-                    onClick={(e) => handleFormSubmit(e)}
+                    onClick={(e) => handleCreate(e)}
                     disabled={creating}
                   >
                     {creating ? (
@@ -1351,9 +1410,9 @@ export default function Livestock() {
           </div>
         </div>
       )}
-      <div className="md:mt-0 mt-20  ">
+      {/* <div className="md:mt-0 mt-20  md:hidden ">
         <Footer />
-      </div>
+      </div> */}
     </div>
   );
 }

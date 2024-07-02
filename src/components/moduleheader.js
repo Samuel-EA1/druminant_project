@@ -16,7 +16,6 @@ function ModuleHeader() {
   const [hamburg, setHamburg] = useState(true);
   const [cancel, setCancel] = useState(false);
   const router = useRouter();
- 
 
   const currentPath = router.asPath;
 
@@ -43,17 +42,21 @@ function ModuleHeader() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log('from here', token)
 
-    if (token) {
-      const decoded = jwtDecode(token);
-      const { isAdmin, status, farmland, userToken } = decoded;
-      setUserData({
-        isAdmin,
-        status,
-        farmland,
-        token,
-      });
+    try {
+      if (token) {
+        const decoded = jwtDecode(token);
+
+        const { isAdmin, status, farmland, userToken } = decoded;
+        setUserData({
+          isAdmin,
+          status,
+          farmland,
+          token,
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, []);
 
@@ -227,7 +230,7 @@ function ModuleHeader() {
 
         {activateIcon && (
           <div
-            className={` module-drop   bg-white top-10 right-0 left-0 absolute   `}
+            className={` module-drop    bg-white top-10 right-0 left-0 absolute   `}
           >
             <ul className="dropDownList-md overflow-hidden">
               <li className={router.pathname === "/" ? "active" : ""}>
@@ -237,7 +240,7 @@ function ModuleHeader() {
               </li>
               <li className={router.pathname === "/dashboard" ? "active" : ""}>
                 <Link
-                  href={`/dashboard/${userData.farmland}`}
+                  href={`/dashboard/${userData?.farmland}`}
                   className="menu-nav2"
                 >
                   Dashboard

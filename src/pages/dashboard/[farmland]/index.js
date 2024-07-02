@@ -24,11 +24,7 @@ import { useRouter } from "next/router";
 
 export default function Staff() {
   const [hamburgerState, setHamburgerState] = useState(false);
-  const [decodedData, setDecodedData] = useState({
-    isAdmin: "",
-    status: "",
-    farmland: "",
-  });
+
   const [loading, setLoading] = useState(false);
   const [eventCount, setEventCount] = useState([]);
   const [pregnancyCount, setPregnancyCount] = useState([]);
@@ -42,14 +38,13 @@ export default function Staff() {
   // render the quarantine modulebased on the role of user
   const userData = useRecoilValue(userState);
 
-  useEffect(() => {
-    toast("Welcome!");
-  }, []);
+  // useEffect(() => {
+  //   toast("Welcome!");
+  // }, []);
 
   useEffect(() => {
     const farmland = router.query.farmland;
 
-   
     setLoading(true);
     if (userData?.token && farmland) {
       const fetchAllCounts = async () => {
@@ -66,8 +61,16 @@ export default function Staff() {
           setModuleCounts(response.data.message);
         } catch (error) {
           setLoading(false);
+          if (error.response.data.message === "Invalid token") {
+            localStorage.removeItem("token");
+            router.push('/login')
+          }
           console.error("Error fetching data", error);
           if (error.response && error.response.status === 400) {
+            setfarmlandError(error.response.data.message);
+            toast.error(error.response.data.message);
+          }
+          if (error.response && error.response.status === 401) {
             setfarmlandError(error.response.data.message);
             toast.error(error.response.data.message);
           }
@@ -185,7 +188,7 @@ export default function Staff() {
                     </div>
                     {/* income and expense */}
                     <div className="p-2 basis-80 lg:basis-96 md:m-5  ">
-                      <Link href={`/dashboard/livestock`}>
+                      <Link href={`/dashboard/${userData.farmland}/finance`}>
                         <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto transform duration-1000 hover:scale-105 hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
@@ -269,7 +272,7 @@ export default function Staff() {
                     </div>
                     {/* envent tracker */}
                     <div className="p-2 basis-80 lg:basis-96 md:m-5  ">
-                      <Link href={`/dashboard/livestock`}>
+                      <Link href={`/dashboard/${userData.farmland}/event`}>
                         <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto transform duration-1000 hover:scale-105 hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
@@ -335,7 +338,9 @@ export default function Staff() {
                       </Link>
                     </div>
                     <div className="p-2 basis-80 lg:basis-96 md:m-5  ">
-                      <Link href={`/dashboard/livestock`}>
+                      <Link
+                        href={`/dashboard/${userData.farmland}/pregnancy-tracker`}
+                      >
                         <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto transform duration-1000 hover:scale-105 hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
@@ -403,7 +408,7 @@ export default function Staff() {
                     </div>
                     {/* lactation */}
                     <div className="p-2 basis-80 lg:basis-96 md:m-5  ">
-                      <Link href={`/dashboard/lactation`}>
+                      <Link href={`/dashboard/${userData.farmland}/lactation`}>
                         <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto transform duration-1000 hover:scale-105 hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
@@ -470,7 +475,7 @@ export default function Staff() {
                       </Link>
                     </div>
                     <div className="p-2 basis-80 lg:basis-96 md:m-5  ">
-                      <Link href={`/dashboard/quarantine`}>
+                      <Link href={`/dashboard/${userData.farmland}/quarantine`}>
                         <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto transform duration-1000 hover:scale-105 hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
@@ -555,16 +560,38 @@ export default function Staff() {
                 </div>
               )}
             </div>
-          ) : decodedData.status === "Reject" ? (
+          ) : userData.status === "Reject" ? (
             <div className="text-center text-gray-200 mx-0 h-screen flex items-center justify-center">
               <div className="flex items-center justify-center flex-col">
                 <p className="dashboard-mssg">Your request has been denied!</p>
+                <label className="text-sm mt-10" for="name">
+                  You can make a new request
+                </label>
+                <input
+                  title="Add additional remarks about the livestock here. Make it brief for easy readablility."
+                  id="name"
+                  // value={formInput.remark}
+                  // onChange={handleChange}
+                  type="text"
+                  placeholder="Farmland name"
+                  name="remark"
+                  className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                />
+                <button
+                  // disabled={processingIndex && processingIndex !== index}
+                  // onClick={() =>
+                  //   handleRequests(index, customer.username, "Reject")
+                  // }
+                  className={`px-3 sm:px-5 py-3 bg-[#008000] rounded-md text-white `}
+                >
+                  Send Request
+                </button>
               </div>
             </div>
           ) : (
             <div className="text-center text-gray-200 mx-0 h-screen flex items-center justify-center">
               <div className="flex items-center justify-center flex-col">
-                <p className="dashboard-mssg">
+                <p className=" px-2 max-w-lg">
                   You are not allowed to access this farmland. <br />
                   Please, remind admin to accept your request
                 </p>
@@ -584,7 +611,7 @@ export default function Staff() {
             </div>
           </div>
         )}
-        ;
+
         <div className="md:mt-0 mt-20">
           <Footer />
         </div>

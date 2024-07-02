@@ -1,24 +1,73 @@
-import { userState } from "@/atom";
 import axios from "axios";
-import { useRecoilValue } from "recoil";
+
+const BASE_URL =
+  process.env.API_BASE_URL || "http://localhost:5000/api/v1/farmland";
+
+const constructUrl = (
+  baseUrl,
+  farmland,
+  moduleType,
+  livestockType,
+  financeType,
+  id = ""
+) => {
+  let url = `${baseUrl}/${farmland}/${moduleType}/${livestockType}`;
+  if (financeType) {
+    url += `/${financeType}`;
+  }
+  if (id) {
+    url += `/${id}`;
+  }
+  return url;
+};
+
+export const createRecord = async (
+  token,
+  farmland,
+  moduleType,
+  livestockType,
+  formdata,
+  financeType = ""
+) => {
+  const url = constructUrl(
+    BASE_URL,
+    farmland,
+    moduleType,
+    livestockType,
+    financeType
+  );
+  const res = await axios.post(url, formdata, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res;
+};
 
 export const viewRecord = async (
   token,
   farmland,
   moduleType,
   livestockType,
-  id
+  id,
+  financeType = ""
 ) => {
-  const res = await axios.get(
-    ` http://localhost:5000/api/v1/farmland/${farmland}/${moduleType}/${livestockType}/${id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+  const url = constructUrl(
+    BASE_URL,
+    farmland,
+    moduleType,
+    livestockType,
+    financeType,
+    id
   );
+  const res = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-  return res.data.message;
+  return res;
 };
 
 export const deleteRecord = async (
@@ -26,19 +75,24 @@ export const deleteRecord = async (
   farmland,
   moduleType,
   livestockType,
-  id
+  id,
+  financeType = ""
 ) => {
-  console.log(id);
-  const res = await axios.delete(
-    ` http://localhost:5000/api/v1/farmland/${farmland}/${moduleType}/${livestockType}/${id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+  const url = constructUrl(
+    BASE_URL,
+    farmland,
+    moduleType,
+    livestockType,
+    financeType,
+    id
   );
+  const res = await axios.delete(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-  return res.data.message;
+  return res;
 };
 
 export const editRecord = async (
@@ -47,17 +101,45 @@ export const editRecord = async (
   moduleType,
   livestockType,
   id,
-  data
+  data,
+  financeType = ""
 ) => {
-  const res = await axios.patch(
-    `http://localhost:5000/api/v1/farmland/${farmland}/${moduleType}/${livestockType}/${id}`,
-    data,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+  const url = constructUrl(
+    BASE_URL,
+    farmland,
+    moduleType,
+    livestockType,
+    financeType,
+    id
   );
+  const res = await axios.patch(url, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-  return res.data.message;
+  return res;
+};
+
+export const fetchAllRecords = async (
+  token,
+  farmland,
+  moduleType,
+  livestockType,
+  financeType = ""
+) => {
+  const url = constructUrl(
+    BASE_URL,
+    farmland,
+    moduleType,
+    livestockType,
+    financeType
+  );
+  const res = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res;
 };

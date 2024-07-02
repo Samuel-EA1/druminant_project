@@ -24,7 +24,7 @@ import { GoSearch } from "react-icons/go";
 import { IoIosMore, IoMdClose } from "react-icons/io";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { PiHouseBold, PiHouseLineLight } from "react-icons/pi";
-import livestockForm from "../../livestockform";
+import livestockForm from "../../../livestockform";
 
 
 // import 'react-smart-data-table/dist/react-smart-data-table.css';
