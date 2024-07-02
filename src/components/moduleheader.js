@@ -16,7 +16,6 @@ function ModuleHeader() {
   const [hamburg, setHamburg] = useState(true);
   const [cancel, setCancel] = useState(false);
   const router = useRouter();
-  const [admin, setAdmin] = useState("");
 
   const currentPath = router.asPath;
 
@@ -44,15 +43,20 @@ function ModuleHeader() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    if (token) {
-      const decoded = jwtDecode(token);
-      const { isAdmin, status, farmland, userToken } = decoded;
-      setUserData({
-        isAdmin,
-        status,
-        farmland,
-        token,
-      });
+    try {
+      if (token) {
+        const decoded = jwtDecode(token);
+
+        const { isAdmin, status, farmland, userToken } = decoded;
+        setUserData({
+          isAdmin,
+          status,
+          farmland,
+          token,
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, []);
 
@@ -123,7 +127,7 @@ function ModuleHeader() {
             </li>
             <li className={router.pathname === "/dashboard" ? "active" : ""}>
               <Link
-                href={"/dashboard"}
+                href={`/dashboard/${userData?.farmland}`}
                 className="menu-nav2"
                 title="View dashboard"
               >
@@ -144,7 +148,7 @@ function ModuleHeader() {
                 Help
               </Link>
             </li>
-            {admin && (
+            {userData?.isAdmin && (
               <>
                 <li className={router.pathname === "/request" ? "active" : ""}>
                   <Link
@@ -226,7 +230,7 @@ function ModuleHeader() {
 
         {activateIcon && (
           <div
-            className={` module-drop   bg-white top-10 right-0 left-0 absolute   `}
+            className={` module-drop    bg-white top-10 right-0 left-0 absolute   `}
           >
             <ul className="dropDownList-md overflow-hidden">
               <li className={router.pathname === "/" ? "active" : ""}>
@@ -235,7 +239,10 @@ function ModuleHeader() {
                 </Link>
               </li>
               <li className={router.pathname === "/dashboard" ? "active" : ""}>
-                <Link href={"/dashboard"} className="menu-nav2">
+                <Link
+                  href={`/dashboard/${userData?.farmland}`}
+                  className="menu-nav2"
+                >
                   Dashboard
                 </Link>
               </li>
@@ -249,7 +256,7 @@ function ModuleHeader() {
                   Help
                 </Link>
               </li>
-              {userData.isAdmin && (
+              {userData?.isAdmin && (
                 <>
                   <li
                     className={router.pathname === "/request" ? "active" : ""}

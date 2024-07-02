@@ -18,7 +18,7 @@ export const Footer = () => {
           </div>
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
             <div>
-              <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+              <h3 className="mb-6 text-sm font-semibold text-gray-200 uppercase dark:text-white">
                 Contact us
               </h3>
               <ul>
@@ -42,7 +42,7 @@ export const Footer = () => {
               </ul>
             </div>
             <div className=" mb-5">
-              <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+              <h3 className="mb-6 text-sm font-semibold text-gray-200 uppercase dark:text-white">
                 Quick links
               </h3>
               <ul>

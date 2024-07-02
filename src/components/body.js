@@ -1,4 +1,5 @@
 import { userState } from "@/atom";
+import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -7,7 +8,7 @@ import { useRecoilValue } from "recoil";
 
 function Body() {
   const [loading, setLoading] = useState(true);
-
+  const userData = useRecoilValue(userState);
   const userFromLocalStorage = useRecoilValue(userState);
 
   // console.log(JSON.parse(userFromLocalStorage));
@@ -27,7 +28,13 @@ function Body() {
         efficiency and productivity. Record and organize detailed animal
         information effortlessly, and access vital data with ease.
       </p>{" "}
-      <Link href={userFromLocalStorage === null ? "/login" : "/dashboard"}>
+      <Link
+        href={
+          userFromLocalStorage === null
+            ? "/login"
+            : `/dashboard/${userData.farmland}`
+        }
+      >
         <p className="lauchBtn group flex items-center justify-center  hover:bg-[#008000]/80  bg-[#008000] text-gray-200 px-2 py-3 max-w-40 rounded-lg text-center text-lg font-bold  ">
           {userFromLocalStorage === null ? "Launch App" : "Proceed"}{" "}
           <span>
