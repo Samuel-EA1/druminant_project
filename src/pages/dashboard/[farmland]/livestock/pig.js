@@ -45,8 +45,8 @@ import {
   editRecord,
   fetchAllRecords,
   viewRecord,
-} from "@/helpterFunctions/handleRecord";
-import { formatDateString } from "@/helpterFunctions/formatTime";
+} from "@/helperFunctions/handleRecord";
+import { formatDateString } from "@/helperFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
 import { HiDotsHorizontal } from "react-icons/hi";

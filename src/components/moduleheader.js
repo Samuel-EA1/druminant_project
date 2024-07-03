@@ -46,6 +46,15 @@ function ModuleHeader() {
     try {
       if (token) {
         const decoded = jwtDecode(token);
+        const currentTime = Date.now() / 1000;
+
+        if (decoded.exp < currentTime) {
+          setUserData(null);
+      
+          toast.error("Login expired!");
+      
+          return;
+        }
 
         const { isAdmin, status, farmland, userToken } = decoded;
         setUserData({
@@ -75,7 +84,7 @@ function ModuleHeader() {
   }
 
   return (
-    <div>
+    <div className="">
       <div
         className={`admin-header  ${
           currentPath === "/" ||
