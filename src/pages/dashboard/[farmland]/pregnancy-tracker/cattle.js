@@ -393,7 +393,7 @@ export default function PregnancyTracker() {
               type="text"
               className="search-input"
               maxLength={15}
-              placeholder="Search here (pregnancy Id)"
+              placeholder="Search here (Livestock Id)"
             /> */}
               </div>
             </>
@@ -418,7 +418,7 @@ export default function PregnancyTracker() {
                     className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
                     style={{ backgroundColor: "green" }}
                   >
-                    pregnancy Id
+                    Livestock Id
                   </th>
                   <th
                     className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
@@ -474,7 +474,7 @@ export default function PregnancyTracker() {
                             fontSize: "11px",
                           }}
                         >
-                          pregnancy Id
+                          Livestock Id
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
@@ -675,7 +675,7 @@ export default function PregnancyTracker() {
                   <div className="general-form">
                     <div className=" w-full">
                       <label className="input-label" htmlFor="entryPregnancyId">
-                        Pregnancy Id
+                        Livestock Id
                       </label>
                       <input
                         title="Enter the entryPregnancyId of the pregnancy here."
@@ -823,7 +823,7 @@ export default function PregnancyTracker() {
                   <div className="general-form">
                     <div className="w-full">
                       <label className="input-label" for="entryPregnancyId">
-                        pregnancy Id
+                        Livestock Id
                       </label>
                       <input
                         title="Enter the entryPregnancyId of the pregnancy here."
@@ -970,7 +970,7 @@ export default function PregnancyTracker() {
             </div>
             <div className="grid grid-cols-2 gap-4 px-1 w-full">
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Pregnancy Id</p>
+                <p className="text-sm text-gray-600">Livestock Id</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
                   {selected.entryPregnancyId}
                 </p>
@@ -1035,7 +1035,7 @@ export default function PregnancyTracker() {
         <Footer />
       </div> */}
 
-      <div className="md:mt-0 mt-20   hidden md:block ">
+      <div className="md:mt-0 mt-20    ">
         <Footer />
       </div>
     </div>
