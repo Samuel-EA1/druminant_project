@@ -54,6 +54,8 @@ import { HiDotsHorizontal } from "react-icons/hi";
 // import 'react-smart-data-table/dist/react-smart-data-table.css';
 
 export default function Quarantine() {
+  const BASE_URL =
+    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api/v1";
   const [formModal, setFormModal] = useState(false);
   const [viewId, setviewId] = useState(null);
   const [deleteId, setdeleteId] = useState(null);
@@ -416,7 +418,7 @@ export default function Quarantine() {
     setquarantining(true);
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/v1/farmland/${userData.farmland}/livestock/goat/${quarantinTagId}`,
+        `${BASE_URL}/farmland/${userData.farmland}/livestock/goat/${quarantinTagId}`,
         quarantinFormData,
         {
           headers: {
