@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const BASE_URL =
-  process.env.API_BASE_URL || "http://localhost:5000/api/v1/farmland";
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  "http://localhost:5000/api/v1";
 
 const constructUrl = (
   baseUrl,
@@ -11,7 +12,7 @@ const constructUrl = (
   financeType,
   id = ""
 ) => {
-  let url = `${baseUrl}/${farmland}/${moduleType}/${livestockType}`;
+  let url = `${baseUrl}/farmland/${farmland}/${moduleType}/${livestockType}`;
   if (financeType) {
     url += `/${financeType}`;
   }

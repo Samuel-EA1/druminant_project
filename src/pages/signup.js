@@ -18,7 +18,9 @@ import { PiPlantLight } from "react-icons/pi";
 import { RiAdminLine } from "react-icons/ri";
 import { toast } from "react-toastify";
 
-export default function Login() {
+export default function SignUp() {
+  const BASE_URL =
+    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api/v1";
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
@@ -39,7 +41,6 @@ export default function Login() {
     setLoading(true);
     e.preventDefault();
     try {
-   
       const newUser = {
         username: formData.username,
         email: formData.email,
@@ -47,7 +48,7 @@ export default function Login() {
         farmland: formData.farmland,
       };
       const res = await axios.post(
-        `http://localhost:5000/api/v1/auth/${formData.role}/register`,
+        `${BASE_URL}/auth/${formData.role}/register`,
         newUser
       );
 
@@ -58,7 +59,7 @@ export default function Login() {
       }
     } catch (error) {
       setLoading(false);
-      alert(error.code)
+      alert(error.code);
       console.log(error);
       if (error.response) {
         toast.error(error.response.data.message);
@@ -244,9 +245,7 @@ export default function Login() {
                       type="submit"
                       onClick={signUp}
                       className="w-full bg-[#008000] hover:bg-[#00801ef1] text-white py-2 px-4 rounded"
-                    >
-                      Sign up
-                    </button>
+                    ></button>
                   )}
                   {error && (
                     <p className="bg-red-900  p-2 text-white w-fit   rounded-sm mt-2">

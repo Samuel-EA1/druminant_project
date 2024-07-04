@@ -43,14 +43,25 @@ function ModuleHeader() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
+    console.log(token, "header");
     try {
       if (token) {
         const decoded = jwtDecode(token);
+        const currentTime = Date.now() / 1000;
 
-        const { isAdmin, status, farmland, userToken } = decoded;
+        if (decoded.exp < currentTime) {
+          setUserData(null);
+
+          toast.error("Login expired!");
+
+          return;
+        }
+
+        const { isAdmin, status, farmland, username } = decoded;
         setUserData({
           isAdmin,
           status,
+          username,
           farmland,
           token,
         });
@@ -75,7 +86,7 @@ function ModuleHeader() {
   }
 
   return (
-    <div>
+    <div className="">
       <div
         className={`admin-header  ${
           currentPath === "/" ||
@@ -134,9 +145,15 @@ function ModuleHeader() {
                 Dashboard
               </Link>
             </li>
-            <li className={router.pathname === "/profile" ? "active" : ""}>
+            <li
+              className={
+                router.pathname === `/profile/${userData?.username}`
+                  ? "active"
+                  : ""
+              }
+            >
               <Link
-                href={"/profile"}
+                href={`/profile/${userData?.username}`}
                 className="menu-nav2"
                 title="View and edit profile"
               >
@@ -246,8 +263,17 @@ function ModuleHeader() {
                   Dashboard
                 </Link>
               </li>
-              <li className={router.pathname === "/profile" ? "active" : ""}>
-                <Link href={"/profile"} className="menu-nav2">
+              <li
+                className={
+                  router.pathname === `/profile/${userData?.username}`
+                    ? "active"
+                    : ""
+                }
+              >
+                <Link
+                  href={`/profile/${userData?.username}`}
+                  className="menu-nav2"
+                >
                   Profile
                 </Link>
               </li>

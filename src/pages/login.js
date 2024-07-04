@@ -22,6 +22,9 @@ import { toast } from "react-toastify";
 import { useRecoilValue } from "recoil";
 
 export default function Login() {
+  const BASE_URL =
+    process.env.NEXT_PUBLIC_API_BASE_URL ||
+    "http://localhost:5000/api/v1/farmland";
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -37,39 +40,14 @@ export default function Login() {
 
   async function login(e) {
     e.preventDefault();
-    // if (formData.username.trim() === "" || formData.password.trim() === "") {
-    //   alert("Fill the form");
-    // }
-    // //send form data to backend and expect a response
-
-    // const res = {
-    //   isAdmin: true,
-    //   username: formData.username,
-    //   farmland: "farmland1",
-    //   status: "pending",
-    //   token: "d7dsuhsudi",
-    // };
-    // //save response to local storage
-    // console.log(formData);
-
-    // localStorage.setItem("user", JSON.stringify(res));
-
-    // router.push(`/dashboard/`);
-
-    // https://druminant-seven.vercel.app/api/v1/auth/login
-
-    // const userFromLocalStorage = useRecoilValue(userState);
 
     try {
       console.log(formData);
       setLoading(true);
-      const res = await axios.post(
-        "https://druminant-seven.vercel.app/api/v1/auth/login",
-        formData
-      );
+      const res = await axios.post(`${BASE_URL}/auth/login`, formData);
       localStorage.setItem("token", res.data.token);
       const decoded = jwtDecode(res.data.token);
-       
+
       setLoading(false);
       router.push(`/dashboard/${decoded.farmland}`);
     } catch (error) {

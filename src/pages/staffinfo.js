@@ -54,6 +54,8 @@ import Head from "next/head";
 // import 'react-smart-data-table/dist/react-smart-data-table.css';
 
 export default function Staffinfo() {
+  const BASE_URL =
+    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api/v1";
   const [customers, setcustomers] = useState([]);
   const userData = useRecoilValue(userState);
   const [fetching, setFetching] = useState(false);
@@ -64,14 +66,11 @@ export default function Staffinfo() {
     setFetching(true);
     if (userData?.token) {
       axios
-        .get(
-          `http://localhost:5000/api/v1/farmland/${userData?.farmland}/requests/accepted`,
-          {
-            headers: {
-              Authorization: `Bearer ${userData?.token}`,
-            },
-          }
-        )
+        .get(`${BASE_URL}/farmland/${userData?.farmland}/requests/accepted`, {
+          headers: {
+            Authorization: `Bearer ${userData?.token}`,
+          },
+        })
         .then((response) => {
           setFetching(false);
           setcustomers(response.data.message);
@@ -93,7 +92,7 @@ export default function Staffinfo() {
 
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/v1/farmland/${userData.farmland}/staff/${username}/process`,
+        `${BASE_URL}/farmland/${userData.farmland}/staff/${username}/process`,
         { status },
         {
           headers: {

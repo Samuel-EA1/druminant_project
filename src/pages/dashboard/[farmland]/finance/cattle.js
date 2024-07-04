@@ -1,14 +1,14 @@
 import { userState } from "@/atom";
 import { Footer } from "@/components/footer";
 import ModuleHeader from "@/components/moduleheader";
-import { formatDateString } from "@/helpterFunctions/formatTime";
+import { formatDateString } from "@/helperFunctions/formatTime";
 import {
   createRecord,
   deleteRecord,
   editRecord,
   fetchAllRecords,
   viewRecord,
-} from "@/helpterFunctions/handleRecord";
+} from "@/helperFunctions/handleRecord";
 import moment from "moment";
 import Head from "next/head";
 import Image from "next/image";
