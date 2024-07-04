@@ -22,7 +22,9 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/router";
 
-export default function Staff() {
+export default function Dashboard() {
+  const BASE_URL =
+    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api/v1";
   const [hamburgerState, setHamburgerState] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -50,7 +52,7 @@ export default function Staff() {
       const fetchAllCounts = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:5000/api/v1/farmland/${farmland}/moduleCount`,
+            `${BASE_URL}/farmland/${farmland}/moduleCount`,
             {
               headers: {
                 Authorization: `Bearer ${userData.token}`,
