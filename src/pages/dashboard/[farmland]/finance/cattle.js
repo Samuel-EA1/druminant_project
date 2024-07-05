@@ -356,7 +356,7 @@ function FinanceRecord() {
                   )}
                 </p>
                 <h3>
-                  N<span>{totalAmount}.00</span>
+                  N<span>{financeTotal?.incomeAmountTotal}.00</span>
                 </h3>
               </div>
               <div className="w-2/4  mr-2  flex space-x-3  items-center  mt-2">
@@ -402,7 +402,7 @@ function FinanceRecord() {
                   )}
                 </p>
                 <h3>
-                  N<span>{totalAmount}.00</span>
+                  N<span>{financeTotal?.expenseAmountTotal}.00</span>
                 </h3>
               </div>
               <div className="w-2/4  mr-2  flex space-x-3  items-center  mt-2">
@@ -470,12 +470,7 @@ function FinanceRecord() {
                     >
                       Transaction Date
                     </th>
-                    <th
-                      className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
-                      style={{ backgroundColor: "#005a06" }}
-                    >
-                      Entry Date & Time
-                    </th>
+
                     <th
                       className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
                       style={{ backgroundColor: "#005a06" }}
@@ -567,22 +562,6 @@ function FinanceRecord() {
                           )}
                         </span>
                       </td>
-                      <td className="w-full md:w-auto flex justify-between items-center  border-green-200 p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
-                        <span
-                          className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase"
-                          style={{
-                            backgroundColor: "#c1ffb4",
-                            fontSize: "11px",
-                          }}
-                        >
-                          Entry Date & Time
-                        </span>
-                        <span style={{ fontSize: "14px" }}>
-                          {moment(row.createdAt).format(
-                            "MMMM Do, YYYY, h:mm:ss A"
-                          )}
-                        </span>
-                      </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3  border-green-200 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
                         <span
                           className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase"
@@ -642,7 +621,7 @@ function FinanceRecord() {
           {financeData.length === 0 && (
             <div className="text-center mx-0  flex-col text-black h-[100vh] flex items-center justify-center">
               <div className="flex items-center justify-center flex-col">
-                Sorry no Finance Record found!
+                Sorry No Data Found !
               </div>
               <div className="cursor">
                 <p
@@ -679,8 +658,8 @@ function FinanceRecord() {
                           Finance Id
                         </label>
                         <input
-                          title="(Brief description with maximum of 70 characters)"
-                          maxLength={50}
+                          title="(Assign an id to your transaction (e.g 1))"
+                          maxLength={10}
                           placeholder="E.g. Sales of livestock"
                           value={formInput.financeEntryId}
                           onChange={handleChange}
@@ -694,8 +673,8 @@ function FinanceRecord() {
                           Description
                         </label>
                         <input
-                          title="(Brief description with maximum of 70 characters)"
-                          maxLength={50}
+                          title="A brief description of transaction"
+                          maxLength={30}
                           placeholder="E.g. Sales of livestock"
                           value={formInput.desc}
                           onChange={handleChange}
@@ -708,10 +687,9 @@ function FinanceRecord() {
                           className="input-label"
                           htmlFor="transactionDate"
                         >
-                          Transaction Date
+                          Transaction Date & Time
                         </label>
                         <input
-                          title="Date of transaction"
                           type="datetime-local"
                           value={formInput.transactionDate}
                           onChange={handleChange}
@@ -723,9 +701,8 @@ function FinanceRecord() {
                           Amount
                         </label>
                         <input
-                          title="Amount in Naira"
+                          title="Amount"
                           pattern="\d{1,2}"
-                          maxLength={2}
                           type="number"
                           pat
                           value={formInput.amount}
@@ -792,7 +769,7 @@ function FinanceRecord() {
             <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
               <div class="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3">
                 <div class="mt-2 mb-8 w-full">
-                  <h4 class="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
+                  <h4 class="px-2 text-xl font-bold first-letter:capitalize text-navy-700 dark:text-green-700">
                     {financeType} Details
                   </h4>
                 </div>
@@ -828,12 +805,10 @@ function FinanceRecord() {
                   </p>
                 </div> */}
 
-                  <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                    <p class="text-sm text-gray-600">Transaction Date</p>
-                    <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                      {moment(selected.transactionDate).format(
-                        "MMMM Do, YYYY, h:mm:ss A"
-                      )}
+                  <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                    <p className="text-sm text-gray-600">Entry Date</p>
+                    <p className="text-base font-medium text-navy-700  dark:text-green-700">
+                      {moment(selected.createdAt).format("MMM Do, YYYY, h:mm:ss A")}
                     </p>
                   </div>
 
@@ -892,8 +867,8 @@ function FinanceRecord() {
                           Finance Id
                         </label>
                         <input
-                          title="Enter the breed of the livestock (e.g., Angus, Holstein) here."
-                          maxLength={80}
+                          title="(Assign an id to your transaction (e.g 1))"
+                          maxLength={10}
                           value={editform.financeEntryId}
                           onChange={handleEditChange}
                           name="financeEntryId"
@@ -906,8 +881,8 @@ function FinanceRecord() {
                           Description
                         </label>
                         <input
-                          title="Enter the breed of the livestock (e.g., Angus, Holstein) here."
-                          maxLength={80}
+                          title="A brief description of transaction"
+                          maxLength={30}
                           value={editform.desc}
                           onChange={handleEditChange}
                           name="desc"
@@ -920,10 +895,9 @@ function FinanceRecord() {
                           className="input-label"
                           htmlFor="transactionDate"
                         >
-                          Transaction Date
+                          Transaction Date & Time
                         </label>
                         <input
-                          title="Enter the breed of the livestock (e.g., Angus, Holstein) here."
                           type="datetime-local"
                           value={formatDateString(editform.transactionDate)}
                           onChange={handleEditChange}
@@ -935,7 +909,7 @@ function FinanceRecord() {
                           Amount
                         </label>
                         <input
-                          title="in Naira"
+                          title="Amount"
                           type="number"
                           value={editform.amount}
                           onChange={handleEditChange}
@@ -1002,10 +976,10 @@ function FinanceRecord() {
           <div className="livestock text-center border-2 p-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
             <div className="flex items-center justify-center flex-col">
               <p className="dashboard-mssg">
-                You are not allowed to access this Farmland finance 
+                You are not allowed to access this Farmland finance
               </p>
               <Link href={`/dashboard/${userData.farmland}`} className="mss-login">
-              Go back to dashboard
+                Go back to dashboard
               </Link>
             </div>
           </div>

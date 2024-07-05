@@ -248,9 +248,8 @@ export default function Livestock() {
         id
       );
 
-      console.log(selectedRecord);
       setViewing(false);
-      setSelected(selectedRecord);
+      setSelected(selectedRecord.data.message);
       setviewLivestock(true);
     } catch (error) {
       setViewing(false);
@@ -806,7 +805,7 @@ export default function Livestock() {
                       <input
                         title="Enter the breed of the livestock here."
                         placeholder="E.g. Holstein Friesian"
-                        maxLength={20}
+                        maxLength={40}
                         required
                         value={formInput.breed}
                         onChange={handleChange}
@@ -820,7 +819,7 @@ export default function Livestock() {
                       </label>
                       <input
                         title="Input the unique identification number assigned to the livestock tag."
-                        maxLength={10}
+                        maxLength={20}
                         required
                         value={formInput.tagId}
                         onChange={handleChange}
@@ -920,23 +919,11 @@ export default function Livestock() {
                         <option>Adopted</option>
                       </select>
 
-                      {/* <label className="input-label" for="name">
-                        Staff in charge
-                      </label>
-                      <input
-                        title="Name of staff creating this livestock profile"
-                        id="name"
-                        value={formInput.staff}
-                        onChange={handleChange}
-                        type="text"
-                        name="staff"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      /> */}
                       <label className="input-label" for="name">
                         Remark
                       </label>
                       <input
-                        title="Add additional remarks about the livestock here. Make it brief for easy readablility."
+                        title="Add additional remarks about the livestock here."
                         id="name"
                         value={formInput.remark}
                         onChange={handleChange}
@@ -1008,7 +995,7 @@ export default function Livestock() {
               className="form-header pt-10 pb:0 md:pt-0 text-lg"
               style={{ color: "white" }}
             >
-              Quarantine a livestock
+              Quarantine Livestock Profile
             </p>
 
             <div
@@ -1030,20 +1017,20 @@ export default function Livestock() {
                         )}
                         onChange={handleChange}
                         name="quarantineDate"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 md:w-[230%]  mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
-                        Reason
+                        Reason for Quarantine
                       </label>
-                      <textarea
+                      <textarea 
                         title="Add any additional notes and remarks about the livestock here."
                         id="name"
                         typeof="text"
                         value={quarantinFormData.reason}
                         onChange={handleChange}
                         name="reason"
-                        className="mb-5  mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-20 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 md:w-[230%]  mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-20 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       ></textarea>
                     </div>
                   </div>
@@ -1125,7 +1112,7 @@ export default function Livestock() {
                       <input
                         title="Enter the breed of the livestock here."
                         placeholder="E.g. Holstein Friesian"
-                        maxLength={20}
+                        maxLength={30}
                         value={editformInput.breed}
                         onChange={handleChange}
                         name="breed"
@@ -1138,7 +1125,7 @@ export default function Livestock() {
                       </label>
                       <input
                         title="Input the unique identification number assigned to the livestock tag."
-                        maxLength={15}
+                        maxLength={20}
                         value={editformInput.tagId}
                         onChange={handleChange}
                         id="name"
@@ -1311,7 +1298,7 @@ export default function Livestock() {
             className="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3"
             style={{ marginTop: "10px" }}
           >
-            <div className="mt-2 mb-8 w-full">
+            <div className="mt-2 mb-4 w-full">
               <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
                 Livestock Profile
               </h4>
@@ -1335,27 +1322,6 @@ export default function Livestock() {
                 <p className="text-sm text-gray-600">Tag Location</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
                   {selected.tagLocation}
-                </p>
-              </div>
-
-              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Sex</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.sex}
-                </p>
-              </div>
-
-              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Birth Date</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {moment(selected.birthDate).format("MMM Do, YYYY, h:mm:ss A")}
-                </p>
-              </div>
-
-              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Weight</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.weight}
                 </p>
               </div>
 
@@ -1397,7 +1363,7 @@ export default function Livestock() {
                 </p>
               </div>
 
-              <div className="btn-div" style={{ width: "100%" }}>
+              <div className="btn-div" style={{ width: "200%" }}>
                 <button
                   className="close-btn"
                   onClick={() => setviewLivestock(false)}

@@ -39,13 +39,13 @@ function LivestockSelection() {
               fontSize: "17px",
             }}
           >
-            pregnancy-tracker Profile Management
+            Pregnancy Tracker Profile Management
           </h1>
           <p
             className="text-white mt-2 text-xs text-center md:text-sm"
             style={{ fontFamily: "verdana" }}
           >
-            Select pregnancy-tracker to monitor and record pregnancy-tracker details
+            Select livestock to monitor and record expected delivery date
           </p>
 
           <div className="mx-auto mt-12 md:mt-36">

@@ -39,13 +39,13 @@ function LivestockSelection() {
               fontSize: "17px",
             }}
           >
-            event Profile Management
+            Event Profile Management
           </h1>
           <p
             className="text-white mt-2 text-xs text-center md:text-sm"
             style={{ fontFamily: "verdana" }}
           >
-            Select event to monitor and record event
+            Select livestock to monitor and record event
             details
           </p>
 

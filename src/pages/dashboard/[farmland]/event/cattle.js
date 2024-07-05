@@ -66,6 +66,7 @@ export default function Event() {
     eventEntryId: "",
     eventDate: "",
     eventType: "",
+    remark:""
   });
   const [viewing, setViewing] = useState(false);
   const [fetchError, setFetchError] = useState("");
@@ -78,6 +79,7 @@ export default function Event() {
     eventEntryId: "",
     eventDate: "",
     eventType: "",
+        remark:""
   });
 
   const [quarantining, setquarantining] = useState(false);
@@ -85,6 +87,7 @@ export default function Event() {
     eventEntryId: "",
     eventType: "",
     eventDate: "",
+        remark:""
   });
 
   const [quarantinTagId, setQuarantinTagId] = useState(null);
@@ -97,6 +100,7 @@ export default function Event() {
         eventDate: selectedRecord.eventDate,
         eventType: selectedRecord.eventType,
         staff: selectedRecord.inCharge,
+        remark: selectedRecord.remark,
       });
     setEditId(tagId);
     setEditFormModal(true);
@@ -238,6 +242,7 @@ export default function Event() {
       eventEntryId: selectedRecord.eventEntryId,
       eventDate: selectedRecord.eventDate,
       eventType: selectedRecord.eventType,
+      remark: selectedRecord.remark,
     });
   }
 
@@ -411,7 +416,7 @@ export default function Event() {
                     className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
                     style={{ backgroundColor: "green" }}
                   >
-                    BIRTH Date
+                    Event Date & Time
                   </th>
 
                   <th
@@ -472,12 +477,12 @@ export default function Event() {
                         >
                           Event Type
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div style={{ fontSize: "14px", color: "black"}}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
                           <p>{row.eventType}</p>
                         </div>
                       </td>
-                      <td className="w-full md:w-auto   justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                      <td className="w-full md:w-auto flex   justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
                         <span
                           className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
@@ -486,9 +491,9 @@ export default function Event() {
                             fontSize: "11px",
                           }}
                         >
-                          Birth Date
+                          Event Date & Time
                         </span>
-                        <span style={{ fontSize: "14px", color: "black" }}>
+                        <span style={{ fontSize: "14px", color: "black"}}>
                           {moment(row.eventDate).format(
                             "MMMM Do, YYYY, h:mm:ss A"
                           )}
@@ -583,7 +588,7 @@ export default function Event() {
               idCounter === "done" && (
                 <div className="text-center mx-0  flex-col text-black h-[100vh] flex items-center justify-center">
                   <div className="flex items-center justify-center flex-col">
-                    Sorry no event Record found!
+                  Sorry, No Data Found !
                   </div>
                   <div className="cursor">
                     <p
@@ -642,7 +647,7 @@ export default function Event() {
               className="form-header pt-10 pb:0 md:pt-0"
               style={{ color: "white" }}
             >
-              Event Profile Details
+              Event Details
             </p>
 
             <div
@@ -657,9 +662,9 @@ export default function Event() {
                         Event Id
                       </label>
                       <input
-                        title="Enter the eventEntryId of the event here."
-                        placeholder="E.g. Holstein Friesian"
-                        maxLength={20}
+                        title="Assign a unique id to event"
+                        placeholder="Assign a unique id to event"
+                        maxLength={10}
                         required
                         value={formInput.eventEntryId}
                         onChange={handleChange}
@@ -671,8 +676,9 @@ export default function Event() {
                         Event Type
                       </label>
                       <input
-                        title="Input the unique identification number assigned to the event tag."
-                        maxLength={10}
+                        title="Brief description of event"
+                        placeholder="E.g Vaccination"
+                        maxLength={30}
                         required
                         value={formInput.eventType}
                         onChange={handleChange}
@@ -681,7 +687,7 @@ export default function Event() {
                         className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
                       <label className="input-label" for="eventDate">
-                        Birth Date
+                       Event Date & Time
                       </label>
                       <input
                         type="datetime-local"
@@ -691,23 +697,12 @@ export default function Event() {
                         name="eventDate"
                         className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
-                      {/* <label className="input-label" for="name">
-                        Staff in charge
-                      </label>
-                      <input
-                        title="Name of staff creating this event profile"
-                        id="name"
-                        value={formInput.staff}
-                        onChange={handleChange}
-                        type="text"
-                        name="staff"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      /> */}
+                     
                       <label className="input-label" for="name">
                         Remark
                       </label>
                       <input
-                        title="Add additional remarks about the event here. Make it brief for easy readablility."
+                        title="Add additional remarks about event here."
                         id="name"
                         value={formInput.remark}
                         onChange={handleChange}
@@ -779,7 +774,7 @@ export default function Event() {
               className="form-header pt-10 pb:0 md:pt-0"
               style={{ color: "white" }}
             >
-              Edit event profile
+              Edit Event Details
             </p>
 
             <div
@@ -794,9 +789,9 @@ export default function Event() {
                         Event Id
                       </label>
                       <input
-                        title="Enter the eventEntryId of the event here."
-                        placeholder="E.g. Holstein Friesian"
-                        maxLength={20}
+                        title="Assign a unique id to event"
+                        placeholder="Assign a unique id to event"
+                        maxLength={10}
                         value={editformInput.eventEntryId}
                         onChange={handleChange}
                         name="eventEntryId"
@@ -808,8 +803,9 @@ export default function Event() {
                         Event Type
                       </label>
                       <input
-                        title="Input the unique identification number assigned to the event tag."
-                        maxLength={15}
+                        title="Brief description of event"
+                        placeholder="E.g Vaccination"
+                        maxLength={30}
                         value={editformInput.eventType}
                         onChange={handleChange}
                         id="eventType"
@@ -818,7 +814,7 @@ export default function Event() {
                       />
 
                       <label className="input-label" for="name">
-                        Birth Date
+                       Event Date & Time
                       </label>
                       <input
                         type="Datetime-local"
@@ -828,6 +824,20 @@ export default function Event() {
                         name="eventDate"
                         className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
+
+                      <label className="input-label" for="name">
+                       Remark
+                      </label>
+                      <input
+                        type="text"
+                        title="Add additional remarks about event here."
+                        id="remark"
+                        value={(editformInput.remark)}
+                        onChange={handleChange}
+                        name="remark"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
+
                     </div>
                   </div>
                 </form>
@@ -892,28 +902,28 @@ export default function Event() {
           >
             <div className="mt-2 mb-8 w-full">
               <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
-                Event Profile
+                Event Details
               </h4>
             </div>
             <div className="grid grid-cols-2 gap-4 px-1 w-full">
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Event Id</p>
+                <p className="text-sm text-gray-600">Event Date & Time</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.eventEntryId}
+                {moment(selected.eventDate).format("MMM Do, YYYY, h:mm:ss A")}
                 </p>
               </div>
 
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Event Date</p>
+                <p className="text-sm text-gray-600">Staff in Charge</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {moment(selected.eventDate).format("MMM Do, YYYY, h:mm:ss A")}
+                {selected.inCharge}
                 </p>
               </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Staff in charge</p>
-                <p className="text-base font-medium text-navy-700  dark:text-green-700">
-                  {selected.inCharge}
+                <p className="text-sm text-gray-600">Remark</p>
+                <p className="text-base font-medium text-navy-700 overflow-auto  dark:text-green-700">
+                  {selected.remark}
                 </p>
               </div>
 
@@ -924,7 +934,7 @@ export default function Event() {
                 </p>
               </div>
 
-              <div className="btn-div" style={{ width: "100%" }}>
+              <div className="btn-div" style={{ width: "200%", float:"right" }}>
                 <button
                   className="close-btn"
                   onClick={() => setviewLivestock(false)}

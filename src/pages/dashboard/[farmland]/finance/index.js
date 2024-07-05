@@ -37,7 +37,7 @@ function IncomeExpenseSelection() {
               fontSize: "17px",
             }}
           >
-            finance  Management
+            Income / Expense Management
           </h1>
           <p
             className="text-white mt-2 text-xs text-center md:text-sm"
