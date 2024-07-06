@@ -674,14 +674,14 @@ display: none;
   color: #020016;
 }
 .dashboard-main2 {
-  background-image: url("../../public/image/dashmain.jpg");
-  background-position: center; /* Ensures the image is centered */
-  background-size: cover; /* Ensures the image covers the entire background */
-  min-height: 100vh; /* At least full viewport height */
-  background-attachment: fixed; /* Keeps the background fixed while scrolling */
-  overflow-y: auto; /* Allows vertical scrolling */
-  width: 100%; /* Full width */
-  background-color: #63ee6c;
+  background-position: center;
+  background-size: cover;
+  min-height: 100vh;
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  justify-content: center;
+  align-items: center;
+
 }
 .lauchBtn{
   margin: 30px 0px 10px 80px;
@@ -2174,7 +2174,7 @@ display: none;
   }
 
   .form-header {
-    margin-top: -30px;
+    margin-top: 0px;
   }
 
   .form-btns2 {
@@ -2440,9 +2440,9 @@ display: none;
   }
 
   .add-btn {
-    padding: 7px 18px 7px 18px;
+    padding: 7px 18px 7px 25px;
     margin: 0px 0px 20px 7px;
-    width: 120px;
+    width: 150px;
     font-size: 14px;
     text-align: center;
   }
@@ -2599,7 +2599,7 @@ display: none;
 
   .add-btn {
     padding: 7px 10px 7px 13px;
-    width: 120px;
+    width: 10px;
 
   }
 
@@ -2672,7 +2672,7 @@ display: none;
     margin-top: 0px;
   }
   .finan-add-btn2 {
-    margin: 010px 5px 5px 0px;
+    margin: 10px 5px 5px 0px;
     padding: 2px;
     border-radius: 7px;
     font-size: 19px;

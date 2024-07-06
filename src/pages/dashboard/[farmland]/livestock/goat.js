@@ -510,7 +510,7 @@ export default function Livestock() {
               (editFormModal || quarantineModal) && "hidden"
             }`}
           >
-            <table className="w-full mt-0">
+            <table className="md:w-full bg-red-700 mt-0" style={{overflow:"auto"}}>
               <thead>
                 <tr>
                   <th

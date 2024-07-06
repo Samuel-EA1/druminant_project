@@ -562,7 +562,7 @@ export default function Livestock() {
                   {livestockData.map((row, key) => (
                     <tr
                       key={key}
-                      className="bg-white    md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap mb-1 md:mb-0 shadow-sm shadow-gray-800 md:shadow-none"
+                      className="bg-white md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap mb-1 md:mb-0 shadow-sm shadow-gray-800 md:shadow-none"
                     >
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b  block md:table-cell relative md:static">
                         <span
@@ -781,11 +781,12 @@ export default function Livestock() {
 
         formModal && (
           <div
-            className="dashboard-main2 py-12 bg-[#01000D]  transition overflow-y-auto  duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
+            className="dashboard-main2 py-12 bg-[#01000D]  transition   duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
             id="modal"
+            style={{backgroundColor:'red', height:"150vh"}}
           >
             <p
-              className="form-header pt-10 pb:0 md:pt-0"
+              className="form-header  pt-5 pb:0 md:pt-0"
               style={{ color: "white" }}
             >
               Livestock Profile Details

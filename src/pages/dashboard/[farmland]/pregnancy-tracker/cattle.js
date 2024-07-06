@@ -57,6 +57,7 @@ export default function PregnancyTracker() {
   const [formModal, setFormModal] = useState(false);
   const [viewId, setviewId] = useState(null);
   const [deleteId, setdeleteId] = useState(null);
+  
   const [fetching, setFetching] = useState(false);
   const userData = useRecoilValue(userState);
   const [deleting, setdelete] = useState(false);
@@ -351,6 +352,7 @@ export default function PregnancyTracker() {
 
   function addProfile() {
     setFormModal(!formModal);
+    setCreating(false);
   }
 
   return (
@@ -377,16 +379,16 @@ export default function PregnancyTracker() {
               <div className="up">
                 <div>
                   <h1 className="module-header md:mt-0  mt-0 ">
-                    pregnancy Profile (Cattle)
+                    pregnancy Checker (Cattle)
                   </h1>
-                  <p>Keep track of your pregnancy profile</p>
+                  <p>Keep track of your pregnant livestock</p>
                 </div>
               </div>
 
               <div className="add-search-div">
                 <div className="cursor">
                   <p className="add-btn" onClick={addProfile}>
-                    <span>+ </span> Add Profile
+                    <span>+ </span> Add Record
                   </p>
                 </div>
                 {/* <input
@@ -418,7 +420,7 @@ export default function PregnancyTracker() {
                     className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
                     style={{ backgroundColor: "green" }}
                   >
-                    Livestock Id
+                    Tag ID
                   </th>
                   <th
                     className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
@@ -432,6 +434,13 @@ export default function PregnancyTracker() {
                     style={{ backgroundColor: "green" }}
                   >
                     Breeding Date
+                  </th>
+
+                  <th
+                    className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
+                    style={{ backgroundColor: "green" }}
+                  >
+                    ECD
                   </th>
 
                   <th
@@ -474,7 +483,7 @@ export default function PregnancyTracker() {
                             fontSize: "11px",
                           }}
                         >
-                          Livestock Id
+                          Tag ID
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
@@ -490,7 +499,7 @@ export default function PregnancyTracker() {
                             fontSize: "11px",
                           }}
                         >
-                          pregnancy Breed
+                        Breed
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
@@ -498,7 +507,7 @@ export default function PregnancyTracker() {
                         </div>
                       </td>
 
-                      <td className="w-full md:w-auto   justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                      <td className="w-full md:w-auto flex  justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
                         <span
                           className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
@@ -512,6 +521,24 @@ export default function PregnancyTracker() {
                         <span style={{ fontSize: "14px", color: "black" }}>
                           {moment(row.breedingDate).format(
                             "MMMM Do, YYYY, h:mm:ss A"
+                          )}
+                        </span>
+                      </td>
+
+                      <td className="w-full md:w-auto flex   justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Breeding Date
+                        </span>
+                        <span style={{ fontSize: "14px", color: "black" }}>
+                          {moment(row.ecd).format(
+                            "MMMM Do, YYYY"
                           )}
                         </span>
                       </td>
@@ -604,7 +631,7 @@ export default function PregnancyTracker() {
               idCounter === "done" && (
                 <div className="text-center mx-0  flex-col text-black h-[100vh] flex items-center justify-center">
                   <div className="flex items-center justify-center flex-col">
-                    Sorry no pregnancy Record found!
+                  Sorry, No Data Found !
                   </div>
                   <div className="cursor">
                     <p
@@ -656,14 +683,14 @@ export default function PregnancyTracker() {
 
         formModal && (
           <div
-            className="dashboard-main2 py-12 bg-[#01000D]  transition overflow-y-auto  duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
+            className="dashboard-main2 bg-[#01000D] transition  duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
             id="modal"
           >
             <p
-              className="form-header pt-10 pb:0 md:pt-0"
+              className="form-header mt-0 pb:0 md:pt-5"
               style={{ color: "white" }}
             >
-              pregnancy Profile Details
+              Pregnancy Details
             </p>
 
             <div
@@ -675,7 +702,7 @@ export default function PregnancyTracker() {
                   <div className="general-form">
                     <div className=" w-full">
                       <label className="input-label" htmlFor="entryPregnancyId">
-                        Livestock Id
+                        Tag ID
                       </label>
                       <input
                         title="Enter the entryPregnancyId of the pregnancy here."
@@ -693,7 +720,7 @@ export default function PregnancyTracker() {
                       </label>
                       <input
                         title="Input the unique identification number assigned to the pregnancy tag."
-                        maxLength={10}
+                        maxLength={40}
                         required
                         value={formInput.breed}
                         onChange={handleChange}
@@ -702,7 +729,7 @@ export default function PregnancyTracker() {
                         className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
                       <label className="input-label" for="breedingDate">
-                        Breeding Date
+                        Breeding Date & Time
                       </label>
                       <input
                         type="datetime-local"
@@ -725,7 +752,7 @@ export default function PregnancyTracker() {
                         className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
                       <label className="input-label" for="status">
-                        Status
+                        Pregnancy Confirmation
                       </label>
                       <select
                         id="name"
@@ -814,7 +841,7 @@ export default function PregnancyTracker() {
               className="form-header pt-10 pb:0 md:pt-0"
               style={{ color: "white" }}
             >
-              Edit pregnancy profile
+              Edit Pregnancy Details
             </p>
 
             <div className="container mx-auto w-11/12 md:w-2/3 max-w-xl">
@@ -894,7 +921,6 @@ export default function PregnancyTracker() {
                       </label>
                       <input
                         title="Input the unique identification number assigned to the pregnancy tag."
-                        maxLength={15}
                         value={editformInput.remark}
                         onChange={handleChange}
                         id="remark"
@@ -965,45 +991,32 @@ export default function PregnancyTracker() {
           >
             <div className="mt-2 mb-8 w-full">
               <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
-                Pregnancy tracker Profile
+                Pregnancy Details
               </h4>
             </div>
             <div className="grid grid-cols-2 gap-4 px-1 w-full">
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Livestock Id</p>
+                <p className="text-sm text-gray-600">Tag Id</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
                   {selected.entryPregnancyId}
                 </p>
               </div>
 
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Breeding Date</p>
+                <p className="text-sm text-gray-600">Breed</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {moment(selected.breedingDate).format(
-                    "MMM Do, YYYY, h:mm:ss A"
-                  )}
+                {selected.breed}
                 </p>
               </div>
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Status</p>
+                <p className="text-sm text-gray-600">Pregnancy Confirmation</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
                   {selected.status}
                 </p>
               </div>
 
-              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">ECD</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {moment(selected.ecd).format("MMM Do, YYYY, h:mm:ss A")}
-                </p>
-              </div>
 
-              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Remark</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.remark}
-                </p>
-              </div>
+
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Staff in charge</p>
@@ -1018,8 +1031,16 @@ export default function PregnancyTracker() {
                   {moment(selected.createdAt).format("MMM Do, YYYY, h:mm:ss A")}
                 </p>
               </div>
+              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Remark</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700"
+                 style={{ width: "100%", overflow: "auto" }}>
+                  {selected.remark}
+                </p>
+              </div>
+              
 
-              <div className="btn-div" style={{ width: "100%" }}>
+              <div className="btn-div" style={{ width: "200%" }}>
                 <button
                   className="close-btn"
                   onClick={() => setviewPregnancy(false)}
@@ -1031,11 +1052,8 @@ export default function PregnancyTracker() {
           </div>
         </div>
       )}
-      {/* <div className="md:mt-0 mt-20  md:hidden ">
-        <Footer />
-      </div> */}
 
-      <div className="md:mt-0 mt-20    ">
+      <div className="-md:mt-44 -mt-44    ">
         <Footer />
       </div>
     </div>

@@ -45,7 +45,7 @@ function LivestockSelection() {
             className="text-white mt-2 text-xs text-center md:text-sm"
             style={{ fontFamily: "verdana" }}
           >
-            Select quarantine to monitor and record quarantine details
+            Select livestock to monitor and record quarantine details
           </p>
 
           <div className="mx-auto mt-12 md:mt-36">

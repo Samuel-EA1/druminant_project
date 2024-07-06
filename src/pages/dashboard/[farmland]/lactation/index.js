@@ -39,13 +39,13 @@ function LactationSelection() {
               fontSize: "17px",
             }}
           >
-            lactation Profile Management
+            Lactation Profile Management
           </h1>
           <p
             className="text-white mt-2 text-xs text-center md:text-sm"
             style={{ fontFamily: "verdana" }}
           >
-            Select lactation to monitor and record lactation details
+            Select livestock to monitor and record lactation details
           </p>
 
           <div className="mx-auto mt-12 md:mt-36">

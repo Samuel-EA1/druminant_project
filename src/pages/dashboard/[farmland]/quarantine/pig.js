@@ -477,7 +477,7 @@ export default function Quarantine() {
                   <h1 className="module-header md:mt-0  mt-0 ">
                     quarantine Profile (pig)
                   </h1>
-                  <p>Keep track of your quarantine profile</p>
+                  <p>Keep track of quarantined profile(s)</p>
                 </div>
               </div>
             </>

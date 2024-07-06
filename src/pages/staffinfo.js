@@ -134,7 +134,7 @@ export default function Staffinfo() {
           <div className="  mb-4 border-b pb-2 border-gray-500 flex items-center space-x-2">
             <BsPeople className="text-white text-lg h-10 w-10" />
             <h3 className="text-2xl font-bold leading-none   text-white">
-              Latest Requests
+              Staff
             </h3>
           </div>
           {fetching ? (

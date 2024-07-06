@@ -477,7 +477,7 @@ export default function Quarantine() {
                   <h1 className="module-header md:mt-0  mt-0 ">
                     quarantine Profile (cattle)
                   </h1>
-                  <p>Keep track of your quarantine profile</p>
+                  <p>Keep track of quarantined profile(s)</p>
                 </div>
               </div>
             </>
@@ -696,7 +696,7 @@ export default function Quarantine() {
               idCounter === "done" && (
                 <div className="text-center mx-0  flex-col text-black h-[100vh] flex items-center justify-center">
                   <div className="flex items-center justify-center flex-col">
-                    Sorry no quarantine Record found!
+                    Sorry, no quarantine Record found!
                   </div>
                 </div>
               )}
