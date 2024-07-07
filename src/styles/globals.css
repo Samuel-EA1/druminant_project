@@ -659,7 +659,7 @@ body {
   background-size: cover; /* Ensures the image covers the entire background */
   min-height: 100vh; /* At least full viewport height */
   background-attachment: fixed; /* Keeps the background fixed while scrolling */
-  overflow-y: auto; /* Allows vertical scrolling */
+ 
   width: 100%; /* Full width */
   background-color: white;
   color: #020016;

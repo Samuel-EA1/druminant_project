@@ -388,11 +388,11 @@ export default function Lactation() {
 
       <ModuleHeader />
 
-      <div className="p-2 md:p-5">
+      <div className="p-2 md:p-5    ">
         {" "}
-        <div className="">
+        <div className=" md:mt-10 ">
           {userData?.token && (
-            <div className=" flex flex-col  h-fit py-2 space-y-2  ">
+            <div className=" flex flex-col  h-fit py-2 space-y-2 ">
               <div>
                 <h1 className="text-lg font-bold">
                   Livestock Profile (Cattle)
@@ -461,13 +461,13 @@ export default function Lactation() {
               {!fetching && lactationData.length > 0 && (
                 <tbody>
                   {lactationData.map((row, key) => (
-                      <tr
+                    <tr
                       key={key}
                       className="  md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap my-5 md:mb-0 shadow-md bg-gray-100 shadow-gray-800 md:shadow-none"
                     >
                       <td className="w-full md:w-auto   justify-between items-center p-3 text-gray-800 text-center border border-b   flex md:table-cell relative md:static">
                         <span
-                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-24  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -483,7 +483,7 @@ export default function Lactation() {
 
                       <td className="w-full md:w-auto  justify-between items-center p-3 text-gray-800 text-center border border-b flex md:table-cell relative md:static">
                         <span
-                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-24  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -499,7 +499,7 @@ export default function Lactation() {
                       </td>
                       <td className="w-full md:w-auto  justify-between items-center p-3 text-gray-800 text-center border border-b flex md:table-cell relative md:static">
                         <span
-                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-24  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -515,7 +515,7 @@ export default function Lactation() {
                       </td>
                       <td className="w-full md:w-auto   justify-between items-center p-3 text-gray-800  border border-b text-center flex md:table-cell relative md:static">
                         <span
-                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-24  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -533,7 +533,7 @@ export default function Lactation() {
 
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center  flex md:table-cell relative md:static ">
                         <span
-                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-24  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",

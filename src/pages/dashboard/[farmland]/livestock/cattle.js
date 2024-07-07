@@ -476,7 +476,7 @@ export default function Livestock() {
 
       <div className="p-2 md:p-5">
         {" "}
-        <div className="">
+        <div className=" md:mt-10 ">
           {userData?.token && (
             <div className=" flex flex-col  h-fit py-2 space-y-2  ">
               <div>
