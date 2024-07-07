@@ -52,8 +52,6 @@ function ModuleHeader() {
         if (decoded.exp < currentTime) {
           setUserData(null);
 
-          toast.error("Login expired!");
-
           return;
         }
 

@@ -85,31 +85,31 @@ a {
 @tailwind components;
 @tailwind utilities;
 
-
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
- 
-
 }
-body{
- 
-    background-image: url("../../public/image/background.jpg");
+
+.dashboardBg {
+  background-image: url("../../public/image/background.jpg");
   background-position: cover;
   background-size: cover;
-  background-color: #01000D;
+  background-color: #01000d;
   /* height: 100vh;
   width: 100vw; */
   object-fit: cover;
 }
 
-
-/* body {
-  height: 100vh;
-  position: relative;
-  border: 3px solid red;
-} */
+body {
+  background-image: url("../../public/image/background.jpg");
+  background-position: cover;
+  background-size: cover;
+  background-color: #01000d;
+  /* height: 100vh;
+  width: 100vw; */
+  object-fit: cover;
+}
 
 .header {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -124,7 +124,7 @@ body{
 
 .navbar img {
   width: 45%;
-  height: auto; 
+  height: auto;
   padding-top: 10px;
 }
 
@@ -136,7 +136,6 @@ body{
 
 .Header-links {
   text-decoration: none;
-
 }
 
 .nav-list-head {
@@ -214,7 +213,7 @@ body{
   text-align: center;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 26px;
-  background-color: #009E0B;
+  background-color: #009e0b;
   border-radius: 10px;
   margin: 50px 0px 0px 80px;
   font-weight: bold;
@@ -236,7 +235,6 @@ body{
   left: 0;
 } */
 .main {
- 
   background-position: center;
   background-size: cover;
   /* height: 100vh;
@@ -251,9 +249,6 @@ body{
   height: 100vh;
 }
 
-
-
-
 .login-header {
   text-align: center;
   width: 15%;
@@ -265,7 +260,6 @@ body{
   color: white;
   font-weight: bold;
   font-size: 20px;
-
 }
 
 .login-header p {
@@ -302,10 +296,10 @@ body{
   outline: none;
   font-weight: bolder;
 }
-.login-user{
+.login-user {
   background-color: #00c40d;
   border-radius: 50%;
-  margin:-30px auto 10px auto;
+  margin: -30px auto 10px auto;
   width: auto;
   height: 50px;
   color: white;
@@ -338,7 +332,8 @@ body{
   text-align: center;
   margin: 15px auto 0px auto;
   font-size: 18px;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   color: white;
 }
 
@@ -346,10 +341,10 @@ body{
   text-align: center;
   margin: 15px auto 0px auto;
   font-size: 18px;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   color: white;
 }
-
 
 .signup-fields {
   /* background-color: green; */
@@ -428,7 +423,7 @@ body{
   text-align: center;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 26px;
-  background-color: #009E0B;
+  background-color: #009e0b;
   border-radius: 20px;
   margin: 30px 0px 0px 80px;
   font-weight: bold;
@@ -481,7 +476,7 @@ body{
 .link1 {
   text-decoration: none;
 }
-.mobile-dashboard2{
+.mobile-dashboard2 {
   display: none;
 }
 
@@ -494,7 +489,6 @@ body{
   padding-right: 15px;
   color: white;
   cursor: pointer;
-
 }
 
 .module-nav-list ul li.active {
@@ -503,9 +497,9 @@ body{
   /* text-decoration: underline; */
   /* background-color: rgba(18, 82, 0, 0.5); */
 }
-.module-drop ul li.active{
-   font-weight: bold ;
-   
+.module-drop ul li.active {
+  font-weight: bold;
+
   color: green;
 }
 
@@ -523,7 +517,6 @@ body{
   /* width: 50%; */
   /* background-color: red; */
   padding: 7px 0px 5px 15px;
-
 }
 
 .module-drop {
@@ -531,7 +524,7 @@ body{
 }
 
 .main-help-page {
-  background-color: #009E0B;
+  background-color: #009e0b;
   color: white;
   width: 70%;
   margin: 20px auto;
@@ -570,7 +563,6 @@ body{
   padding: 9px;
 }
 
-
 .admin-header h4 {
   font-size: 20px;
   margin: 13px 10px 0px 0px;
@@ -588,19 +580,18 @@ body{
   /* background-color: red; */
   margin-right: 15px;
   width: auto;
-  
 }
-.break{
+.break {
   display: none;
 }
 .mobile-header {
-display: none;
+  display: none;
 }
 
 .hello-message {
   display: none;
 }
-.card1{
+.card1 {
   background-color: white;
   height: 170px;
   width: 25%;
@@ -623,7 +614,7 @@ display: none;
   font-size: 15px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-.card4{
+.card4 {
   background-color: white;
   height: 80px;
   width: 100%;
@@ -641,7 +632,7 @@ display: none;
   text-decoration: underline;
 }
 
-.mobile-dashboard{
+.mobile-dashboard {
   display: none;
 }
 .dashboard {
@@ -668,7 +659,7 @@ display: none;
   background-size: cover; /* Ensures the image covers the entire background */
   min-height: 100vh; /* At least full viewport height */
   background-attachment: fixed; /* Keeps the background fixed while scrolling */
-  overflow-y: auto; /* Allows vertical scrolling */
+ 
   width: 100%; /* Full width */
   background-color: white;
   color: #020016;
@@ -681,9 +672,8 @@ display: none;
   padding-bottom: 30px;
   justify-content: center;
   align-items: center;
-
 }
-.lauchBtn{
+.lauchBtn {
   margin: 30px 0px 10px 80px;
 }
 .menu {
@@ -700,9 +690,8 @@ display: none;
 }
 
 .menu li:hover {
-
   text-decoration: underline;
-  background-color: #009E0B;
+  background-color: #009e0b;
   color: white;
 }
 
@@ -720,14 +709,11 @@ display: none;
 .img1 h1 {
   text-align: center;
   font-size: 100px;
-
 }
 
 .img1 p {
   padding: 10px 0px 0px 5px;
 }
-
-
 
 .up {
   display: flex;
@@ -743,7 +729,6 @@ display: none;
   cursor: pointer;
 }
 
-
 .admin-navlinks {
   /* background-color: red; */
   width: 10%;
@@ -754,8 +739,6 @@ display: none;
   justify-content: space-around;
   background-color: yellow;
 }
-
-
 
 .admin-navlinks li {
   padding: 10px 0px 20px 5px;
@@ -785,8 +768,6 @@ display: none;
   padding-top: 28px;
   justify-content: space-around;
 }
-
-
 
 .dashboard-mssg {
   font-size: 18px;
@@ -818,11 +799,6 @@ display: none;
   color: #008000;
 }
 
-
-
-
-
-
 .row-1 img {
   width: 250px;
   height: 200px;
@@ -830,7 +806,6 @@ display: none;
 }
 
 .parent {
-
 }
 
 .img11 {
@@ -841,9 +816,7 @@ display: none;
 
 .img11:hover {
   transform: scale(1.05);
-
 }
-
 
 .event {
   height: 200px;
@@ -933,7 +906,7 @@ display: none;
   width: 300px;
   height: 200px;
 }
-.help{
+.help {
   margin-top: -20px;
   margin-bottom: 30px;
   color: white;
@@ -1018,7 +991,6 @@ display: none;
 .module-nav-list li:hover {
   color: white;
   text-decoration: underline;
-
 }
 
 .module-content {
@@ -1059,7 +1031,7 @@ display: none;
   text-transform: uppercase;
   padding: 60px 0px 0px 17px;
   color: #008000;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bolder;
 }
 
@@ -1078,8 +1050,6 @@ display: none;
   color: #0f4b00;
   font-family: sans-serif;
   position: relative;
-
-
 }
 
 .add-search-div {
@@ -1089,7 +1059,7 @@ display: none;
 }
 
 .add-btn {
-  background-color: #009E0B;
+  background-color: #009e0b;
   color: white;
   text-align: center;
   padding: 9px 20px 9px 20px;
@@ -1100,7 +1070,7 @@ display: none;
   cursor: pointer;
 }
 .add-btn3 {
-  background-color: #009E0B;
+  background-color: #009e0b;
   color: white;
   text-align: center;
   padding: 9px 20px 9px 20px;
@@ -1147,12 +1117,10 @@ display: none;
   /* Change this to your desired hover color */
 }
 
-
 .general-form {
   display: flex;
   justify-content: space-between;
 }
-
 
 .btn {
   background-color: green;
@@ -1202,7 +1170,6 @@ display: none;
   padding: 10px 20px 10px 20px;
   border-radius: 6px;
   font-size: 15px;
-
 }
 
 .btn-div {
@@ -1210,7 +1177,6 @@ display: none;
   width: 200%;
   text-align: right;
   margin-top: 30px;
-
 }
 
 .btn-div2 {
@@ -1225,7 +1191,6 @@ display: none;
   color: red;
   font-size: 13px;
   background-color: yellow;
-
 }
 
 .livestock-select {
@@ -1235,7 +1200,6 @@ display: none;
   width: 60%;
   /* background-color: red; */
   margin: 25px auto 0px auto;
-
 }
 
 .livestock-select p {
@@ -1248,11 +1212,10 @@ display: none;
   margin-left: 1px;
   margin-top: 10px;
 }
-.live-img1{
+.live-img1 {
   width: 200px;
   height: 180px;
 }
-
 
 .live-img2:hover {
   transform: scale(1.04);
@@ -1276,7 +1239,7 @@ display: none;
   text-transform: uppercase;
   text-align: center;
   color: rgb(0, 109, 0);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bolder;
   padding-top: 10px;
 }
@@ -1300,11 +1263,11 @@ display: none;
   /* padding: 10px 0px 10px 17px; */
   color: rgb(0, 109, 0);
   padding-top: 55px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .incomeCard {
-  border: 1px solid #009E0B;
+  border: 1px solid #009e0b;
   width: 47%;
   box-shadow: 1px 1.5px 5px #008000;
   margin-top: 10px;
@@ -1363,7 +1326,6 @@ display: none;
   font-size: 14px;
   float: right;
   display: none;
-
 }
 
 .form-header2 {
@@ -1374,7 +1336,7 @@ display: none;
 }
 
 .finance-title {
-  color: #009E0B;
+  color: #009e0b;
   font-weight: bold;
   font-size: 19px;
   padding-left: 30px;
@@ -1389,7 +1351,6 @@ display: none;
   padding: 10px 30px 0px 0px;
   text-align: right;
 }
-
 
 /* media queries */
 
@@ -1418,13 +1379,11 @@ display: none;
     height: 40px;
     width: 100%;
     margin: 0px auto 20px auto;
-
   }
 
   .login-header {
     width: 20%;
   }
-
 
   .login-header2 {
     margin: 30px auto 30px auto;
@@ -1536,7 +1495,6 @@ display: none;
   .livestock-select img {
     padding-top: 0px;
     margin-top: 30px;
-
   }
 
   .select-header {
@@ -1545,7 +1503,7 @@ display: none;
   }
 
   .live-img2:hover {
-    transform: scale(1.00);
+    transform: scale(1);
   }
 
   .main-name {
@@ -1553,7 +1511,6 @@ display: none;
     height: auto;
     margin-top: 150px;
   }
-
 }
 
 @media screen and (max-width: 1181px) {
@@ -1601,7 +1558,7 @@ display: none;
 
   .dropDownList {
     position: absolute;
-    background-color: #009E0B;
+    background-color: #009e0b;
     border-bottom: 1px solid white;
     top: 20;
     right: 0;
@@ -1610,20 +1567,19 @@ display: none;
     right: 0;
     left: 0;
     margin-top: 0px;
-
   }
-.lauchBtn{
-  margin: 30px 0px 10px 30px;
-}
+  .lauchBtn {
+    margin: 30px 0px 10px 30px;
+  }
   .dropDownList {
     position: absolute;
-    background-color: #009E0B;
+    background-color: #009e0b;
     border-bottom: 1px solid white;
-    top: 0;  /* Corrected the top property */
+    top: 0; /* Corrected the top property */
     right: 0;
     left: 0;
     margin-top: 0px;
-}
+  }
 
   .dropDownList a:active {
     color: red;
@@ -1640,11 +1596,10 @@ display: none;
     z-index: 1000;
     display: block;
     animation: slideDown 0.5s ease forwards;
-
-}
-.module-drop.hidden {
-  animation: slideUp 0.5s ease forwards;
-}
+  }
+  .module-drop.hidden {
+    animation: slideUp 0.5s ease forwards;
+  }
 
   .dropDownList-md li {
     padding: 13px;
@@ -1654,37 +1609,34 @@ display: none;
     padding: 10px;
     border-bottom: 1px solid rgb(0, 68, 15);
     text-align: center;
-
   }
 
   .dropDownList-md {
     list-style: none;
     margin: 0;
     padding: 0;
-}
+  }
   @keyframes slideDown {
     0% {
-        transform: translateY(-100%);
-        opacity: 0;
+      transform: translateY(-100%);
+      opacity: 0;
     }
     100% {
-        transform: translateY(0);
-        opacity: 1;
+      transform: translateY(0);
+      opacity: 1;
     }
-}
+  }
 
-@keyframes slideUp {
+  @keyframes slideUp {
     0% {
-        transform: translateY(0);
-        opacity: 1;
+      transform: translateY(0);
+      opacity: 1;
     }
     100% {
-        transform: translateY(-100%);
-        opacity: 0;
+      transform: translateY(-100%);
+      opacity: 0;
     }
-}
-
-
+  }
 
   .drop {
     position: relative;
@@ -1705,7 +1657,6 @@ display: none;
     display: block;
     font-size: 5px;
     padding-top: 0px;
-
   }
 
   .navbar {
@@ -1738,7 +1689,6 @@ display: none;
     padding: 10px 25px 10px 25px;
   }
 
-
   .login-header {
     width: 25%;
     /* margin: 120px auto 0px auto; */
@@ -1759,7 +1709,6 @@ display: none;
     font-size: 19px;
   }
 
-
   .login-header2 p {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: bold;
@@ -1772,9 +1721,7 @@ display: none;
   }
 
   .signup-role {
-
     font-size: 14px;
-
   }
 
   .signup-fields {
@@ -1790,9 +1737,9 @@ display: none;
     background-image: url("../../public/image/phonebg.jpg");
     background-position: center;
     background-size: cover;
-  
+
     object-fit: cover;
-    color: #092b00; 
+    color: #092b00;
   }
   .dashboard-main {
     height: 100vh;
@@ -1813,10 +1760,10 @@ display: none;
     justify-content: space-around;
   }
   .form-header2 {
-    margin-top: 20px
+    margin-top: 20px;
   }
-  
-  .card1{
+
+  .card1 {
     background-color: white;
     height: 170px;
     width: 25%;
@@ -1832,7 +1779,7 @@ display: none;
     padding-left: 8px;
     font-size: 14px;
   }
-  .mobile-dashboard{
+  .mobile-dashboard {
     display: block;
     /* background-color: red; */
   }
@@ -1844,10 +1791,10 @@ display: none;
     padding-top: 20px;
     justify-content: space-around;
   }
-  .desktop-dashboard{
+  .desktop-dashboard {
     display: none;
   }
-  .card2{
+  .card2 {
     background-color: white;
     height: 150px;
     width: 40%;
@@ -1870,7 +1817,7 @@ display: none;
     font-size: 15px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
-  .mobile-dashboard2{
+  .mobile-dashboard2 {
     display: none;
   }
   .login-header p {
@@ -1887,7 +1834,7 @@ display: none;
   .menu ul li {
     padding: 7px 20px 7px 20px;
   }
-  .dashboard{
+  .dashboard {
     /* background-color: red; */
   }
   .admin-header {
@@ -1953,12 +1900,12 @@ display: none;
   }
 
   .main-help-page {
-    background-color: #009E0B;
+    background-color: #009e0b;
     color: white;
     width: 95%;
     margin: 20px auto;
   }
-  .help{
+  .help {
     margin-top: -80px;
     margin-bottom: 30px;
     color: white;
@@ -1971,7 +1918,7 @@ display: none;
     margin-top: -40px;
     height: 90vh;
   }
-  .main-image{
+  .main-image {
     /* background-color: red; */
     padding-left: 0px;
     margin-left: 8px;
@@ -1984,7 +1931,7 @@ display: none;
   .main-text {
     max-width: 60%;
     font-size: 13.5px;
-    text-shadow: black 5px ;
+    text-shadow: black 5px;
   }
 
   .main-name {
@@ -2003,7 +1950,7 @@ display: none;
   .login-header p {
     font-size: 15px;
   }
-  .help{
+  .help {
     margin-top: 00px;
     margin-bottom: 30px;
     color: white;
@@ -2014,11 +1961,9 @@ display: none;
   }
 }
 
-
 @media screen and (max-width: 849px) {
   .login-header h1 {
     /* background-color: yellow; */
-
   }
 
   .login-header {
@@ -2031,7 +1976,6 @@ display: none;
   }
   .login-header2 p {
     font-size: 6px;
-
   }
 
   .login-header2 h1 {
@@ -2108,7 +2052,6 @@ display: none;
 
   .fields {
     width: 70%;
-
   }
 
   .signup {
@@ -2152,7 +2095,7 @@ display: none;
     font-size: 17px;
     padding: 0px;
   }
-  .break{
+  .break {
     display: block;
   }
 
@@ -2170,7 +2113,6 @@ display: none;
 
   .general-form {
     display: block;
-
   }
 
   .form-header {
@@ -2193,10 +2135,9 @@ display: none;
     height: auto;
     margin-top: 150px;
   }
-.parent{
-  margin-top: -30px;
-}
-
+  .parent {
+    margin-top: -30px;
+  }
 }
 
 @media screen and (max-width: 612px) {
@@ -2220,7 +2161,6 @@ display: none;
     /* flex-direction: column; */
   }
 
-
   .lauch-btn {
     width: 250px;
     height: 50px;
@@ -2235,8 +2175,6 @@ display: none;
     font-weight: bold;
     padding-top: 8px;
   }
-
-
 
   .login-header h1 {
     font-size: 21px;
@@ -2293,9 +2231,7 @@ display: none;
   }
 
   .signup-role {
-
     font-size: 12px;
-
   }
 
   .livestock-select {
@@ -2314,7 +2250,6 @@ display: none;
     border-radius: 50%;
     margin-top: 30px;
     margin: 30px auto 10px auto;
-
   }
 
   .livestock-select p {
@@ -2350,12 +2285,9 @@ display: none;
     display: none;
   }
 
-
   .mobile-header img {
     padding-left: 4px;
   }
-
-
 
   .hello-message {
     background-color: rgb(0, 128, 17);
@@ -2370,8 +2302,6 @@ display: none;
   .admin-header h5 {
     display: block;
   }
-
-
 
   .menu {
     display: none;
@@ -2409,13 +2339,11 @@ display: none;
     /* background-color: red; */
     width: 70%;
     text-align: center;
-
   }
 
   .img11 img {
     margin-top: 20px;
     margin-bottom: 0px;
-
   }
 
   .parent {
@@ -2424,7 +2352,6 @@ display: none;
     background-position: cover;
     background-size: cover;
     position: relative;
-
   }
 
   .hamburger-content {
@@ -2476,11 +2403,11 @@ display: none;
   }
 
   .incomeCard p {
-    font-size: 13px
+    font-size: 13px;
   }
 
   .incomeCard h3 {
-    font-size: 13px
+    font-size: 13px;
   }
 
   .finan-add-btn2 {
@@ -2524,14 +2451,14 @@ display: none;
     margin: 30px 0px 0px 30px;
     padding: 10px 25px 10px 25px;
   }
-  .mobile-dashboard{
-    display:none;
+  .mobile-dashboard {
+    display: none;
     /* background-color: red; */
   }
-  .mobile-dashboard2{
+  .mobile-dashboard2 {
     display: block;
   }
-  .card3{
+  .card3 {
     background-color: white;
     height: 150px;
     width: 90%;
@@ -2565,7 +2492,7 @@ display: none;
     font-size: 14px;
   }
   .add-btn3 {
-    background-color: #009E0B;
+    background-color: #009e0b;
     color: white;
     text-align: center;
     padding: 7px 16px 7px 19px;
@@ -2588,7 +2515,7 @@ display: none;
   .login-header p {
     font-size: 15px;
   }
-  .login-user{
+  .login-user {
     background-color: rgba(9, 43, 0, 0.5);
   }
   .search-icon {
@@ -2600,13 +2527,9 @@ display: none;
   .add-btn {
     padding: 7px 10px 7px 13px;
     width: 10px;
-
   }
 
-
-
   .close-btn {
-
     margin-top: -15px;
   }
 
@@ -2625,7 +2548,6 @@ display: none;
     border: none;
     border-radius: 50%;
     margin: 20px auto 10px auto;
-
   }
 
   .livestock-select p {
@@ -2643,7 +2565,6 @@ display: none;
     font-size: 15px;
     margin-top: 0px;
   }
-
 
   .finan-add-btn2 {
     display: block;
@@ -2695,7 +2616,6 @@ display: none;
     width: 55%;
     height: auto;
     margin-top: 110px;
-
   }
 
   .launch-btn {
@@ -2703,7 +2623,7 @@ display: none;
     margin: 33px 0px 0px 15px;
     padding: 10px 25px 10px 25px;
   }
-  .lauchBtn{
+  .lauchBtn {
     margin: 30px 0px 10px 18px;
   }
 }
