@@ -116,17 +116,17 @@ export default function Dashboard() {
                 <>
                   {" "}
                   <div className="dashboard md:mt-0">
-                    <p className="first-letter:capitalize md:mt-16 mt-0">
+                    <p className="first-letter:capitalize md:mt-16 mt-3">
                       {userData.farmland}
                       <br className="break" /> Dashboard
                     </p>
                   </div>
-                  <div className=" my-5 max-w-7xl  mx-auto  md:flex md:my-20  flex-wrap items-center justify-center border border-transparent  text-gray-800">
+                  <div className=" my-20 max-w-7xl  mx-auto    md:flex flex-wrap items-center justify-center border border-transparent  text-gray-800">
                     {" "}
                     {/* livestock */}
-                    <div className="p-2basis-80 lg:basis-96 md:m-5  ">
+                    <div className="p-2 basis-80 lg:basis-96 md:m-5  ">
                       <Link href={`/dashboard/${userData.farmland}/livestock`}>
-                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto transform duration-1000 hover:scale-[1.02] hover:animate-pulse ">
+                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:scale-[1.02] hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
                             <h1 className="font-bold text-lg mb-2">
@@ -195,7 +195,7 @@ export default function Dashboard() {
                     {/* income and expense */}
                     <div className="p-2 basis-80 lg:basis-96 md:m-5  ">
                       <Link href={`/dashboard/${userData.farmland}/finance`}>
-                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto transform duration-1000 hover:scale-105 hover:animate-pulse ">
+                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:scale-105 hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
                             <h1 className="font-bold text-lg mb-2">
@@ -279,7 +279,7 @@ export default function Dashboard() {
                     {/* envent tracker */}
                     <div className="p-2 basis-80 lg:basis-96 md:m-5  ">
                       <Link href={`/dashboard/${userData.farmland}/event`}>
-                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto transform duration-1000 hover:scale-105 hover:animate-pulse ">
+                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:scale-105 hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
                             <h1 className="font-bold text-lg mb-2">
@@ -347,7 +347,7 @@ export default function Dashboard() {
                       <Link
                         href={`/dashboard/${userData.farmland}/pregnancy-tracker`}
                       >
-                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto transform duration-1000 hover:scale-105 hover:animate-pulse ">
+                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:scale-105 hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
                             <h1 className="font-bold text-lg mb-2">
@@ -415,11 +415,11 @@ export default function Dashboard() {
                     {/* lactation */}
                     <div className="p-2 basis-80 lg:basis-96 md:m-5  ">
                       <Link href={`/dashboard/${userData.farmland}/lactation`}>
-                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto transform duration-1000 hover:scale-105 hover:animate-pulse ">
+                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:scale-105 hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
                             <h1 className="font-bold text-lg mb-2">
-                              Lactation Tracker
+                              Lactation
                             </h1>
                           </div>
 
@@ -482,7 +482,7 @@ export default function Dashboard() {
                     </div>
                     <div className="p-2 basis-80 lg:basis-96 md:m-5  ">
                       <Link href={`/dashboard/${userData.farmland}/quarantine`}>
-                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto transform duration-1000 hover:scale-105 hover:animate-pulse ">
+                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:scale-105 hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
                             <h1 className="font-bold text-lg mb-2">
