@@ -333,7 +333,7 @@ function FinanceRecord() {
       </Head>
       <ModuleHeader />
       {userData && !fetchError ? (
-        <div className="livestock">
+        <div className="livestock p-2 md:p-5">
           <div className="amount">
             <h1>Income/Expense (pig)</h1>
             <p>Track your income and expenses</p>
@@ -482,13 +482,14 @@ function FinanceRecord() {
                   {financeData.map((row, key) => (
                     <tr
                       key={key}
-                      className="bg-white md:hover:bg-emerald-50 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap mb-10 md:mb-0 shadow-sm shadow-gray-800 md:shadow-none"
+                      className="  md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap my-5 md:mb-0 shadow-md bg-gray-100 shadow-gray-800 md:shadow-none"
                     >
                       <td className="w-full md:w-auto flex justify-between border-green-200 items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
                         <span
-                          className="md:hidden   top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
-                            backgroundColor: "#c1ffb4",
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
                             fontSize: "11px",
                           }}
                         >
@@ -501,9 +502,10 @@ function FinanceRecord() {
 
                       <td className="w-full md:w-auto flex justify-between border-green-200 items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
                         <span
-                          className="md:hidden   top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
-                            backgroundColor: "#c1ffb4",
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
                             fontSize: "11px",
                           }}
                         >
@@ -515,9 +517,10 @@ function FinanceRecord() {
                       </td>
                       <td className="w-full md:w-auto flex justify-between border-green-200 items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
                         <span
-                          className="md:hidden   top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
-                            backgroundColor: "#c1ffb4",
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
                             fontSize: "11px",
                           }}
                         >
@@ -527,11 +530,12 @@ function FinanceRecord() {
                           {row.desc}
                         </div>
                       </td>
-                      <td className="w-full md:w-auto flex justify-between  border-green-200 items-center p-3 text-gray-800 text-center border block md:table-cell relative md:static">
+                      <td className="w-full md:w-auto flex justify-between border-green-200 items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-none  px-2 py-1 font-bold uppercase"
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
-                            backgroundColor: "#c1ffb4",
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
                             fontSize: "11px",
                           }}
                         >
@@ -545,15 +549,16 @@ function FinanceRecord() {
                           <p>{row.amount}.00</p>
                         </div>
                       </td>
-                      <td className="w-full md:w-auto flex justify-between items-center  border-green-200 p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                      <td className="w-full space-x-2 md:w-auto flex justify-between border-green-200 items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-none  px-1 py-1  font-bold uppercase"
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
-                            backgroundColor: "#c1ffb4",
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
                             fontSize: "11px",
                           }}
                         >
-                          Transaction Date
+                          Txn Date
                         </span>
                         <span style={{ fontSize: "14px" }}>
                           {moment(row.transactionDate).format(
@@ -562,18 +567,19 @@ function FinanceRecord() {
                         </span>
                       </td>
 
-                      <td className="w-full md:w-auto flex justify-between items-center p-3  border-green-200 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
+                      <td className="w-full md:w-auto flex justify-between border-green-200 items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-none  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
-                            backgroundColor: "#c1ffb4",
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
                             fontSize: "11px",
                           }}
                         >
                           Actions
                         </span>
 
-                        <div className="">
+                        <div className="min-w-40">
                           <button
                             title="Edit"
                             onClick={() => editBtnFn(row.financeEntryId)}
@@ -640,7 +646,7 @@ function FinanceRecord() {
             financeForm && (
               <div
                 className="form-backdrop"
-                class=" py-9 bg-[#01000D] transition duration-150 overflow-y-auto  ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
+                class=" py-9 bg-[#01000D] transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
                 id="modal"
               >
                 <p className="form-header2 first-letter:capitalize">
@@ -808,7 +814,9 @@ function FinanceRecord() {
                   <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p className="text-sm text-gray-600">Entry Date</p>
                     <p className="text-base font-medium text-navy-700  dark:text-green-700">
-                      {moment(selected.createdAt).format("MMM Do, YYYY, h:mm:ss A")}
+                      {moment(selected.createdAt).format(
+                        "MMM Do, YYYY, h:mm:ss A"
+                      )}
                     </p>
                   </div>
 
@@ -851,7 +859,7 @@ function FinanceRecord() {
             editModal && (
               <div
                 className="form-backdrop "
-                class="  py-9 bg-[#01000D] transition duration-150 overflow-y-auto  ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
+                class="  py-9 bg-[#01000D] transition duration-150   ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
                 id="modal"
               >
                 <p className="form-header2">Edit {financeType} Details</p>

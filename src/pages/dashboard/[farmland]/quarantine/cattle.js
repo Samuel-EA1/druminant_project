@@ -467,25 +467,37 @@ export default function Quarantine() {
 
       <ModuleHeader />
 
-      <div className="">
+      <div className="p-2 md:p-5">
         {" "}
-        <div className="">
+        <div className=" md:mt-10 ">
           {userData?.token && (
-            <>
-              <div className="up">
-                <div>
-                  <h1 className="module-header md:mt-0  mt-0 ">
-                    quarantine Profile (cattle)
-                  </h1>
-                  <p>Keep track of quarantined profile(s)</p>
-                </div>
+            <div className=" flex flex-col  h-fit py-2 space-y-2  ">
+              <div>
+                <h1 className="text-2xl  font-bold">
+                  Quarantine Profile (Cattle)
+                </h1>
+                <p className=" mt-1">Keep track of your Quarantine profile</p>
               </div>
-            </>
+
+              <p
+                className="text-white bg-[#008000] cursor-pointer hover:bg-[#026702]  w-fit p-2 rounded-md"
+                onClick={addProfile}
+              >
+                <span>+ </span> Add Profile
+              </p>
+            </div>
+
+            //   {/* <input
+            //   type="text"
+            //   className="search-input"
+            //   maxLength={15}
+            //   placeholder="Search here (Tag id)"
+            // /> */}
           )}
         </div>
         {userData?.token && (
           <div
-            className={`flex    flex-col justify-between h-screen  ${
+            className={`flex    flex-col justify-between min-h-screen  ${
               (editFormModal || quarantineModal) && "hidden"
             }`}
           >
@@ -541,13 +553,11 @@ export default function Quarantine() {
                   {quarantineData.map((row, key) => (
                     <tr
                       key={key}
-                      className={`bg-white  md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap mb-1 md:mb-0 shadow-sm shadow-gray-800 md:shadow-none  ${
-                        viewquarantine && " hidden"
-                      }    `}
+                      className="  md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap my-5 md:mb-0 shadow-md bg-gray-100 shadow-gray-800 md:shadow-none"
                     >
-                      <td className="w-full md:w-auto flex  justify-between items-center p-3 text-gray-800 text-center border border-b  block md:table-cell relative md:static">
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -562,7 +572,7 @@ export default function Quarantine() {
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -577,7 +587,7 @@ export default function Quarantine() {
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -593,7 +603,7 @@ export default function Quarantine() {
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -608,7 +618,7 @@ export default function Quarantine() {
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -625,7 +635,7 @@ export default function Quarantine() {
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -640,7 +650,7 @@ export default function Quarantine() {
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -650,7 +660,7 @@ export default function Quarantine() {
                           Actions
                         </span>
 
-                        <div className="flex w-full justify-center max-w-sm space-x-5">
+                        <div className="flex  justify-center max-w-sm space-x-5">
                           {viewing && viewId === row.tagId ? (
                             <button
                               title="More info"
@@ -718,9 +728,6 @@ export default function Quarantine() {
         </div>
       )}
 
-      <div className="md:mt-0 mt-20   hidden md:block ">
-        <Footer />
-      </div>
       {
         //quarantine input form
 
@@ -1321,9 +1328,9 @@ export default function Quarantine() {
           </div>
         </div>
       )}
-      {/* <div className="md:mt-0 mt-20  md:hidden ">
+      <div className="md:mt-0 mt-20    ">
         <Footer />
-      </div> */}
+      </div>
     </div>
   );
 }
