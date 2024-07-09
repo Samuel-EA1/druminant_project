@@ -371,39 +371,37 @@ export default function PregnancyTracker() {
 
       <ModuleHeader />
 
-      <>
+      <div className="p-2 md:p-5">
         {" "}
-        <div className="">
-          {userData?.token && !fetchError && (
-            <>
-              <div className="up">
-                <div>
-                  <h1 className="module-header md:mt-0  mt-0 ">
-                    pregnancy Checker (Cattle)
-                  </h1>
-                  <p>Keep track of your pregnant livestock</p>
-                </div>
+        <div className=" md:mt-10 ">
+          {userData?.token && (
+            <div className=" flex flex-col  h-fit py-2 space-y-2  ">
+              <div>
+                <h1 className="text-2xl  font-bold">
+                  Pregnancy Profile (Cattle)
+                </h1>
+                <p className=" mt-1">Keep track of your Pregnancy profile</p>
               </div>
 
-              <div className="add-search-div">
-                <div className="cursor">
-                  <p className="add-btn" onClick={addProfile}>
-                    <span>+ </span> Add Record
-                  </p>
-                </div>
-                {/* <input
-              type="text"
-              className="search-input"
-              maxLength={15}
-              placeholder="Search here (Livestock Id)"
-            /> */}
-              </div>
-            </>
+              <p
+                className="text-white bg-[#008000] cursor-pointer hover:bg-[#026702]  w-fit p-2 rounded-md"
+                onClick={addProfile}
+              >
+                <span>+ </span> Add Profile
+              </p>
+            </div>
+
+            //   {/* <input
+            //   type="text"
+            //   className="search-input"
+            //   maxLength={15}
+            //   placeholder="Search here (Tag id)"
+            // /> */}
           )}
         </div>
         {userData?.token && !fetchError ? (
           <div
-            className={`flex  flex-col justify-between h-screen ${
+            className={`flex  flex-col justify-between min-h-screen ${
               editFormModal && "hidden"
             }`}
           >
@@ -456,11 +454,11 @@ export default function PregnancyTracker() {
                   {pregnancyData.map((row, key) => (
                     <tr
                       key={key}
-                      className="bg-white      md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap mb-1 md:mb-0 shadow-sm shadow-gray-800 md:shadow-none"
+                      className="  md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap my-5 md:mb-0 shadow-md bg-gray-100 shadow-gray-800 md:shadow-none"
                     >
-                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b  block md:table-cell relative md:static">
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -476,7 +474,7 @@ export default function PregnancyTracker() {
 
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -492,14 +490,14 @@ export default function PregnancyTracker() {
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
                             fontSize: "11px",
                           }}
                         >
-                        Breed
+                          Breed
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
@@ -509,7 +507,7 @@ export default function PregnancyTracker() {
 
                       <td className="w-full md:w-auto flex  justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -527,7 +525,7 @@ export default function PregnancyTracker() {
 
                       <td className="w-full md:w-auto flex   justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -537,15 +535,13 @@ export default function PregnancyTracker() {
                           Breeding Date
                         </span>
                         <span style={{ fontSize: "14px", color: "black" }}>
-                          {moment(row.ecd).format(
-                            "MMMM Do, YYYY"
-                          )}
+                          {moment(row.ecd).format("MMMM Do, YYYY")}
                         </span>
                       </td>
 
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -631,7 +627,7 @@ export default function PregnancyTracker() {
               idCounter === "done" && (
                 <div className="text-center mx-0  flex-col text-black h-[100vh] flex items-center justify-center">
                   <div className="flex items-center justify-center flex-col">
-                  Sorry, No Data Found !
+                    Sorry, No Data Found !
                   </div>
                   <div className="cursor">
                     <p
@@ -662,7 +658,7 @@ export default function PregnancyTracker() {
             </div>
           )
         )}
-      </>
+      </div>
 
       {!userData?.token && !fetching && (
         <div className="text-center border-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
@@ -1005,7 +1001,7 @@ export default function PregnancyTracker() {
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Breed</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                {selected.breed}
+                  {selected.breed}
                 </p>
               </div>
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
@@ -1014,9 +1010,6 @@ export default function PregnancyTracker() {
                   {selected.status}
                 </p>
               </div>
-
-
-
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Staff in charge</p>
@@ -1033,12 +1026,13 @@ export default function PregnancyTracker() {
               </div>
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Remark</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700"
-                 style={{ width: "100%", overflow: "auto" }}>
+                <p
+                  className="text-base font-medium text-navy-700 dark:text-green-700"
+                  style={{ width: "100%", overflow: "auto" }}
+                >
                   {selected.remark}
                 </p>
               </div>
-              
 
               <div className="btn-div" style={{ width: "200%" }}>
                 <button
@@ -1053,7 +1047,7 @@ export default function PregnancyTracker() {
         </div>
       )}
 
-      <div className="-md:mt-44 -mt-44    ">
+      <div className="md:mt-0 mt-20   ">
         <Footer />
       </div>
     </div>

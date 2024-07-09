@@ -73,7 +73,7 @@ export default function Event() {
   const [editting, setEditting] = useState(false);
 
   const [creating, setCreating] = useState(false);
-  const [viewLivestock, setviewLivestock] = useState(false);
+  const [viewEvent, setviewEvent] = useState(false);
   const [tagIdError, setTagIdError] = useState("");
   const [selected, setSelected] = useState({
     eventEntryId: "",
@@ -196,7 +196,7 @@ export default function Event() {
     }
   }
 
-  async function handleViewLivestock(id) {
+  async function handleviewEvent(id) {
     setviewId(id);
     setViewing(true);
     try {
@@ -210,7 +210,7 @@ export default function Event() {
 
       setViewing(false);
       setSelected(selectedRecord.data.message);
-      setviewLivestock(true);
+      setviewEvent(true);
     } catch (error) {
       setViewing(false);
       console.log(error);
@@ -355,40 +355,36 @@ export default function Event() {
 
       <ModuleHeader />
 
-      <>
+      <div className="p-2 md:p-5">
         {" "}
-        <div className="">
-          {userData?.token && !fetchError && (
-            <>
-              <div className="up">
-                <div>
-                  <h1 className="module-header md:mt-0  mt-0 ">
-                    Event Tracker (pig)
-                  </h1>
-                  <p>Keep track of your event profile</p>
-                </div>
+        <div className=" md:mt-10 ">
+          {userData?.token && (
+            <div className=" flex flex-col  h-fit py-2 space-y-2  ">
+              <div>
+                <h1 className="text-2xl  font-bold">Event Profile (PIG)</h1>
+                <p className=" mt-1">Keep track of your Event profile</p>
               </div>
 
-              <div className="add-search-div">
-                <div className="cursor">
-                  <p className="add-btn" onClick={addProfile}>
-                    <span>+ </span> Add Profile
-                  </p>
-                </div>
-                {/* <input
-              type="text"
-              className="search-input"
-              maxLength={15}
-              placeholder="Search here (Event Id)"
-            /> */}
-              </div>
-            </>
+              <p
+                className="text-white bg-[#008000] cursor-pointer hover:bg-[#026702]  w-fit p-2 rounded-md"
+                onClick={addProfile}
+              >
+                <span>+ </span> Add Profile
+              </p>
+            </div>
+
+            //   {/* <input
+            //   type="text"
+            //   className="search-input"
+            //   maxLength={15}
+            //   placeholder="Search here (Tag id)"
+            // /> */}
           )}
         </div>
         {userData?.token && !fetchError ? (
           <div
-            className={`flex  flex-col justify-between h-screen ${
-              editFormModal && "hidden"
+            className={`flex  flex-col justify-between min-h-screen ${
+              (editFormModal || formModal) && "hidden"
             }`}
           >
             <table className="w-full mt-0">
@@ -436,7 +432,7 @@ export default function Event() {
                     >
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b  block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20 top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -452,7 +448,7 @@ export default function Event() {
 
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20 top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -468,7 +464,7 @@ export default function Event() {
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20 top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -482,9 +478,9 @@ export default function Event() {
                           <p>{row.eventType}</p>
                         </div>
                       </td>
-                      <td className="w-full md:w-auto   justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                      <td className="w-full md:w-auto flex   justify-between items-center p-3 text-gray-800  border border-b text-center block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20 top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -502,7 +498,7 @@ export default function Event() {
 
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20 top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -532,9 +528,7 @@ export default function Event() {
                           ) : (
                             <button
                               title="More info"
-                              onClick={() =>
-                                handleViewLivestock(row.eventEntryId)
-                              }
+                              onClick={() => handleviewEvent(row.eventEntryId)}
                               className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
                             >
                               <MdRemoveRedEye style={{ fontSize: "14px" }} />
@@ -588,7 +582,7 @@ export default function Event() {
               idCounter === "done" && (
                 <div className="text-center mx-0  flex-col text-black h-[100vh] flex items-center justify-center">
                   <div className="flex items-center justify-center flex-col">
-                  Sorry, No Data Found !
+                    Sorry, No Data Found !
                   </div>
                   <div className="cursor">
                     <p
@@ -619,7 +613,7 @@ export default function Event() {
             </div>
           )
         )}
-      </>
+      </div>
 
       {!userData?.token && !fetching && (
         <div className="text-center border-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
@@ -640,14 +634,14 @@ export default function Event() {
 
         formModal && (
           <div
-            className="dashboard-main2 py-12 bg-[#01000D]  transition overflow-y-auto  duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
+            className="dashboard-main2 py-12 bg-[#01000D]  transition duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
             id="modal"
           >
             <p
               className="form-header pt-10 pb:0 md:pt-0"
               style={{ color: "white" }}
             >
-               Event Details
+              Event Details
             </p>
 
             <div
@@ -678,7 +672,7 @@ export default function Event() {
                       <input
                         title="Brief description of event"
                         placeholder="E.g Vaccination"
-                        maxLength={30}
+                        maxLength={20}
                         required
                         value={formInput.eventType}
                         onChange={handleChange}
@@ -774,7 +768,7 @@ export default function Event() {
               className="form-header pt-10 pb:0 md:pt-0"
               style={{ color: "white" }}
             >
-            Edit Event Details
+              Edit Event Details
             </p>
 
             <div
@@ -805,7 +799,7 @@ export default function Event() {
                       <input
                         title="Brief description of event"
                         placeholder="E.g Vaccination"
-                        maxLength={30}
+                        maxLength={20}
                         value={editformInput.eventType}
                         onChange={handleChange}
                         id="eventType"
@@ -814,7 +808,7 @@ export default function Event() {
                       />
 
                       <label className="input-label" for="name">
-                       Event Date & Time
+                        Event Date & Time
                       </label>
                       <input
                         type="Datetime-local"
@@ -826,13 +820,13 @@ export default function Event() {
                       />
 
                       <label className="input-label" for="name">
-                       Remark
+                        Remark
                       </label>
                       <input
                         type="text"
                         title="Add additional remarks about event here."
                         id="remark"
-                        value={(editformInput.remark)}
+                        value={editformInput.remark}
                         onChange={handleChange}
                         name="remark"
                         className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
@@ -893,7 +887,7 @@ export default function Event() {
         )
       }
 
-      {viewLivestock && (
+      {viewEvent && (
         <div className="fixed inset-0 flex  items-center justify-center bg-gray-800 bg-opacity-50 z-50">
           <div
             className="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3"
@@ -901,21 +895,21 @@ export default function Event() {
           >
             <div className="mt-2 mb-8 w-full">
               <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
-              Event Details
+                Event Details
               </h4>
             </div>
             <div className="grid grid-cols-2 gap-4 px-1 w-full">
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Event Date & Time</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                {moment(selected.eventDate).format("MMM Do, YYYY, h:mm:ss A")}
+                  {moment(selected.eventDate).format("MMM Do, YYYY, h:mm:ss A")}
                 </p>
               </div>
 
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Staff in Charge</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                {selected.inCharge}
+                  {selected.inCharge}
                 </p>
               </div>
 
@@ -936,7 +930,7 @@ export default function Event() {
               <div className="btn-div" style={{ width: "200%" }}>
                 <button
                   className="close-btn"
-                  onClick={() => setviewLivestock(false)}
+                  onClick={() => setviewEvent(false)}
                 >
                   Close
                 </button>
@@ -945,11 +939,7 @@ export default function Event() {
           </div>
         </div>
       )}
-      {/* <div className="md:mt-0 mt-20  md:hidden ">
-        <Footer />
-      </div> */}
-
-      <div className="md:mt-0 mt-20   hidden md:block ">
+      <div className="md:mt-0 mt-20    ">
         <Footer />
       </div>
     </div>

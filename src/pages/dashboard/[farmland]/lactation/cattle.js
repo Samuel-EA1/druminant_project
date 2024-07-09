@@ -82,7 +82,7 @@ export default function Lactation() {
   const [editting, setEditting] = useState(false);
 
   const [creating, setCreating] = useState(false);
-  const [viewLivestock, setviewLivestock] = useState(false);
+  const [ViewLactation, setViewLactation] = useState(false);
   const [milkCompositionState, setmilkCompositionState] = useState(false);
   const [selected, setSelected] = useState({
     deliveryDate: "",
@@ -204,7 +204,7 @@ export default function Lactation() {
     }
   }
 
-  async function handleViewLivestock(id) {
+  async function handleViewLactation(id) {
     setviewId(id);
     setViewing(true);
     try {
@@ -219,7 +219,7 @@ export default function Lactation() {
       console.log(selectedRecord);
       setViewing(false);
       setSelected(selectedRecord.data.message);
-      setviewLivestock(true);
+      setViewLactation(true);
     } catch (error) {
       setViewing(false);
       console.log(error);
@@ -395,9 +395,9 @@ export default function Lactation() {
             <div className=" flex flex-col  h-fit py-2 space-y-2 ">
               <div>
                 <h1 className="text-lg font-bold">
-                  Livestock Profile (Cattle)
+                  Lactation Profile (Cattle)
                 </h1>
-                <p className=" mt-1">Keep track of your livestock profile</p>
+                <p className=" mt-1">Keep track of your Lactation profile</p>
               </div>
 
               <p
@@ -418,7 +418,7 @@ export default function Lactation() {
         </div>
         {userData?.token && !fetchError ? (
           <div
-            className={`flex  flex-col justify-between h-screen ${
+            className={`flex  flex-col justify-between min-h-screen ${
               editFormModal && "hidden"
             }`}
           >
@@ -467,7 +467,7 @@ export default function Lactation() {
                     >
                       <td className="w-full md:w-auto   justify-between items-center p-3 text-gray-800 text-center border border-b   flex md:table-cell relative md:static">
                         <span
-                          className="md:hidden w-24  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-32  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -483,7 +483,7 @@ export default function Lactation() {
 
                       <td className="w-full md:w-auto  justify-between items-center p-3 text-gray-800 text-center border border-b flex md:table-cell relative md:static">
                         <span
-                          className="md:hidden w-24  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-32  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -499,23 +499,23 @@ export default function Lactation() {
                       </td>
                       <td className="w-full md:w-auto  justify-between items-center p-3 text-gray-800 text-center border border-b flex md:table-cell relative md:static">
                         <span
-                          className="md:hidden w-24  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-32  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
                             fontSize: "11px",
                           }}
                         >
-                          NUMBER OF OFFSPRING
+                          No. of Offspring
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
                           <p>{row.offspringNumber}</p>
                         </div>
                       </td>
-                      <td className="w-full md:w-auto   justify-between items-center p-3 text-gray-800  border border-b text-center flex md:table-cell relative md:static">
+                      <td className="w-full md:w-auto  space-x-2  justify-between items-center p-3 text-gray-800  border border-b text-center flex md:table-cell relative md:static">
                         <span
-                          className="md:hidden w-24  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-32  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -526,14 +526,14 @@ export default function Lactation() {
                         </span>
                         <span style={{ fontSize: "14px", color: "black" }}>
                           {moment(row.deliveryDate).format(
-                            "MMMM Do, YYYY, h:mm:ss A"
+                            "MMM D, YYYY, h:mm:ss A"
                           )}
                         </span>
                       </td>
 
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center  flex md:table-cell relative md:static ">
                         <span
-                          className="md:hidden w-24  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-32  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -564,7 +564,7 @@ export default function Lactation() {
                             <button
                               title="More info"
                               onClick={() =>
-                                handleViewLivestock(row.entryLactationId)
+                                handleViewLactation(row.entryLactationId)
                               }
                               className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
                             >
@@ -1152,7 +1152,7 @@ export default function Lactation() {
         )
       }
 
-      {viewLivestock && (
+      {ViewLactation && (
         <div className="fixed inset-0 flex  items-center justify-center bg-gray-800 bg-opacity-50 z-50">
           <div
             className="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3"
@@ -1225,7 +1225,7 @@ export default function Lactation() {
               {/* <div className=" " style={{ width: "100%" }}>
                 <button
                   className="close-btn"
-                  onClick={() => setviewLivestock(false)}
+                  onClick={() => setViewLactation(false)}
                 >
                   Close
                 </button>
@@ -1235,14 +1235,14 @@ export default function Lactation() {
               <p
                 onClick={() => {
                   setmilkCompositionState(true);
-                  setviewLivestock(false);
+                  setViewLactation(false);
                 }}
                 className="text-white bg-[#008000]  max-w-lg px-2 py-2 text-center  rounded-md cursor-pointer hover:bg-green-700"
               >
                 Milk Composition{" "}
               </p>{" "}
               <p
-                onClick={() => setviewLivestock(false)}
+                onClick={() => setViewLactation(false)}
                 className="text-white bg-red-600  px-2  text-center py-2 rounded-md cursor-pointer  "
               >
                 Close
@@ -1310,7 +1310,7 @@ export default function Lactation() {
               <p
                 onClick={() => {
                   setmilkCompositionState(false);
-                  setviewLivestock(true);
+                  setViewLactation(true);
                 }}
                 className="text-white bg-red-600 w-full  px-5    text-center py-2 rounded-md cursor-pointer  "
               >
@@ -1325,7 +1325,7 @@ export default function Lactation() {
       </div> */}
 
       {(!formModal || !editformInput) && (
-        <div className="md:mt-0 mt-20   hidden md:block ">
+        <div className="md:mt-0 mt-20    ">
           <Footer />
         </div>
       )}

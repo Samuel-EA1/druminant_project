@@ -51,7 +51,7 @@ function ModuleHeader() {
 
         if (decoded.exp < currentTime) {
           setUserData(null);
-
+           localStorage.removeItem('token')
           return;
         }
 
