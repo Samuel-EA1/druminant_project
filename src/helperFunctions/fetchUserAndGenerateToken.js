@@ -1,8 +1,9 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-
 const BASE_URL =
-  "http://localhost:5000/api/v1" || process.env.NEXT_PUBLIC_API_BASE_URL;
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:5000/api/v1"
+    : process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const refreshToken = async (userData) => {
   if (userData && userData.status) {
@@ -26,7 +27,7 @@ export const refreshToken = async (userData) => {
       if (error.code === "ERR_  NETWORK") {
         return toast.error("Something went wrong, please try again later!");
       }
-      if (error.response.data.message === "Invalid token") {
+      if (error.response && error.response.data.message === "Invalid token") {
         localStorage.removeItem("token");
         router.push("/login");
       }
