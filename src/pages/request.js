@@ -122,107 +122,109 @@ export default function Requests() {
         />
       </Head>
       <ModuleHeader />
-      <div className="   my-20 max-md:my-10  mx-auto px-1">
-        <div className="p-4 min-h-screen  max-md:max-w-lg max-w-4xl mx-auto  rounded-lg border shadow-md sm:p-8 bg-gray-800 dark:border-gray-700">
-          <div className="  mb-4 border-b pb-2 border-gray-500 flex items-center space-x-2">
-            <BsPeople className="text-white text-lg h-10 w-10" />
-            <h3 className="text-2xl font-bold leading-none   text-white">
-              Latest Requests
-            </h3>
-          </div>
-          {fetching ? (
-            <div className="text-center  mx-0  text-white h-[50vh] flex items-center justify-center ">
-              <div className="flex items-center justify-center flex-col">
-                <AiOutlineLoading3Quarters className="text-4xl  animate-spin" />
+      {userData && (
+        <div className="   my-20 max-md:my-10  mx-auto px-1">
+          <div className="p-4 min-h-screen  max-md:max-w-lg max-w-4xl mx-auto  rounded-lg border shadow-md sm:p-8 bg-gray-800 dark:border-gray-700">
+            <div className="  mb-4 border-b pb-2 border-gray-500 flex items-center space-x-2">
+              <BsPeople className="text-white text-lg h-10 w-10" />
+              <h3 className="text-2xl font-bold leading-none   text-white">
+                Latest Requests
+              </h3>
+            </div>
+            {fetching ? (
+              <div className="text-center  mx-0  text-white h-[50vh] flex items-center justify-center ">
+                <div className="flex items-center justify-center flex-col">
+                  <AiOutlineLoading3Quarters className="text-4xl  animate-spin" />
+                </div>
               </div>
-            </div>
-          ) : !fetching && customers.length == 0 ? (
-            <div className="text-center  mx-0  flex-col  text-black h-[80vh] flex items-center justify-center">
-              <h2 className="flex items-center text-white  justify-center flex-col">
-                Sorry no Farmland requests found!
-              </h2>
-              <Link
-                className="px-10 py-2 flex items-center space-x-2 group cursor-pointer hover:bg-green-800 mt-5 text-white bg-[#008000] rounded-md justify-center"
-                href={"/d"}
-              >
-                <FaLongArrowAltDown className="rotate-90  group-hover:-translate-x-2 transform duration-1000" />
-                <p> Back to Framland dashboard</p>
-              </Link>
-            </div>
-          ) : (
-            <div>
-              <ul role="list" className="">
-                {customers.map((customer, index) => (
-                  <li key={index} className="py-3  sm:py-4">
-                    <div className="flex justify-between items-center space-x-4">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate text-white">
-                          @{customer.username}
-                        </p>
-                        <p className="text-sm truncate text-gray-400">
-                          {customer.email}
-                        </p>
-                      </div>
-                      <div className=" b space-x-2 items-center text-base font-semibold text-gray-900 dark:text-white">
-                        {processingIndex !== index ? (
-                          <>
+            ) : !fetching && customers.length == 0 ? (
+              <div className="text-center  mx-0  flex-col  text-black h-[80vh] flex items-center justify-center">
+                <h2 className="flex items-center text-white  justify-center flex-col">
+                  Sorry no Farmland requests found!
+                </h2>
+                <Link
+                  className="px-10 py-2 flex items-center space-x-2 group cursor-pointer hover:bg-green-800 mt-5 text-white bg-[#008000] rounded-md justify-center"
+                  href={`/dashboard/${userData.farmland}`}
+                >
+                  <FaLongArrowAltDown className="rotate-90  group-hover:-translate-x-2 transform duration-1000" />
+                  <p> Back to Framland dashboard</p>
+                </Link>
+              </div>
+            ) : (
+              <div>
+                <ul role="list" className="">
+                  {customers.map((customer, index) => (
+                    <li key={index} className="py-3  sm:py-4">
+                      <div className="flex justify-between items-center space-x-4">
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium truncate text-white">
+                            @{customer.username}
+                          </p>
+                          <p className="text-sm truncate text-gray-400">
+                            {customer.email}
+                          </p>
+                        </div>
+                        <div className=" b space-x-2 items-center text-base font-semibold text-gray-900 dark:text-white">
+                          {processingIndex !== index ? (
+                            <>
+                              <button
+                                disabled={
+                                  processingIndex && processingIndex !== index
+                                }
+                                onClick={() =>
+                                  handleRequests(
+                                    index,
+                                    customer.username,
+                                    "Accept"
+                                  )
+                                }
+                                className={`px-3 sm:px-5 py-3 bg-[#008000] rounded-md text-white ${
+                                  processingIndex &&
+                                  processingIndex !== index &&
+                                  "bg-transparent border-2 border-gray-50/10"
+                                }`}
+                              >
+                                Accept
+                              </button>
+                              <button
+                                disabled={
+                                  processingIndex && processingIndex !== index
+                                }
+                                onClick={() =>
+                                  handleRequests(
+                                    index,
+                                    customer.username,
+                                    "Reject"
+                                  )
+                                }
+                                className={`px-3 sm:px-5 py-3 bg-red-700 rounded-md text-white ${
+                                  processingIndex &&
+                                  processingIndex !== index &&
+                                  "bg-transparent border-2 border-gray-50/10"
+                                }`}
+                              >
+                                Reject
+                              </button>
+                            </>
+                          ) : (
                             <button
-                              disabled={
-                                processingIndex && processingIndex !== index
-                              }
-                              onClick={() =>
-                                handleRequests(
-                                  index,
-                                  customer.username,
-                                  "Accept"
-                                )
-                              }
-                              className={`px-3 sm:px-5 py-3 bg-[#008000] rounded-md text-white ${
-                                processingIndex &&
-                                processingIndex !== index &&
-                                "bg-transparent border-2 border-gray-50/10"
-                              }`}
+                              disabled
+                              className="bg-[#008000] text-white px-5 py-2 rounded-md w-full flex justify-center space-x-2 items-center"
                             >
-                              Accept
+                              <AiOutlineLoading3Quarters className="animate-spin" />
+                              <p>Processing...</p>
                             </button>
-                            <button
-                              disabled={
-                                processingIndex && processingIndex !== index
-                              }
-                              onClick={() =>
-                                handleRequests(
-                                  index,
-                                  customer.username,
-                                  "Reject"
-                                )
-                              }
-                              className={`px-3 sm:px-5 py-3 bg-red-700 rounded-md text-white ${
-                                processingIndex &&
-                                processingIndex !== index &&
-                                "bg-transparent border-2 border-gray-50/10"
-                              }`}
-                            >
-                              Reject
-                            </button>
-                          </>
-                        ) : (
-                          <button
-                            disabled
-                            className="bg-[#008000] text-white px-5 py-2 rounded-md w-full flex justify-center space-x-2 items-center"
-                          >
-                            <AiOutlineLoading3Quarters className="animate-spin" />
-                            <p>Processing...</p>
-                          </button>
-                        )}
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
       <div className="md:mt-0 mt-20 ">
         <Footer />
       </div>

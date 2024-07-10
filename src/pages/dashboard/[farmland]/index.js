@@ -1,5 +1,5 @@
 // import Header2 from "@/components/header2";
-import { userState } from "@/atom";
+import { newUserToken, userState } from "@/atom";
 import { Footer } from "@/components/footer";
 import ModuleHeader from "@/components/moduleheader";
 import Head from "next/head";
@@ -21,6 +21,10 @@ import { BsCalendar2Date } from "react-icons/bs";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/router";
+import {
+  fetchStatus,
+  refreshToken,
+} from "@/helperFunctions/fetchUserAndGenerateToken";
 
 export default function Dashboard() {
   const BASE_URL =
@@ -28,14 +32,16 @@ export default function Dashboard() {
   const [hamburgerState, setHamburgerState] = useState(false);
 
   const [loading, setLoading] = useState(false);
-  const [eventCount, setEventCount] = useState([]);
-  const [pregnancyCount, setPregnancyCount] = useState([]);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [newToken, setnewToken] = useRecoilState(newUserToken);
   const [lactationCount, setLactationCount] = useState([]);
   const [quarantineCount, setQuarantineCount] = useState([]);
   const [expenseCount, setExpenseCount] = useState([]);
   const [incomeCount, setIncomeCount] = useState([]);
   const [moduleCounts, setModuleCounts] = useState([]);
   const [farmlandError, setfarmlandError] = useState("");
+  const [farmland, setFarmland] = useState("");
   const router = useRouter();
   // render the quarantine modulebased on the role of user
   const userData = useRecoilValue(userState);
@@ -44,6 +50,37 @@ export default function Dashboard() {
   //   toast("Welcome!");
   // }, []);
 
+  // local function to refresh and set new token
+  const refreshTOkenCallBack = async () => {
+    const refreshedToken = await refreshToken(userData);
+
+    if (refreshedToken) {
+      setnewToken(refreshedToken);
+    }
+  };
+
+  // check  user  status
+  useEffect(() => {
+    if (userData) {
+      const fetchStatusAndRefreshToken = () => {
+        fetchStatus(userData.username)
+          .then((res) => {
+            if (res !== userData.status) {
+              console.log(res, userData.status);
+              // generate new token
+              refreshTOkenCallBack();
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+
+      fetchStatusAndRefreshToken(); // Initial call
+    }
+  }, [userData]);
+
+  // fetch farmland details
   useEffect(() => {
     const farmland = router.query.farmland;
 
@@ -60,25 +97,24 @@ export default function Dashboard() {
             }
           );
           setLoading(false);
+
           setModuleCounts(response.data.message);
         } catch (error) {
           console.log(error);
           setLoading(false);
-          if (error.code === "ERR_NETWORK"){
-           return  toast.error('Something went wrong, please try again later!');
+          if (error.code === "ERR_NETWORK") {
+            return toast.error("Something went wrong, please try again later!");
           }
-            if (error.response.data.message === "Invalid token") {
-              localStorage.removeItem("token");
-              router.push("/login");
-            }
+          if (error.response.data.message === "Invalid token") {
+            localStorage.removeItem("token");
+            router.push("/login");
+          }
           console.error("Error fetching data", error);
           if (error.response && error.response.status === 400) {
             setfarmlandError(error.response.data.message);
-            toast.error(error.response.data.message);
           }
           if (error.response && error.response.status === 401) {
             setfarmlandError(error.response.data.message);
-            toast.error(error.response.data.message);
           }
         }
       };
@@ -92,6 +128,53 @@ export default function Dashboard() {
       (item) => item.livestockCount.name === liveStockType
     );
     return match[moduleType].data;
+  };
+
+  const sendRquest = async () => {
+    setSending(true);
+    setSent(false);
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/farmland/request`,
+        { farmland },
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+        }
+      );
+      if (response.data.message) {
+        const refreshedToken = await refreshToken(userData);
+        if (refreshedToken) {
+          setnewToken(refreshedToken);
+        }
+        setSent(true);
+        setSending(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setSending(false);
+      setSent(false);
+      if (error.code === "ERR_NETWORK") {
+        return toast.error("Something went wrong, please try again later!");
+      }
+      if (error.response.data.message === "Invalid token") {
+        localStorage.removeItem("token");
+      }
+      console.error("Error fetching data", error);
+      if (error.response && error.response.status === 400) {
+        toast.error(error.response.data.message);
+      }
+
+      if (error.response && error.response.status === 404) {
+        toast.error(error.response.data.message);
+      }
+      if (error.response && error.response.status === 401) {
+        toast.error(error.response.data.message);
+      }
+    }
+
+    console.log(sent, userData.status);
   };
 
   return (
@@ -195,7 +278,7 @@ export default function Dashboard() {
                     {/* income and expense */}
                     <div className="p-2 basis-80 lg:basis-96 md:m-5  ">
                       <Link href={`/dashboard/${userData.farmland}/finance`}>
-                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:scale-105 hover:animate-pulse ">
+                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:  hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
                             <h1 className="font-bold text-lg mb-2">
@@ -279,7 +362,7 @@ export default function Dashboard() {
                     {/* envent tracker */}
                     <div className="p-2 basis-80 lg:basis-96 md:m-5  ">
                       <Link href={`/dashboard/${userData.farmland}/event`}>
-                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:scale-105 hover:animate-pulse ">
+                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:  hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
                             <h1 className="font-bold text-lg mb-2">
@@ -347,7 +430,7 @@ export default function Dashboard() {
                       <Link
                         href={`/dashboard/${userData.farmland}/pregnancy-tracker`}
                       >
-                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:scale-105 hover:animate-pulse ">
+                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:  hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
                             <h1 className="font-bold text-lg mb-2">
@@ -415,7 +498,7 @@ export default function Dashboard() {
                     {/* lactation */}
                     <div className="p-2 basis-80 lg:basis-96 md:m-5  ">
                       <Link href={`/dashboard/${userData.farmland}/lactation`}>
-                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:scale-105 hover:animate-pulse ">
+                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:  hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
                             <h1 className="font-bold text-lg mb-2">
@@ -482,7 +565,7 @@ export default function Dashboard() {
                     </div>
                     <div className="p-2 basis-80 lg:basis-96 md:m-5  ">
                       <Link href={`/dashboard/${userData.farmland}/quarantine`}>
-                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:scale-105 hover:animate-pulse ">
+                        <div className="bg-gray-200 w-full p-3   rounded-md  max-w-md lg:max-w-sm mx-auto  duration-1000 hover:  hover:animate-pulse ">
                           <div className="flex items-center">
                             {/* <FaCow style={{ fontSize: "25px", marginTop: "10px", marginLeft: "5px", color: "#030025" }} /> */}
                             <h1 className="font-bold text-lg mb-2">
@@ -566,40 +649,62 @@ export default function Dashboard() {
                 </div>
               )}
             </div>
-          ) : userData.status === "Reject" ? (
+          ) : userData.status === "Reject" && !sent ? (
             <div className="text-center text-gray-200 mx-0 h-screen flex items-center justify-center">
               <div className="flex items-center justify-center flex-col">
-                <p className="dashboard-mssg">Your request has been denied!</p>
-                <label className="text-sm mt-10" for="name">
-                  You can make a new request
-                </label>
-                <input
-                  title="Add additional remarks about the livestock here. Make it brief for easy readablility."
-                  id="name"
-                  // value={formInput.remark}
-                  // onChange={handleChange}
-                  type="text"
-                  placeholder="Farmland name"
-                  name="remark"
-                  className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                />
-                <button
-                  // disabled={processingIndex && processingIndex !== index}
-                  // onClick={() =>
-                  //   handleRequests(index, customer.username, "Reject")
-                  // }
-                  className={`px-3 sm:px-5 py-3 bg-[#008000] rounded-md text-white `}
-                >
-                  Send Request
-                </button>
+                <>
+                  {" "}
+                  <p className="dashboard-mssg">
+                    Your request has been denied!
+                  </p>
+                  <label className="text-sm mt-10" for="name">
+                    You can make a new request
+                  </label>
+                  <input
+                    title="Add additional remarks about the livestock here. Make it brief for easy readablility."
+                    id="name"
+                    // value={formInput.remark}
+                    onChange={(e) => setFarmland(e.target.value)}
+                    type="text"
+                    placeholder="Farmland name"
+                    name="remark"
+                    className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                  />
+                  <button
+                    onClick={sendRquest}
+                    disabled={sending}
+                    className={`px-3 sm:px-5 py-3 bg-[#008000] rounded-md text-white `}
+                  >
+                    {sending ? (
+                      <div className="flex justify-center space-x-2 items-center">
+                        {" "}
+                        <AiOutlineLoading3Quarters className="text-xl  animate-spin" />{" "}
+                        <span> Processing</span>
+                      </div>
+                    ) : (
+                      "Send Request"
+                    )}
+                  </button>
+                </>
+              </div>
+            </div>
+          ) : userData.status === "Reject" && sent ? (
+            <div className="text-center text-gray-200 mx-0 h-screen flex items-center justify-center">
+              <div className="flex items-center justify-center flex-col">
+                <>
+                  {" "}
+                  <p className="dashboard-mssg">
+                    Farmland request successfully sent!
+                  </p>
+                </>
               </div>
             </div>
           ) : (
             <div className="text-center text-gray-200 mx-0 h-screen flex items-center justify-center">
               <div className="flex items-center justify-center flex-col">
-                <p className=" px-2 max-w-lg">
-                  You are not allowed to access this farmland. <br />
-                  Please, remind admin to accept your request
+                <p className=" px-5 max-w-md text-lg">
+                  Your request is pending. Please, remind admin to accept your
+                  request!
                 </p>
               </div>
             </div>

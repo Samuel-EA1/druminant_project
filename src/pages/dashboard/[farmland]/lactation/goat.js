@@ -394,9 +394,7 @@ export default function Lactation() {
           {userData?.token && (
             <div className=" flex flex-col  h-fit py-2 space-y-2 ">
               <div>
-                <h1 className="text-lg font-bold">
-                  Lactation Profile (GOAT)
-                </h1>
+                <h1 className="text-lg font-bold">Lactation Profile (GOAT)</h1>
                 <p className=" mt-1">Keep track of your Lactation profile</p>
               </div>
 
@@ -671,7 +669,7 @@ export default function Lactation() {
 
         formModal && (
           <div
-            className="dashboard-main2 py-12 bg-[#01000D]  transition overflow-y-auto  duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
+            className="  -mt-12  py-12 bg-[#01000D]        duration-150 ease-in-out   "
             id="modal"
           >
             <p
@@ -685,183 +683,212 @@ export default function Lactation() {
               role="alert"
               className="container mx-auto w-11/12 md:w-2/3 max-w-xl"
             >
-              <div className="w-[auto] bg-white relative mt-4 md:mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
+              <div className="w-[auto] bg-white   mt-4 md:mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
                 <form>
                   <div className="general-form">
-                    <div className=" w-full">
-                      <label className="input-label" htmlFor="entryLactationId">
-                        lactation Id
-                      </label>
-                      <input
-                        title="Enter the lactationEntryId of the lactation here."
-                        placeholder="E.g. Holstein Friesian"
-                        maxLength={20}
-                        required
-                        value={formInput.entryLactationId}
-                        onChange={handleChange}
-                        name="entryLactationId"
-                        id="entryLactationId"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                    <div className=" w-full flex flex-wrap items-center   justify-between">
+                      <div className=" w-full md:w-[40%]">
+                        <label
+                          className="input-label"
+                          htmlFor="entryLactationId"
+                        >
+                          Tag Id
+                        </label>
+                        <input
+                          title="Enter the lactationEntryId of the lactation here."
+                          placeholder="E.g. pig321"
+                          maxLength={20}
+                          required
+                          value={formInput.entryLactationId}
+                          onChange={handleChange}
+                          name="entryLactationId"
+                          id="entryLactationId"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" for="deliveryDate">
-                        Delivery Date
-                      </label>
-                      <input
-                        type="datetime-local"
-                        id="deliveryDate"
-                        value={formInput.deliveryDate}
-                        onChange={handleChange}
-                        name="deliveryDate"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-                      <label className="input-label" htmlFor="offspringNumber">
-                        number of offspring
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={formInput.offspringNumber}
-                        onChange={handleChange}
-                        id="offspringNumber"
-                        name="offspringNumber"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" for="deliveryDate">
+                          Delivery Date
+                        </label>
+                        <input
+                          type="datetime-local"
+                          id="deliveryDate"
+                          value={formInput.deliveryDate}
+                          onChange={handleChange}
+                          name="deliveryDate"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal min-w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
+                      <div className=" w-full md:w-[40%]">
+                        <label
+                          className="input-label"
+                          htmlFor="offspringNumber"
+                        >
+                          number of offspring
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={formInput.offspringNumber}
+                          onChange={handleChange}
+                          id="offspringNumber"
+                          name="offspringNumber"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" htmlFor="milkYield">
-                        Milk Yield
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={formInput.milkYield}
-                        onChange={handleChange}
-                        id="milkYield"
-                        name="milkYield"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="milkYield">
+                          Milk Yield
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={formInput.milkYield}
+                          onChange={handleChange}
+                          id="milkYield"
+                          name="milkYield"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" htmlFor="weight">
-                        Weight
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={formInput.weight}
-                        onChange={handleChange}
-                        id="weight"
-                        name="weight"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="weight">
+                          Weight
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={formInput.weight}
+                          onChange={handleChange}
+                          id="weight"
+                          name="weight"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" for="observation">
-                        Observation
-                      </label>
-                      <input
-                        title="Add additional remarks about the lactation here. Make it brief for easy readablility."
-                        id="observation"
-                        value={formInput.observation}
-                        onChange={handleChange}
-                        type="text"
-                        name="observation"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" for="observation">
+                          Observation
+                        </label>
+                        <input
+                          title="Add additional remarks about the lactation here. Make it brief for easy readablility."
+                          id="observation"
+                          value={formInput.observation}
+                          onChange={handleChange}
+                          type="text"
+                          name="observation"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" htmlFor="fat">
-                        Fat
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={formInput.fat}
-                        onChange={handleChange}
-                        id="fat"
-                        name="fat"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="fat">
+                          Fat
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={formInput.fat}
+                          onChange={handleChange}
+                          id="fat"
+                          name="fat"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" htmlFor="snf">
-                        Snf
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={formInput.snf}
-                        onChange={handleChange}
-                        id="snf"
-                        name="snf"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="snf">
+                          Snf
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={formInput.snf}
+                          onChange={handleChange}
+                          id="snf"
+                          name="snf"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="lactose">
+                          Lactose
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={formInput.lactose}
+                          onChange={handleChange}
+                          id="lactose"
+                          name="lactose"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" htmlFor="lactose">
-                        Lactose
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={formInput.lactose}
-                        onChange={handleChange}
-                        id="lactose"
-                        name="lactose"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="salt">
+                          Salt
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={formInput.salt}
+                          onChange={handleChange}
+                          id="salt"
+                          name="salt"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" htmlFor="salt">
-                        Salt
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={formInput.salt}
-                        onChange={handleChange}
-                        id="salt"
-                        name="salt"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="protein">
+                          Protein
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={formInput.protein}
+                          onChange={handleChange}
+                          id="protein"
+                          name="protein"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" htmlFor="protein">
-                        Protein
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={formInput.protein}
-                        onChange={handleChange}
-                        id="protein"
-                        name="protein"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-
-                      <label className="input-label" htmlFor="water">
-                        Water
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={formInput.water}
-                        onChange={handleChange}
-                        id="water"
-                        name="water"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="water">
+                          Water
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={formInput.water}
+                          onChange={handleChange}
+                          id="water"
+                          name="water"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
                     </div>
                   </div>
                 </form>
@@ -936,166 +963,209 @@ export default function Lactation() {
               <div className="w-[auto] bg-white relative mt-4 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
                 <form>
                   <div className="general-form">
-                    <div className=" w-full">
-                      <label className="input-label" htmlFor="entryLactationId">
-                        lactation Id
-                      </label>
-                      <input
-                        title="Enter the lactationEntryId of the lactation here."
-                        placeholder="E.g. Holstein Friesian"
-                        maxLength={20}
-                        required
-                        value={editformInput.entryLactationId}
-                        onChange={handleChange}
-                        name="entryLactationId"
-                        id="entryLactationId"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                    <div className=" w-full flex flex-wrap items-center   justify-between">
+                      <div className=" w-full md:w-[40%]">
+                        <label
+                          className="input-label"
+                          htmlFor="entryLactationId"
+                        >
+                          Tag Id
+                        </label>
+                        <input
+                          title="Enter the lactationEntryId of the lactation here."
+                          placeholder="E.g. pig321"
+                          maxLength={20}
+                          required
+                          value={editformInput.entryLactationId}
+                          onChange={handleChange}
+                          name="entryLactationId"
+                          id="entryLactationId"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" for="deliveryDate">
-                        Delivery Date
-                      </label>
-                      <input
-                        type="datetime-local"
-                        id="deliveryDate"
-                        value={formatDateString(editformInput.deliveryDate)}
-                        onChange={handleChange}
-                        name="deliveryDate"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" for="deliveryDate">
+                          Delivery Date
+                        </label>
+                        <input
+                          type="datetime-local"
+                          id="deliveryDate"
+                          value={formatDateString(editformInput.deliveryDate)}
+                          onChange={handleChange}
+                          name="deliveryDate"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal min-w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
+                      <div className=" w-full md:w-[40%]">
+                        <label
+                          className="input-label"
+                          htmlFor="offspringNumber"
+                        >
+                          number of offspring
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={editformInput.offspringNumber}
+                          onChange={handleChange}
+                          id="offspringNumber"
+                          name="offspringNumber"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" htmlFor="milkYield">
-                        Milk Yield
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={editformInput.milkYield}
-                        onChange={handleChange}
-                        id="milkYield"
-                        name="milkYield"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="milkYield">
+                          Milk Yield
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={editformInput.milkYield}
+                          onChange={handleChange}
+                          id="milkYield"
+                          name="milkYield"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" htmlFor="weight">
-                        Weight
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={editformInput.weight}
-                        onChange={handleChange}
-                        id="weight"
-                        name="weight"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="weight">
+                          Weight
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={editformInput.weight}
+                          onChange={handleChange}
+                          id="weight"
+                          name="weight"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" for="observation">
-                        Observation
-                      </label>
-                      <input
-                        title="Add additional remarks about the lactation here. Make it brief for easy readablility."
-                        id="observation"
-                        value={editformInput.observation}
-                        onChange={handleChange}
-                        type="text"
-                        name="observation"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" for="observation">
+                          Observation
+                        </label>
+                        <input
+                          title="Add additional remarks about the lactation here. Make it brief for easy readablility."
+                          id="observation"
+                          value={editformInput.observation}
+                          onChange={handleChange}
+                          type="text"
+                          name="observation"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" htmlFor="fat">
-                        Fat
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={editformInput.fat}
-                        onChange={handleChange}
-                        id="fat"
-                        name="fat"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="fat">
+                          Fat
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={editformInput.fat}
+                          onChange={handleChange}
+                          id="fat"
+                          name="fat"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" htmlFor="snf">
-                        Snf
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={editformInput.snf}
-                        onChange={handleChange}
-                        id="snf"
-                        name="snf"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="snf">
+                          Snf
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={editformInput.snf}
+                          onChange={handleChange}
+                          id="snf"
+                          name="snf"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="lactose">
+                          Lactose
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={editformInput.lactose}
+                          onChange={handleChange}
+                          id="lactose"
+                          name="lactose"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" htmlFor="lactose">
-                        Lactose
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={editformInput.lactose}
-                        onChange={handleChange}
-                        id="lactose"
-                        name="lactose"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="salt">
+                          Salt
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={editformInput.salt}
+                          onChange={handleChange}
+                          id="salt"
+                          name="salt"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" htmlFor="salt">
-                        Salt
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={editformInput.salt}
-                        onChange={handleChange}
-                        id="salt"
-                        name="salt"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="protein">
+                          Protein
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={editformInput.protein}
+                          onChange={handleChange}
+                          id="protein"
+                          name="protein"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
 
-                      <label className="input-label" htmlFor="protein">
-                        Protein
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={editformInput.protein}
-                        onChange={handleChange}
-                        id="protein"
-                        name="protein"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-
-                      <label className="input-label" htmlFor="water">
-                        Water
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the lactation tag."
-                        maxLength={10}
-                        required
-                        type="number"
-                        value={editformInput.water}
-                        onChange={handleChange}
-                        id="water"
-                        name="water"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" htmlFor="water">
+                          Water
+                        </label>
+                        <input
+                          title="Input the unique identification number assigned to the lactation tag."
+                          maxLength={10}
+                          required
+                          type="number"
+                          value={editformInput.water}
+                          onChange={handleChange}
+                          id="water"
+                          name="water"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                      </div>
                     </div>
                   </div>
                 </form>
