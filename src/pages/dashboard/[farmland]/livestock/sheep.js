@@ -58,6 +58,7 @@ export default function Livestock() {
     process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api/v1";
   const [formModal, setFormModal] = useState(false);
   const [viewId, setviewId] = useState(null);
+  const [deleteId, setdeleteId] = useState(null);
   const [fetching, setFetching] = useState(false);
   const userData = useRecoilValue(userState);
   const [deleting, setdelete] = useState(false);
@@ -187,6 +188,7 @@ export default function Livestock() {
   };
 
   const handledeleteRecord = async (id) => {
+    setdeleteId(id);
     setdelete(true);
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this profile?"
@@ -204,6 +206,7 @@ export default function Livestock() {
         setdelete(false);
         toast.success(response);
       } catch (error) {
+        setdeleteId("");
         setdelete(false);
         console.log(error);
         if (error.code === "ERR_BAD_REQUEST") {
@@ -212,6 +215,7 @@ export default function Livestock() {
       }
     } else {
       setdelete(false);
+      setdeleteId("");
     }
   };
 
@@ -474,40 +478,38 @@ export default function Livestock() {
 
       <ModuleHeader />
 
-      <>
+      <div className="p-2 md:p-5">
         {" "}
-        <div className="">
+        <div className=" md:mt-10 ">
           {userData?.token && (
-            <>
-              <div className="up">
-                <div>
-                  <h1 className="module-header md:mt-0  mt-0 ">
-                    Livestock Profile (sheep)
-                  </h1>
-                  <p>Keep track of your livestock profile</p>
-                </div>
+            <div className=" flex flex-col  h-fit py-2 space-y-2  ">
+              <div>
+                <h1 className="text-2xl  font-bold">
+                  Livestock Profile (SHEEP)
+                </h1>
+                <p className=" mt-1">Keep track of your livestock profile</p>
               </div>
 
-              <div className="add-search-div">
-                <div className="cursor">
-                  <p className="add-btn" onClick={addProfile}>
-                    <span>+ </span> Add Profile
-                  </p>
-                </div>
-                {/* <input
-              type="text"
-              className="search-input"
-              maxLength={15}
-              placeholder="Search here (Tag id)"
-            /> */}
-              </div>
-            </>
+              <p
+                className="text-white bg-[#008000] cursor-pointer hover:bg-[#026702]  w-fit p-2 rounded-md"
+                onClick={addProfile}
+              >
+                <span>+ </span> Add Profile
+              </p>
+            </div>
+
+            //   {/* <input
+            //   type="text"
+            //   className="search-input"
+            //   maxLength={15}
+            //   placeholder="Search here (Tag id)"
+            // /> */}
           )}
         </div>
         {userData?.token && (
           <div
-            className={`flex  flex-col justify-between h-screen ${
-              (editFormModal || quarantineModal) && "hidden"
+            className={`flex  flex-col justify-between min-h-screen ${
+              (editFormModal || quarantineModal || formModal) && "hidden"
             }`}
           >
             <table className="w-full mt-0">
@@ -562,11 +564,11 @@ export default function Livestock() {
                   {livestockData.map((row, key) => (
                     <tr
                       key={key}
-                      className="bg-white md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap mb-1 md:mb-0 shadow-sm shadow-gray-800 md:shadow-none"
+                      className="  md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap my-5 md:mb-0 shadow-md bg-gray-100 shadow-gray-800 md:shadow-none"
                     >
-                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b  block md:table-cell relative md:static">
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -581,7 +583,7 @@ export default function Livestock() {
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -596,7 +598,7 @@ export default function Livestock() {
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -612,7 +614,7 @@ export default function Livestock() {
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -627,7 +629,7 @@ export default function Livestock() {
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -644,7 +646,7 @@ export default function Livestock() {
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -659,7 +661,7 @@ export default function Livestock() {
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
                         <span
-                          className="md:hidden  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
@@ -695,13 +697,16 @@ export default function Livestock() {
                               <MdRemoveRedEye style={{ fontSize: "14px" }} />
                             </button>
                           )}
-                          {deleting ? (
+                          {row.tagId === deleteId ? (
                             <button
-                              className=" mr-2 px-3 py-1 ml-2 animate-spin   hover:bg-red-600 text-white bg-red-500 rounded-md"
+                              className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
                               onClick={() => handledeleteRecord(row.tagId)}
                             >
                               {/* Delete */}
                               <AiOutlineLoading3Quarters
+                                className={`${
+                                  row.tagId === deleteId && "animate-spin"
+                                } `}
                                 style={{ fontSize: "14px" }}
                               />
                             </button>
@@ -757,7 +762,7 @@ export default function Livestock() {
               )}
           </div>
         )}
-      </>
+      </div>
 
       {!userData?.token && !fetching && (
         <div className="text-center border-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
@@ -773,9 +778,6 @@ export default function Livestock() {
         </div>
       )}
 
-      <div className="md:mt-0 mt-20   hidden md:block ">
-        <Footer />
-      </div>
       {
         //Livestock input form
 
@@ -783,7 +785,7 @@ export default function Livestock() {
           <div
             className="dashboard-main2 py-12 bg-[#01000D]  transition   duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
             id="modal"
-            style={{backgroundColor:'red', height:"150vh"}}
+            style={{ backgroundColor: "red", height: "150vh" }}
           >
             <p
               className="form-header  pt-5 pb:0 md:pt-0"
@@ -1397,9 +1399,9 @@ export default function Livestock() {
           </div>
         </div>
       )}
-      {/* <div className="md:mt-0 mt-20  md:hidden ">
+      <div className="md:mt-0 mt-20   ">
         <Footer />
-      </div> */}
+      </div>
     </div>
   );
 }

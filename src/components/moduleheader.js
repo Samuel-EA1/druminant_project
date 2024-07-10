@@ -1,4 +1,9 @@
-import { userState } from "@/atom";
+import { newUserToken, userState } from "@/atom";
+import {
+  fetchStatus,
+  refreshToken,
+} from "@/helperFunctions/fetchUserAndGenerateToken";
+
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
@@ -12,11 +17,15 @@ import { toast } from "react-toastify";
 import { useRecoilState } from "recoil";
 
 function ModuleHeader() {
+  const BASE_URL =
+    "http://localhost:5000/api/v1" || process.env.NEXT_PUBLIC_API_BASE_URL;
+
   const [activateIcon, setactivateIcon] = useState(false);
   const [hamburg, setHamburg] = useState(true);
   const [cancel, setCancel] = useState(false);
   const router = useRouter();
 
+  const [refreshing, setrefreshing] = useState(false);
   const currentPath = router.asPath;
 
   function dropNav() {
@@ -36,24 +45,29 @@ function ModuleHeader() {
     setHamburg(true);
   }
 
-  //change the link component to a p tag, create a fucntion that when a user clicks on the p tag, it clears the local storage and redirects the
-  //user back to home page
   const [userData, setUserData] = useRecoilState(userState);
+  const [newToken, setnewToken] = useRecoilState(newUserToken);
+  const [token, setToken] = useState(null);
+
+  // useEffect to fetch token from localstorage
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+    if (newToken) {
+      console.log("gotten new token");
+    }
+  }, []);
 
-    console.log(token, "header");
-    try {
-      if (token) {
+  useEffect(() => {
+    if (token) {
+      try {
         const decoded = jwtDecode(token);
         const currentTime = Date.now() / 1000;
 
         if (decoded.exp < currentTime) {
           setUserData(null);
-
-          toast.error("Login expired!");
-
+          localStorage.removeItem("token");
           return;
         }
 
@@ -65,11 +79,11 @@ function ModuleHeader() {
           farmland,
           token,
         });
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
-  }, []);
+  }, [token]);
 
   function logOut() {
     confirm("Are you sure you want to log out?");
