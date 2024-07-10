@@ -57,7 +57,7 @@ function ModuleHeader() {
     if (newToken) {
       console.log("gotten new token");
     }
-  }, []);
+  }, [newToken]);
 
   useEffect(() => {
     if (token) {

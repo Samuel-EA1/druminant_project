@@ -333,11 +333,13 @@ function FinanceRecord() {
       </Head>
       <ModuleHeader />
       {userData && !fetchError ? (
-        <div className="livestock p-2 md:p-5">
-          <div className="amount">
-            <h1>Income/Expense (goat)</h1>
-            <p>Track your income and expenses</p>
-          </div>
+         <div className="livestock p-2 md:p-5 ">
+         <div>
+               <h1 className="text-lg md:text-2xl head2 px-1 md:px-0 font-bold">
+                 Income/Expense (Goat)
+               </h1>
+               <p className=" px-1 md:px-0 mt-1">Track livestock-related income and expenses</p>
+             </div>
 
           <div className={`finance-cards `}>
             <div className="incomeCard flex" style={getActiveStyle("income")}>
@@ -561,7 +563,7 @@ function FinanceRecord() {
                           Txn Date
                         </span>
                         <span style={{ fontSize: "14px" }}>
-                          {moment(row.transactionDate).format(
+                            {moment(row.transactionDate).format(
                             "MMMM Do, YYYY, h:mm:ss A"
                           )}
                         </span>
@@ -661,12 +663,12 @@ function FinanceRecord() {
                     <form onSubmit={handleFinanceSubmit}>
                       <div>
                         <label className="input-label" htmlFor="financeEntryId">
-                          Finance Id
+                          Id
                         </label>
                         <input
                           title="(Assign an id to your transaction (e.g 1))"
                           maxLength={10}
-                          placeholder="E.g. Sales of livestock"
+                          placeholder="Finance entry id"
                           value={formInput.financeEntryId}
                           onChange={handleChange}
                           name="financeEntryId"
@@ -864,7 +866,7 @@ function FinanceRecord() {
                     <form onSubmit={(e) => handleEditRecord(e)}>
                       <div>
                         <label className="input-label" htmlFor="financeEntryId">
-                          Finance Id
+                          Id
                         </label>
                         <input
                           title="(Assign an id to your transaction (e.g 1))"
@@ -872,7 +874,7 @@ function FinanceRecord() {
                           value={editform.financeEntryId}
                           onChange={handleEditChange}
                           name="financeEntryId"
-                          placeholder="E.g. Sales of animal"
+                          placeholder="Finance entry id"
                           type="text"
                           id="financeEntryId"
                           class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"

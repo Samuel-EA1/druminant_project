@@ -39,7 +39,7 @@ function LivestockSelection() {
               fontSize: "17px",
             }}
           >
-            Event Profile Management
+            Event Tracker
           </h1>
           <p
             className="text-white mt-2 text-xs text-center md:text-sm"

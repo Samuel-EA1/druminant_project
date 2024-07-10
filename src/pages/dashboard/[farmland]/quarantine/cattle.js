@@ -471,20 +471,15 @@ export default function Quarantine() {
         {" "}
         <div className=" md:mt-10 ">
           {userData?.token && (
-            <div className=" flex flex-col  h-fit py-2 space-y-2  ">
-              <div>
-                <h1 className="text-2xl  font-bold">
-                  Quarantine Profile (Cattle)
-                </h1>
-                <p className=" mt-1">Keep track of your Quarantine profile</p>
-              </div>
+            <div className="  ">
+            <div>
+              <h1 className="text-lg md:text-2xl head  font-bold">
+                Quarantined Profile (Cattle)
+              </h1>
+              <p className=" mt-1">Keep track of quarantined profiles</p>
+            </div>
 
-              <p
-                className="text-white bg-[#008000] cursor-pointer hover:bg-[#026702]  w-fit p-2 rounded-md"
-                onClick={addProfile}
-              >
-                <span>+ </span> Add Profile
-              </p>
+              
             </div>
 
             //   {/* <input
@@ -501,7 +496,7 @@ export default function Quarantine() {
               (editFormModal || quarantineModal) && "hidden"
             }`}
           >
-            <table className={` w-full mt-0 `}>
+            <table className={` w-full mt-5 `}>
               <thead>
                 <tr>
                   <th
@@ -706,7 +701,7 @@ export default function Quarantine() {
               idCounter === "done" && (
                 <div className="text-center mx-0  flex-col text-black h-[100vh] flex items-center justify-center">
                   <div className="flex items-center justify-center flex-col">
-                    Sorry, no quarantine Record found!
+                    Sorry, no quarantined profile found!
                   </div>
                 </div>
               )}
@@ -959,7 +954,7 @@ export default function Quarantine() {
               role="alert"
               className="container mx-auto w-11/12 md:w-2/3 max-w-xl"
             >
-              <div className="w-[auto] bg-white relative mt-4 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
+              <div className="w-[auto] bg-white relative md:mt-0  mt-10 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
                 <div className="  text-center text-lg">
                   {" "}
                   Are sure you want to release this livestock?
@@ -1237,18 +1232,12 @@ export default function Quarantine() {
                 </p>
               </div>
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Tag ID</p>
+                <p className="text-sm text-gray-600">Quarantine Date</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.tagId}
+                {moment(selected.quarantineDate).format("MMM Do, YYYY, h:mm:ss A")}
                 </p>
               </div>
 
-              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Tag ID</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.tagId}
-                </p>
-              </div>
 
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Tag Location</p>
@@ -1257,26 +1246,6 @@ export default function Quarantine() {
                 </p>
               </div>
 
-              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Sex</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.sex}
-                </p>
-              </div>
-
-              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Birth Date</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {moment(selected.birthDate).format("MMM Do, YYYY, h:mm:ss A")}
-                </p>
-              </div>
-
-              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Weight</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.weight}
-                </p>
-              </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Status</p>
@@ -1316,7 +1285,7 @@ export default function Quarantine() {
                 </p>
               </div>
 
-              <div className="btn-div" style={{ width: "100%" }}>
+              <div className="btn-div" style={{ width: "200%" }}>
                 <button
                   className="close-btn"
                   onClick={() => setviewquarantine(false)}

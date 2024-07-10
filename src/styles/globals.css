@@ -1342,7 +1342,9 @@ body {
   padding-left: 30px;
   padding: 10px 0px 0px 30px;
 }
-
+.head2{
+  margin-top: 45px;
+}
 .finance-title2 {
   color: red;
   font-weight: bold;
@@ -1925,6 +1927,12 @@ body {
     margin-top: -1px;
     width: 100%;
   }
+  .head{
+    margin-top: -50px;
+  }
+  .head2{
+    margin-top: -10px;
+  }
 }
 
 @media screen and (max-width: 764px) {
@@ -1932,6 +1940,12 @@ body {
     max-width: 60%;
     font-size: 13.5px;
     text-shadow: black 5px;
+  }
+  .head{
+    margin-top: 0px;
+  }
+  .head2{
+    margin-top: 0px;
   }
 
   .main-name {

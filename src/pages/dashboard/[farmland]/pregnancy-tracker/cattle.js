@@ -375,21 +375,21 @@ export default function PregnancyTracker() {
         {" "}
         <div className=" md:mt-10 ">
           {userData?.token && (
-            <div className=" flex flex-col  h-fit py-2 space-y-2  ">
-              <div>
-                <h1 className="text-2xl  font-bold">
-                  Pregnancy Profile (Cattle)
-                </h1>
-                <p className=" mt-1">Keep track of your Pregnancy profile</p>
-              </div>
-
-              <p
-                className="text-white bg-[#008000] cursor-pointer hover:bg-[#026702]  w-fit p-2 rounded-md"
-                onClick={addProfile}
-              >
-                <span>+ </span> Add Profile
-              </p>
-            </div>
+             <div className="  ">
+             <div>
+               <h1 className="text-lg md:text-2xl head font-bold">
+                Pregnancy Tracker (Cattle)
+               </h1>
+               <p className=" mt-1">Monitor expected calving date (ecd) in livestock</p>
+             </div>
+ 
+             <p
+               className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
+               onClick={addProfile}
+             >
+               <span>+ </span> Add Record
+             </p>
+           </div>
 
             //   {/* <input
             //   type="text"
@@ -405,7 +405,7 @@ export default function PregnancyTracker() {
               editFormModal && "hidden"
             }`}
           >
-            <table className="w-full mt-0">
+            <table className="w-full mt-5">
               <thead>
                 <tr>
                   <th
@@ -701,7 +701,7 @@ export default function PregnancyTracker() {
                         Tag ID
                       </label>
                       <input
-                        title="Enter the entryPregnancyId of the pregnancy here."
+                        title="Enter Tag Id of the livestock"
                         placeholder="Cattle294"
                         maxLength={20}
                         required
@@ -715,7 +715,7 @@ export default function PregnancyTracker() {
                         Breed
                       </label>
                       <input
-                        title="Input the unique identification number assigned to the pregnancy tag."
+                        title="Enter breed of the livestock"
                         maxLength={40}
                         required
                         value={formInput.breed}
@@ -742,6 +742,7 @@ export default function PregnancyTracker() {
                       <input
                         type="number"
                         id="gestationPeriod"
+                        placeholder="Enter gestation period for the livestock"
                         value={formInput.gestationPeriod}
                         onChange={handleChange}
                         name="gestationPeriod"
@@ -846,10 +847,10 @@ export default function PregnancyTracker() {
                   <div className="general-form">
                     <div className="w-full">
                       <label className="input-label" for="entryPregnancyId">
-                        Livestock Id
+                        Tag Id
                       </label>
                       <input
-                        title="Enter the entryPregnancyId of the pregnancy here."
+                        title="Enter the Tag Id of livestock"
                         placeholder="Cattle294"
                         maxLength={20}
                         value={editformInput.entryPregnancyId}
@@ -863,7 +864,7 @@ export default function PregnancyTracker() {
                         Breed
                       </label>
                       <input
-                        title="Input the unique identification number assigned to the pregnancy tag."
+                        title="Enter breed of the livestock"
                         maxLength={15}
                         value={editformInput.breed}
                         onChange={handleChange}
@@ -888,7 +889,7 @@ export default function PregnancyTracker() {
                         Gestation Period
                       </label>
                       <input
-                        title="Input the unique identification number assigned to the pregnancy tag."
+                        title="Enter gestation period for the livestock"
                         maxLength={15}
                         value={editformInput.gestationPeriod}
                         onChange={handleChange}
@@ -916,7 +917,7 @@ export default function PregnancyTracker() {
                         Remark
                       </label>
                       <input
-                        title="Input the unique identification number assigned to the pregnancy tag."
+                        title="Add additional remarks about the pregnancy here. Make it brief for easy readablility."
                         value={editformInput.remark}
                         onChange={handleChange}
                         id="remark"

@@ -480,18 +480,18 @@ export default function Livestock() {
 
       <div className="p-2 md:p-5">
         {" "}
-        <div className=" md:mt-10 ">
+        <div className={`md:mt-10 ${(editFormModal || formModal) && "hidden"}`}>
           {userData?.token && (
-            <div className=" flex flex-col  h-fit py-2 space-y-2  ">
+            <div className="  ">
               <div>
-                <h1 className="text-2xl  font-bold">
-                  Livestock Profile (GOAT)
+                <h1 className="text-lg md:text-2xl head  font-bold">
+                  Livestock Profile (Goat)
                 </h1>
                 <p className=" mt-1">Keep track of your livestock profile</p>
               </div>
 
               <p
-                className="text-white bg-[#008000] cursor-pointer hover:bg-[#026702]  w-fit p-2 rounded-md"
+                className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
                 onClick={addProfile}
               >
                 <span>+ </span> Add Profile
@@ -512,7 +512,7 @@ export default function Livestock() {
               (editFormModal || quarantineModal || formModal) && "hidden"
             }`}
           >
-            <table className="md:w-full mt-0" style={{ overflow: "auto" }}>
+            <table className="md:w-full mt-5" style={{ overflow: "auto" }}>
               <thead>
                 <tr>
                   <th

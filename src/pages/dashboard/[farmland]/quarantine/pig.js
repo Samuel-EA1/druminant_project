@@ -471,21 +471,15 @@ export default function Quarantine() {
         {" "}
         <div className=" md:mt-10 ">
           {userData?.token && (
-            <div className=" flex flex-col  h-fit py-2 space-y-2  ">
-              <div>
-                <h1 className="text-2xl  font-bold">
-                  Quarantine Profile (PIG)
-                </h1>
-                <p className=" mt-1">Keep track of your Quarantine profile</p>
-              </div>
-
-              <p
-                className="text-white bg-[#008000] cursor-pointer hover:bg-[#026702]  w-fit p-2 rounded-md"
-                onClick={addProfile}
-              >
-                <span>+ </span> Add Profile
-              </p>
+            <div className="  ">
+            <div>
+              <h1 className="text-lg md:text-2xl head  font-bold">
+                Quarantined Profile (Pig)
+              </h1>
+              <p className=" mt-1">Keep track of quarantined profiles</p>
             </div>
+
+           </div>
 
             //   {/* <input
             //   type="text"
@@ -501,7 +495,7 @@ export default function Quarantine() {
               (editFormModal || quarantineModal) && "hidden"
             }`}
           >
-            <table className={` w-full mt-0 `}>
+            <table className={` w-full mt-5 `}>
               <thead>
                 <tr>
                   <th

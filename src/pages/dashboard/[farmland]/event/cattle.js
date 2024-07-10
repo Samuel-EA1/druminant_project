@@ -359,19 +359,21 @@ export default function Event() {
         {" "}
         <div className=" md:mt-10 ">
           {userData?.token && (
-            <div className=" flex flex-col  h-fit py-2 space-y-2  ">
-              <div>
-                <h1 className="text-2xl  font-bold">Event Profile (Cattle)</h1>
-                <p className=" mt-1">Keep track of your Event profile</p>
-              </div>
-
-              <p
-                className="text-white bg-[#008000] cursor-pointer hover:bg-[#026702]  w-fit p-2 rounded-md"
-                onClick={addProfile}
-              >
-                <span>+ </span> Add Profile
-              </p>
+            <div className="  ">
+            <div>
+              <h1 className="text-lg md:text-2xl head font-bold">
+                Event Tracker (Cattle)
+              </h1>
+              <p className=" mt-1">Keep track of events in livestock</p>
             </div>
+
+            <p
+              className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
+              onClick={addProfile}
+            >
+              <span>+ </span> Add Event
+            </p>
+          </div>
 
             //   {/* <input
             //   type="text"
@@ -387,7 +389,7 @@ export default function Event() {
               (editFormModal || formModal) && "hidden"
             }`}
           >
-            <table className="w-full mt-0">
+            <table className="w-full mt-5">
               <thead>
                 <tr>
                   <th

@@ -384,6 +384,7 @@ export default function Livestock() {
         edittagId,
         formdata
       );
+      
 
       if (editResponse) {
         setEditting(false);
@@ -480,18 +481,18 @@ export default function Livestock() {
 
       <div className="p-2 md:p-5">
         {" "}
-        <div className=" md:mt-10 ">
+        <div className={`md:mt-10 ${(editFormModal || formModal) && "hidden"}`}>
           {userData?.token && (
-            <div className=" flex flex-col  h-fit py-2 space-y-2  ">
+            <div className="  ">
               <div>
-                <h1 className="text-2xl  font-bold">
-                  Livestock Profile (SHEEP)
+                <h1 className="text-lg md:text-2xl head  font-bold">
+                  Livestock Profile (Sheep)
                 </h1>
                 <p className=" mt-1">Keep track of your livestock profile</p>
               </div>
 
               <p
-                className="text-white bg-[#008000] cursor-pointer hover:bg-[#026702]  w-fit p-2 rounded-md"
+                className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
                 onClick={addProfile}
               >
                 <span>+ </span> Add Profile
@@ -512,7 +513,7 @@ export default function Livestock() {
               (editFormModal || quarantineModal || formModal) && "hidden"
             }`}
           >
-            <table className="w-full mt-0">
+            <table className="w-full mt-5">
               <thead>
                 <tr>
                   <th
@@ -778,17 +779,16 @@ export default function Livestock() {
         </div>
       )}
 
-      {
+{
         //Livestock input form
 
         formModal && (
           <div
-            className="dashboard-main2 py-12 bg-[#01000D]  transition   duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
+            className="dashboard-main2 py-12 bg-[#01000D]  transition overflow-y-auto  duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
             id="modal"
-            style={{ backgroundColor: "red", height: "150vh" }}
           >
             <p
-              className="form-header  pt-5 pb:0 md:pt-0"
+              className="form-header pt-10 pb:0 md:pt-0"
               style={{ color: "white" }}
             >
               Livestock Profile Details
@@ -926,7 +926,7 @@ export default function Livestock() {
                         Remark
                       </label>
                       <input
-                        title="Add additional remarks about the livestock here. Make it brief for easy readablility."
+                        title="Add additional remarks about the livestock here."
                         id="name"
                         value={formInput.remark}
                         onChange={handleChange}
@@ -985,6 +985,7 @@ export default function Livestock() {
           </div>
         )
       }
+
 
       {
         //Livestock EDIT form

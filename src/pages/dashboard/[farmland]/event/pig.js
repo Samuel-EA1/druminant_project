@@ -359,19 +359,21 @@ export default function Event() {
         {" "}
         <div className=" md:mt-10 ">
           {userData?.token && (
-            <div className=" flex flex-col  h-fit py-2 space-y-2  ">
-              <div>
-                <h1 className="text-2xl  font-bold">Event Profile (PIG)</h1>
-                <p className=" mt-1">Keep track of your Event profile</p>
-              </div>
-
-              <p
-                className="text-white bg-[#008000] cursor-pointer hover:bg-[#026702]  w-fit p-2 rounded-md"
-                onClick={addProfile}
-              >
-                <span>+ </span> Add Profile
-              </p>
-            </div>
+             <div className="  ">
+             <div>
+               <h1 className="text-lg md:text-2xl head font-bold">
+                 Event Tracker (Pig)
+               </h1>
+               <p className=" mt-1">Keep track of events in livestocks</p>
+             </div>
+ 
+             <p
+               className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
+               onClick={addProfile}
+             >
+               <span>+ </span> Add Event
+             </p>
+           </div>
 
             //   {/* <input
             //   type="text"
@@ -387,7 +389,7 @@ export default function Event() {
               (editFormModal || formModal) && "hidden"
             }`}
           >
-            <table className="w-full mt-0">
+            <table className="w-full mt-5">
               <thead>
                 <tr>
                   <th
@@ -412,7 +414,7 @@ export default function Event() {
                     className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
                     style={{ backgroundColor: "green" }}
                   >
-                    Even Date & Time
+                    Event Date & Time
                   </th>
 
                   <th
@@ -487,7 +489,7 @@ export default function Event() {
                             fontSize: "11px",
                           }}
                         >
-                          Birth Date
+                          Date & Time
                         </span>
                         <span style={{ fontSize: "14px", color: "black" }}>
                           {moment(row.eventDate).format(
