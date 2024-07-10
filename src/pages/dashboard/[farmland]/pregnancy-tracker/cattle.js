@@ -523,7 +523,7 @@ export default function PregnancyTracker() {
                         </span>
                       </td>
 
-                      <td className="w-full md:w-auto flex   justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                      <td className="w-full md:w-auto flex   space-x-3  justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
                         <span
                           className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{

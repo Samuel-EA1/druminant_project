@@ -158,7 +158,7 @@ function Profile() {
         )}
         {editProfile && (
           <div
-            className="    w-fit mx-auto   mt-10   md:mt-32  "
+            className="      mx-2   mt-10   md:mt-32  "
             onClick={(e) => e.stopPropagation()}
           >
             <form

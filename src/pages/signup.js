@@ -59,7 +59,7 @@ export default function SignUp() {
       }
     } catch (error) {
       setLoading(false);
-      alert(error.code);
+
       console.log(error);
       if (error.response) {
         toast.error(error.response.data.message);
@@ -245,7 +245,9 @@ export default function SignUp() {
                       type="submit"
                       onClick={signUp}
                       className="w-full bg-[#008000] hover:bg-[#00801ef1] text-white py-2 px-4 rounded"
-                    ></button>
+                    >
+                      Sign up
+                    </button>
                   )}
                   {error && (
                     <p className="bg-red-900  p-2 text-white w-fit   rounded-sm mt-2">
