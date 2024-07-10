@@ -399,7 +399,7 @@ export default function Lactation() {
               </div>
 
               <p
-                className="text-white bg-[#008000]  w-fit p-2 rounded-md"
+                className="text-white bg-[#008000]  cursor-pointer w-fit p-2 rounded-md"
                 onClick={addProfile}
               >
                 <span>+ </span> Add Profile
@@ -416,7 +416,7 @@ export default function Lactation() {
         </div>
         {userData?.token && !fetchError ? (
           <div
-            className={`flex  flex-col justify-between min-h-screen border-2 ${
+            className={`flex  flex-col justify-between min-h-screen ${
               (editFormModal || formModal) && "hidden"
             }`}
           >
@@ -669,7 +669,7 @@ export default function Lactation() {
 
         formModal && (
           <div
-            className="  -mt-12  py-12 bg-[#01000D]        duration-150 ease-in-out   "
+            className="  -mt-12  md:mt-0 py-12 bg-[#01000D]        duration-150 ease-in-out   "
             id="modal"
           >
             <p

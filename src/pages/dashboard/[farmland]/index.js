@@ -65,7 +65,7 @@ export default function Dashboard() {
       const fetchStatusAndRefreshToken = () => {
         fetchStatus(userData.username)
           .then((res) => {
-            if (res !== userData.status) {
+            if (res !== undefined && res !== userData.status) {
               console.log(res, userData.status);
               // generate new token
               refreshTOkenCallBack();
