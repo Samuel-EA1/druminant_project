@@ -674,7 +674,7 @@ export default function Lactation() {
 
         formModal && (
           <div
-            className="dashboard-main2 py-12 bg-[#01000D]  transition overflow-y-auto  duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
+            className="dashboard-main2 py-12 bg-[#01000D]  transition   duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
             id="modal"
           >
             <p
