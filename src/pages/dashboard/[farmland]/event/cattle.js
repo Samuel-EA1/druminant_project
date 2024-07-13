@@ -63,7 +63,7 @@ export default function Event() {
   const [edittagId, setEditTagId] = useState("");
   const [editFormModal, setEditFormModal] = useState(false);
   const [editformInput, setEditFormInput] = useState({
-    eventEntryId: "",
+    tagId: "",
     eventDate: "",
     eventType: "",
     remark: "",
@@ -76,7 +76,7 @@ export default function Event() {
   const [viewEvent, setviewEvent] = useState(false);
   const [tagIdError, setTagIdError] = useState("");
   const [selected, setSelected] = useState({
-    eventEntryId: "",
+    tagId: "",
     eventDate: "",
     eventType: "",
     remark: "",
@@ -84,7 +84,7 @@ export default function Event() {
 
   const [quarantining, setquarantining] = useState(false);
   const [formInput, setformInput] = useState({
-    eventEntryId: "",
+    tagId: "",
     eventType: "",
     eventDate: "",
     remark: "",
@@ -96,10 +96,10 @@ export default function Event() {
     // Fetch the record with `id` from your data source
     const selectedRecord = // Logic to fetch the record based on `id`
       setEditFormInput({
-        eventEntryId: selectedRecord.eventEntryId,
+        tagId: selectedRecord.tagId,
         eventDate: selectedRecord.eventDate,
         eventType: selectedRecord.eventType,
-        staff: selectedRecord.inCharge,
+
         remark: selectedRecord.remark,
       });
     setEditId(tagId);
@@ -231,15 +231,13 @@ export default function Event() {
   };
 
   // edit event
-  function editBtnFn(tagId) {
-    setEditTagId(tagId);
+  function editBtnFn(id) {
+    setEditTagId(id);
     setEditFormModal(true);
-    const selectedRecord = eventData.find(
-      (record) => record.eventEntryId === tagId
-    );
+    const selectedRecord = eventData.find((record) => record._id === id);
 
     setEditFormInput({
-      eventEntryId: selectedRecord.eventEntryId,
+      tagId: selectedRecord.tagId,
       eventDate: selectedRecord.eventDate,
       eventType: selectedRecord.eventType,
       remark: selectedRecord.remark,
@@ -251,13 +249,13 @@ export default function Event() {
     e.preventDefault();
     setCreating(true);
     try {
-      const { eventEntryId, eventType, eventDate } = formInput;
+      console.log(formInput);
 
-      if (!eventEntryId || !eventType || !eventDate) {
-        setCreating(false);
-        alert("Please, ensure you fill in all fields.");
-        return;
-      }
+      // if (!eventEntryId || !eventType || !eventDate) {
+      //   setCreating(false);
+      //   alert("Please, ensure you fill in all fields.");
+      //   return;
+      // }
 
       const res = await createRecord(
         userData.token,
@@ -306,7 +304,6 @@ export default function Event() {
         setEditting(false);
         setEditFormModal(false);
         setEditFormInput({
-          eventEntryId: "",
           tagId: "",
           tagLocation: "",
           sex: "",
@@ -360,20 +357,20 @@ export default function Event() {
         <div className=" md:mt-10 ">
           {userData?.token && (
             <div className="  ">
-            <div>
-              <h1 className="text-lg md:text-2xl head font-bold">
-                Event Tracker (Cattle)
-              </h1>
-              <p className=" mt-1">Keep track of events in livestock</p>
-            </div>
+              <div>
+                <h1 className="text-lg md:text-2xl head font-bold">
+                  Event Tracker (Cattle)
+                </h1>
+                <p className=" mt-1">Keep track of events in livestock</p>
+              </div>
 
-            <p
-              className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
-              onClick={addProfile}
-            >
-              <span>+ </span> Add Event
-            </p>
-          </div>
+              <p
+                className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
+                onClick={addProfile}
+              >
+                <span>+ </span> Add Event
+              </p>
+            </div>
 
             //   {/* <input
             //   type="text"
@@ -402,7 +399,7 @@ export default function Event() {
                     className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
                     style={{ backgroundColor: "green" }}
                   >
-                    Event Id
+                    Tag Id
                   </th>
                   <th
                     className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
@@ -448,20 +445,25 @@ export default function Event() {
                         </div>
                       </td>
 
-                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
+                      <td className=" md:w-auto  space-x-2 flex w-full justify-between items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
                         <span
-                          className="md:hidden w-20 top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          className="md:hidden    rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
                             backgroundColor: "#9be49b",
                             color: "#01000D",
                             fontSize: "11px",
                           }}
                         >
-                          Event Id
+                          Tag Id
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className=""
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                          <p className="max-w-10">{row.eventEntryId}</p>
+                          <p className=" text-ellipsis overflow-hidden ...">
+                            {row.tagId}
+                          </p>
                         </div>
                       </td>
                       <td className=" md:w-auto  space-x-2 flex w-full justify-between items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
@@ -518,14 +520,14 @@ export default function Event() {
                         <div className="">
                           <button
                             title="Edit"
-                            onClick={() => editBtnFn(row.eventEntryId)}
+                            onClick={() => editBtnFn(row._id)}
                             className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
                           >
                             {/* Edit */}
                             <FaRegEdit style={{ fontSize: "14px" }} />
                           </button>
 
-                          {viewing && viewId === row.eventEntryId ? (
+                          {viewing && viewId === row._id ? (
                             <button
                               title="More info"
                               className=" px-3 py-1 ml-2 animate-pulse   hover:bg-green-600 text-white bg-green-500 rounded-md"
@@ -535,18 +537,16 @@ export default function Event() {
                           ) : (
                             <button
                               title="More info"
-                              onClick={() => handleviewEvent(row.eventEntryId)}
+                              onClick={() => handleviewEvent(row._id)}
                               className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
                             >
                               <MdRemoveRedEye style={{ fontSize: "14px" }} />
                             </button>
                           )}
-                          {deleting ? (
+                          {deleting && row._id == deleteId ? (
                             <button
                               className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
-                              onClick={() =>
-                                handledeleteRecord(row.eventEntryId)
-                              }
+                              onClick={() => handledeleteRecord(row._id)}
                             >
                               {/* Delete */}
                               <AiOutlineLoading3Quarters
@@ -560,9 +560,7 @@ export default function Event() {
                             <button
                               title="Delete"
                               className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
-                              onClick={() =>
-                                handledeleteRecord(row.eventEntryId)
-                              }
+                              onClick={() => handledeleteRecord(row._id)}
                             >
                               {/* Delete */}
                               <RiDeleteBin6Line style={{ fontSize: "14px" }} />
@@ -659,18 +657,18 @@ export default function Event() {
                 <form>
                   <div className="general-form">
                     <div className=" w-full">
-                      <label className="input-label" htmlFor="eventEntryId">
-                        Event Id
+                      <label className="input-label" htmlFor="tagId">
+                        Tag Id
                       </label>
                       <input
                         title="Assign a unique id to event"
                         placeholder="Assign a unique id to event"
                         maxLength={10}
                         required
-                        value={formInput.eventEntryId}
+                        value={formInput.tagId}
                         onChange={handleChange}
-                        name="eventEntryId"
-                        id="eventEntryId"
+                        name="tagId"
+                        id="tagId"
                         className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
                       <label className="input-label" htmlFor="eventType">
@@ -786,17 +784,17 @@ export default function Event() {
                 <form>
                   <div className="general-form">
                     <div className="w-full">
-                      <label className="input-label" for="name">
-                        Event Id
+                      <label className="input-label" for="tagId">
+                        Tag Id
                       </label>
                       <input
                         title="Assign a unique id to event"
                         placeholder="Assign a unique id to event"
                         maxLength={10}
-                        value={editformInput.eventEntryId}
+                        value={editformInput.tagId}
                         onChange={handleChange}
-                        name="eventEntryId"
-                        id="eventEntryId"
+                        name="tagId"
+                        id="tagId"
                         className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
 
@@ -905,18 +903,23 @@ export default function Event() {
                 Event Details
               </h4>
             </div>
-            <div className="grid grid-cols-2 gap-4 px-1 w-full">
+            <div className="grid grid-cols-2 grid-rows-4  md:gap-4 px-1 w-full">
+              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">TagId</p>
+                <p className="text-base font-medium text-navy-700 overflow-auto  dark:text-green-700">
+                  {selected.tagId}
+                </p>
+              </div>
+              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Event Type</p>
+                <p className="text-base font-medium text-navy-700 overflow-auto  dark:text-green-700">
+                  {selected.eventType}
+                </p>
+              </div>
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Event Date & Time</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
                   {moment(selected.eventDate).format("MMM Do, YYYY, h:mm:ss A")}
-                </p>
-              </div>
-
-              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Staff in Charge</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.inCharge}
                 </p>
               </div>
 
@@ -926,9 +929,15 @@ export default function Event() {
                   {selected.remark}
                 </p>
               </div>
+              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">User In Charge</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                  {selected.inCharge}
+                </p>
+              </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Entry Date</p>
+                <p className="text-sm text-gray-600">Created</p>
                 <p className="text-base font-medium text-navy-700  dark:text-green-700">
                   {moment(selected.createdAt).format("MMM Do, YYYY, h:mm:ss A")}
                 </p>

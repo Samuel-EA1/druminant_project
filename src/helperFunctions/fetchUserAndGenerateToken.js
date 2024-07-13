@@ -6,7 +6,8 @@ const BASE_URL =
     : process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const refreshToken = async (userData) => {
-  if (userData && userData.status) {
+  console.log("from helper funciton", userData);
+  if (userData && (userData.status || userData.isAdmin)) {
     console.log(userData, "inside block");
     try {
       const res = await axios.post(

@@ -1,6 +1,8 @@
-import { userState } from "@/atom";
+import { newUserToken, userState } from "@/atom";
 import { Footer } from "@/components/footer";
 import ModuleHeader from "@/components/moduleheader";
+import { refreshToken } from "@/helperFunctions/fetchUserAndGenerateToken";
+import { data } from "autoprefixer";
 import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
@@ -22,17 +24,27 @@ function Profile() {
   const [fetching, setfetching] = useState(false);
   const [editing, setEditing] = useState(false);
   const [fetchError, setFetchError] = useState("");
+  const [newToken, setnewToken] = useRecoilState(newUserToken);
   const [formData, setformData] = useState({
     username: "",
     password: "",
     email: "",
   });
+  const refreshTOkenCallBack = async () => {
+    const refreshedToken = await refreshToken(userData);
+
+    if (refreshedToken) {
+      setnewToken(refreshedToken);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setformData((prevData) => ({ ...prevData, [name]: value }));
   };
   function logOut() {
+    if (userData.username !== profileData.username)
+      return toast.warn("Please login into your account to proceed");
     confirm("Are you sure you want to log out?");
     localStorage.removeItem("token");
     setUserData(null);
@@ -41,7 +53,7 @@ function Profile() {
   }
 
   const INPUT_CLASS =
-    "w-full px-3 py-2 rounded-lg border focus:outline-none focus:ring focus:ring-primary  text-black";
+    "w-full px-3 py-2  rounded-lg border focus:outline-none focus:ring focus:ring-primary  text-black";
   const BUTTON_CLASS =
     "bg-primary text-primary-foreground w-full py-2 rounded-lg hover:bg-primary/80 bg-[#221c7a] flex item-center justify-center space-x-2";
 
@@ -56,8 +68,10 @@ function Profile() {
     if (password !== "") updateData["password"] = password;
 
     if (userData) {
+      console.log("linde 72", userData);
       try {
         setEditing(true);
+
         const res = await axios.patch(
           `${BASE_URL}/profile/${router.query.username}`,
           updateData,
@@ -68,7 +82,8 @@ function Profile() {
           }
         );
         if (res.data.message) {
-          localStorage.setItem("token", res.data.message.token);
+          console.log(userData, "from 84");
+          refreshTOkenCallBack();
           if (updateData.username) {
             router.push(`/profile/${username}`);
           }
@@ -121,7 +136,7 @@ function Profile() {
           }
         });
     }
-  }, [userData, router.isReady, router.query.username]);
+  }, [userData, router.isReady, newToken, router.query.username]);
 
   return (
     <>
@@ -179,7 +194,7 @@ function Profile() {
                   type="text"
                   id="username"
                   name="username"
-                  placeholder="John Doe"
+                  placeholder={userData.username}
                   className={INPUT_CLASS}
                 />
               </div>
@@ -192,7 +207,7 @@ function Profile() {
                   type="email"
                   id="email"
                   name="email"
-                  placeholder="john.doe@example.com"
+                  placeholder={"john.doe@example.com"}
                   className={INPUT_CLASS}
                 />
               </div>
@@ -251,25 +266,40 @@ function Profile() {
             <h2 class="text-center text-2xl font-semibold mt-3">
               @{profileData.username}
             </h2>
-            <p class="text-center text-gray-200 mt-1">{profileData.email}</p>
+            {profileData.email === userData.email && (
+              <p class="text-center text-gray-200 mt-1">{profileData.email}</p>
+            )}
             <div className="text-center mt-16 flex  flex-col sm:flex-row justify-between">
-              <Link href={`/dashboard/${userData.farmland}`}>
-                <p className="bg-[#008000] py-3 px-3 rounded mb-5 md:mb-0">
+              <Link href={`/dashboard/${profileData.farmland}`}>
+                <p
+                  className={`bg-[#008000] cursor-pointer py-3 px-3 rounded mb-5 md:mb-0 `}
+                >
                   Go to farm
                 </p>
               </Link>
               <p
                 onClick={(e) => {
+                  if (userData.username !== profileData.username)
+                    return toast.warn(
+                      "Please login into your account to proceed"
+                    );
+
                   e.stopPropagation();
                   setEditProfile(true);
                 }}
-                className="bg-[#221c7a] py-3 cursor-pointer px-3 rounded mb-5  md:mb-0"
+                className={`bg-[#221c7a] py-3 cursor-pointer px-3 rounded mb-5  md:mb-0  ${
+                  userData.username !== profileData.username &&
+                  "bg-gray-500 cursor-not-allowed"
+                }`}
               >
                 Update profile
               </p>
               <p
                 onClick={logOut}
-                className="bg-[red] cursor-pointer py-3 px-3 rounded mb-5  md:mb-0"
+                className={`bg-[red] cursor-pointer py-3 px-3 rounded mb-5  md:mb-0  ${
+                  userData.username !== profileData.username &&
+                  "bg-gray-500 cursor-not-allowed"
+                }`}
               >
                 Log out
               </p>

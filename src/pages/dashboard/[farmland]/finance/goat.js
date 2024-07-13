@@ -30,7 +30,12 @@ function FinanceRecord() {
   const [creating, setcreating] = useState(false);
   const [financeForm, setFinanceForm] = useState(false);
   const [financeData, setFinanceData] = useState([]);
-  const [financeTotal, setFinanceTotal] = useState({});
+  const [financeTotal, setFinanceTotal] = useState({
+    incomeAmountTotal: 0.0,
+    expenseAmountTotal: 0.0,
+    incomeLength: 0,
+    expenseLength: 0,
+  });
   const [financeType, setFinanceType] = useState("income");
   const [viewIncomeDetails, setviewIncomeDetails] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
@@ -45,13 +50,11 @@ function FinanceRecord() {
     transactionDate: "",
     amount: null,
     paymentmethod: "",
-    financeEntryId: "",
   });
 
   {
   }
   const [formInput, setformInput] = useState({
-    financeEntryId: "",
     paymentmethod: "",
     desc: "",
     transactionDate: "",
@@ -123,9 +126,19 @@ function FinanceRecord() {
         if (res.data) {
           setFetching(false);
           console.log(res.data.message);
-          const { incomeLength, expenseLength } = res.data.message;
+          const {
+            incomeAmountTotal,
+            expenseAmountTotal,
+            incomeLength,
+            expenseLength,
+          } = res.data.message;
 
-          setFinanceTotal({ incomeLength, expenseLength });
+          setFinanceTotal({
+            expenseAmountTotal,
+            incomeAmountTotal,
+            incomeLength,
+            expenseLength,
+          });
           setFinanceData(res.data.message.allFinance.reverse());
         }
       } else {
@@ -163,7 +176,7 @@ function FinanceRecord() {
         id,
         financeType
       );
-      console.log(selectedRecord);
+
       if (selectedRecord) {
         setviewIncomeDetails(true);
         setSelected(selectedRecord.data.message);
@@ -213,16 +226,13 @@ function FinanceRecord() {
   function editBtnFn(id) {
     setEditId(id);
     seteditModal(true);
-    const selectedRecord = financeData.find(
-      (record) => record.financeEntryId === id
-    );
+    const selectedRecord = financeData.find((record) => record._id === id);
 
     seteditform({
       desc: selectedRecord.desc,
       transactionDate: selectedRecord.transactionDate,
       amount: selectedRecord.amount,
       paymentmethod: selectedRecord.paymentmethod,
-      financeEntryId: selectedRecord.financeEntryId,
     });
   }
 
@@ -239,6 +249,7 @@ function FinanceRecord() {
     try {
       const formdata = editform;
 
+      console.log(formdata);
       console.log(financeType);
       const editResponse = await editRecord(
         userData.token,
@@ -333,13 +344,15 @@ function FinanceRecord() {
       </Head>
       <ModuleHeader />
       {userData && !fetchError ? (
-         <div className="livestock p-2 md:p-5 ">
-         <div>
-               <h1 className="text-lg md:text-2xl head2 px-1 md:px-0 font-bold">
-                 Income/Expense (Goat)
-               </h1>
-               <p className=" px-1 md:px-0 mt-1">Track livestock-related income and expenses</p>
-             </div>
+        <div className="livestock p-2 md:p-5  border-2">
+          <div>
+            <h1 className="text-lg md:text-2xl head2 px-1 md:px-0 font-bold">
+              Income/Expense (goat)
+            </h1>
+            <p className=" px-1 md:px-0 mt-1">
+              Track livestock-related income and expenses
+            </p>
+          </div>
 
           <div className={`finance-cards `}>
             <div className="incomeCard flex" style={getActiveStyle("income")}>
@@ -358,7 +371,7 @@ function FinanceRecord() {
                   )}
                 </p>
                 <h3>
-                  N<span>{financeTotal?.incomeAmountTotal}.00</span>
+                  N<span>{financeTotal?.incomeAmountTotal}</span>
                 </h3>
               </div>
               <div className="w-2/4  mr-2  flex space-x-3  items-center  mt-2">
@@ -404,7 +417,7 @@ function FinanceRecord() {
                   )}
                 </p>
                 <h3>
-                  N<span>{financeTotal?.expenseAmountTotal}.00</span>
+                  N<span>{financeTotal?.expenseAmountTotal}</span>
                 </h3>
               </div>
               <div className="w-2/4  mr-2  flex space-x-3  items-center  mt-2">
@@ -439,7 +452,7 @@ function FinanceRecord() {
 
           {financeData.length > 0 && !editModal && !financeForm && (
             <div>
-              <table className="w-full mt-5">
+              <table className="w-full mt-5 ">
                 <thead>
                   <tr>
                     <th
@@ -472,6 +485,7 @@ function FinanceRecord() {
                     >
                       Transaction Date
                     </th>
+
                     <th
                       className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
                       style={{ backgroundColor: "#005a06" }}
@@ -532,7 +546,7 @@ function FinanceRecord() {
                           {row.desc}
                         </div>
                       </td>
-                      <td className="w-full md:w-auto flex justify-between border-green-200 items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
+                      <td className="w-full md:w-auto flex justify-between  border-green-200 items-center p-3 text-gray-800 text-center border block md:table-cell relative md:static">
                         <span
                           className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
@@ -563,13 +577,12 @@ function FinanceRecord() {
                           Txn Date
                         </span>
                         <span style={{ fontSize: "14px" }}>
-                            {moment(row.transactionDate).format(
+                          {moment(row.transactionDate).format(
                             "MMMM Do, YYYY, h:mm:ss A"
                           )}
                         </span>
                       </td>
-
-                      <td className="w-full md:w-auto flex justify-between border-green-200 items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
+                      <td className="w-full md:w-auto flex justify-between items-center p-3  border-green-200 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
                         <span
                           className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                           style={{
@@ -584,7 +597,7 @@ function FinanceRecord() {
                         <div className="min-w-40">
                           <button
                             title="Edit"
-                            onClick={() => editBtnFn(row.financeEntryId)}
+                            onClick={() => editBtnFn(row._id)}
                             className=" px-2 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
                           >
                             <FaRegEdit style={{ fontSize: "14px" }} />
@@ -592,7 +605,7 @@ function FinanceRecord() {
 
                           <button
                             title="More info"
-                            onClick={() => handleViewRecord(row.financeEntryId)}
+                            onClick={() => handleViewRecord(row._id)}
                             className=" px-2 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
                           >
                             {viewId === row.financeEntryId ? (
@@ -604,11 +617,9 @@ function FinanceRecord() {
                           <button
                             title="Delete"
                             className=" mr-0 px-2 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
-                            onClick={() =>
-                              handleDeleteFinance(row.financeEntryId)
-                            }
+                            onClick={() => handleDeleteFinance(row._id)}
                           >
-                            {deleteId === row.financeEntryId ? (
+                            {deleteId === row._id ? (
                               <AiOutlineLoading3Quarters
                                 className="animate-spin"
                                 style={{ fontSize: "14px" }}
@@ -629,7 +640,7 @@ function FinanceRecord() {
           {financeData.length === 0 && (
             <div className="text-center mx-0  flex-col text-black h-[100vh] flex items-center justify-center">
               <div className="flex items-center justify-center flex-col">
-                Sorry No Data Found !
+                Sorry No Data Found!
               </div>
               <div className="cursor">
                 <p
@@ -648,7 +659,7 @@ function FinanceRecord() {
             financeForm && (
               <div
                 className="form-backdrop"
-                class=" py-9 bg-[#01000D] transition duration-150  ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
+                class="  py-9 bg-[#01000D] transition duration-150   ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
                 id="modal"
               >
                 <p className="form-header2 first-letter:capitalize">
@@ -662,21 +673,6 @@ function FinanceRecord() {
                   <div class="w-[auto] relative mt-4 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
                     <form onSubmit={handleFinanceSubmit}>
                       <div>
-                        <label className="input-label" htmlFor="financeEntryId">
-                          Id
-                        </label>
-                        <input
-                          title="(Assign an id to your transaction (e.g 1))"
-                          maxLength={10}
-                          placeholder="Finance entry id"
-                          value={formInput.financeEntryId}
-                          onChange={handleChange}
-                          name="financeEntryId"
-                          type="text"
-                          id="financeEntryId"
-                          class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                        />
-
                         <label className="input-label" htmlFor="desc">
                           Description
                         </label>
@@ -795,7 +791,7 @@ function FinanceRecord() {
                   <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Amount</p>
                     <p class="text-base font-medium text-navy-700 dark:text-green-700">
-                      {selected.amount}
+                      N{selected.amount}
                     </p>
                   </div>
 
@@ -805,6 +801,14 @@ function FinanceRecord() {
                       {selected.paymentmethod}
                     </p>
                   </div>
+                  {/* 
+                <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p class="text-sm text-gray-600">Entry Date & Time</p>
+                  <p class="text-base font-medium text-navy-700 dark:text-green-700">
+                    {selected.entryDate}
+                  </p>
+                </div> */}
+
                   <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p className="text-sm text-gray-600">Entry Date</p>
                     <p className="text-base font-medium text-navy-700  dark:text-green-700">
@@ -853,7 +857,7 @@ function FinanceRecord() {
             editModal && (
               <div
                 className="form-backdrop "
-                class="  py-9 bg-[#01000D] transition duration-150   ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
+                class="  py-9 bg-[#01000D] transition duration-150     ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
                 id="modal"
               >
                 <p className="form-header2">Edit {financeType} Details</p>
@@ -865,20 +869,6 @@ function FinanceRecord() {
                   <div class="w-[auto] relative mt-4 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
                     <form onSubmit={(e) => handleEditRecord(e)}>
                       <div>
-                        <label className="input-label" htmlFor="financeEntryId">
-                          Id
-                        </label>
-                        <input
-                          title="(Assign an id to your transaction (e.g 1))"
-                          maxLength={10}
-                          value={editform.financeEntryId}
-                          onChange={handleEditChange}
-                          name="financeEntryId"
-                          placeholder="Finance entry id"
-                          type="text"
-                          id="financeEntryId"
-                          class="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                        />
                         <label className="input-label" htmlFor="description">
                           Description
                         </label>
@@ -978,7 +968,7 @@ function FinanceRecord() {
           <div className="livestock text-center border-2 p-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
             <div className="flex items-center justify-center flex-col">
               <p className="dashboard-mssg">
-                You are not allowed to access this page
+                You are not allowed to access this Farmland finance
               </p>
               <Link
                 href={`/dashboard/${userData.farmland}`}
@@ -1008,7 +998,7 @@ function FinanceRecord() {
         </div>
       )}
 
-      <Footer />
+      {!financeForm && !editModal && !viewIncomeDetails && <Footer />}
     </div>
   );
 }

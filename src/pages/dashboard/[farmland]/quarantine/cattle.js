@@ -451,7 +451,7 @@ export default function Quarantine() {
       onClick={() => {
         setviewquarantine(false);
       }}
-      className={` bg-white ${viewquarantine && " bg-gray-400 "}`}
+      className={` bg-white ${viewquarantine && ""}`}
     >
       <Head>
         <title>Druminant - quarantine Profile (cattle)</title>
@@ -472,14 +472,12 @@ export default function Quarantine() {
         <div className=" md:mt-10 ">
           {userData?.token && (
             <div className="  ">
-            <div>
-              <h1 className="text-lg md:text-2xl head  font-bold">
-                Quarantined Profile (Cattle)
-              </h1>
-              <p className=" mt-1">Keep track of quarantined profiles</p>
-            </div>
-
-              
+              <div>
+                <h1 className="text-lg md:text-2xl head  font-bold">
+                  Quarantined Profile (Cattle)
+                </h1>
+                <p className=" mt-1">Keep track of quarantined profiles</p>
+              </div>
             </div>
 
             //   {/* <input
@@ -492,7 +490,7 @@ export default function Quarantine() {
         </div>
         {userData?.token && (
           <div
-            className={`flex    flex-col justify-between min-h-screen  ${
+            className={`flex    flex-col justify-between  min-h-screen  ${
               (editFormModal || quarantineModal) && "hidden"
             }`}
           >
@@ -1209,11 +1207,10 @@ export default function Quarantine() {
       }
 
       {viewquarantine && (
-        <div className="absolute     inset-0  flex  items-center justify-center   z-50">
+        <div className="absolute  bg-white/50 min-h-screen h-full  inset-0  flex  items-center justify-center   z-50">
           <div
             onClick={(e) => e.stopPropagation()}
-            className="absolute  top-0 flex flex-col items-center border-2 border-gray-300   rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3"
-            style={{ marginTop: "10px" }}
+            className="absolute  top-0 flex flex-col items-center mt-14 md:mt-20  border-2 border-gray-600   rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3"
           >
             <div className="mt-2 mb-8 w-full flex justify-between">
               <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
@@ -1224,7 +1221,7 @@ export default function Quarantine() {
                 onClick={() => setviewquarantine(false)}
               />
             </div>
-            <div className="grid grid-cols-2 gap-4 px-1 w-full">
+            <div className="grid grid-cols-2  grid-rows-2 gap-4 px-1 w-full">
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Reason for Quarantine</p>
                 <p className="text-base  line-clamp-5 font-medium text-navy-700 dark:text-green-700">
@@ -1234,10 +1231,11 @@ export default function Quarantine() {
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Quarantine Date</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                {moment(selected.quarantineDate).format("MMM Do, YYYY, h:mm:ss A")}
+                  {moment(selected.quarantineDate).format(
+                    "MMM Do, YYYY, h:mm:ss A"
+                  )}
                 </p>
               </div>
-
 
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Tag Location</p>
@@ -1245,7 +1243,12 @@ export default function Quarantine() {
                   {selected.tagLocation}
                 </p>
               </div>
-
+              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                <p className="text-sm text-gray-600">Tag Id</p>
+                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                  {selected.tagId}
+                </p>
+              </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Status</p>
@@ -1285,7 +1288,7 @@ export default function Quarantine() {
                 </p>
               </div>
 
-              <div className="btn-div" style={{ width: "200%" }}>
+              <div>
                 <button
                   className="close-btn"
                   onClick={() => setviewquarantine(false)}
@@ -1297,9 +1300,11 @@ export default function Quarantine() {
           </div>
         </div>
       )}
-      <div className="md:mt-0 mt-20    ">
-        <Footer />
-      </div>
+      {!viewquarantine && (
+        <div className="md:mt-0 mt-20    ">
+          <Footer />
+        </div>
+      )}
     </div>
   );
 }

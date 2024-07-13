@@ -66,7 +66,7 @@ export default function Dashboard() {
         fetchStatus(userData.username)
           .then((res) => {
             if (res !== undefined && res !== userData.status) {
-              console.log(res, userData.status);
+          
               // generate new token
               refreshTOkenCallBack();
             }
@@ -174,7 +174,7 @@ export default function Dashboard() {
       }
     }
 
-    console.log(sent, userData.status);
+ 
   };
 
   return (

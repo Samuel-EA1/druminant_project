@@ -57,14 +57,14 @@ export default function PregnancyTracker() {
   const [formModal, setFormModal] = useState(false);
   const [viewId, setviewId] = useState(null);
   const [deleteId, setdeleteId] = useState(null);
-  
+
   const [fetching, setFetching] = useState(false);
   const userData = useRecoilValue(userState);
   const [deleting, setdelete] = useState(false);
   const [edittagId, setEditTagId] = useState("");
   const [editFormModal, setEditFormModal] = useState(false);
   const [editformInput, setEditFormInput] = useState({
-    entryPregnancyId: "",
+    tagId: "",
     breedingDate: "",
     status: "",
     breed: "",
@@ -79,7 +79,7 @@ export default function PregnancyTracker() {
   const [viewPregnancy, setviewPregnancy] = useState(false);
   const [tagIdError, setTagIdError] = useState("");
   const [selected, setSelected] = useState({
-    entryPregnancyId: "",
+    tagId: "",
     breedingDate: "",
     status: "",
     breed: "",
@@ -88,7 +88,7 @@ export default function PregnancyTracker() {
   });
 
   const [formInput, setformInput] = useState({
-    entryPregnancyId: "",
+    tagId: "",
     status: "",
     breed: "",
     gestationPeriod: null,
@@ -102,7 +102,7 @@ export default function PregnancyTracker() {
     // Fetch the record with `id` from your data source
     const selectedRecord = // Logic to fetch the record based on `id`
       setEditFormInput({
-        entryPregnancyId: selectedRecord.entryPregnancyId,
+        tagId: selectedRecord.tagId,
         breedingDate: selectedRecord.breedingDate,
         breed: selectedRecord.breed,
         staff: selectedRecord.inCharge,
@@ -236,15 +236,13 @@ export default function PregnancyTracker() {
   };
 
   // edit pregnancy
-  function editBtnFn(tagId) {
-    setEditTagId(tagId);
+  function editBtnFn(id) {
+    setEditTagId(id);
     setEditFormModal(true);
-    const selectedRecord = pregnancyData.find(
-      (record) => record.entryPregnancyId === tagId
-    );
+    const selectedRecord = pregnancyData.find((record) => record._id === id);
 
     setEditFormInput({
-      entryPregnancyId: selectedRecord.entryPregnancyId,
+      tagId: selectedRecord.tagId,
       breedingDate: selectedRecord.breedingDate,
       breed: selectedRecord.breed,
       status: selectedRecord.status,
@@ -258,22 +256,6 @@ export default function PregnancyTracker() {
     e.preventDefault();
     setCreating(true);
     try {
-      const { entryPregnancyId, breed, breedingDate, gestationPeriod, status } =
-        formInput;
-
-      console.log(formInput);
-      if (
-        !entryPregnancyId ||
-        !breed ||
-        !breedingDate ||
-        !gestationPeriod ||
-        !status
-      ) {
-        setCreating(false);
-        alert("Please, ensure you fill in all fields.");
-        return;
-      }
-
       const res = await createRecord(
         userData.token,
         userData.farmland,
@@ -321,7 +303,7 @@ export default function PregnancyTracker() {
         setEditting(false);
         setEditFormModal(false);
         setEditFormInput({
-          entryPregnancyId: "",
+          tagId: "",
           tagId: "",
           tagLocation: "",
           sex: "",
@@ -374,22 +356,24 @@ export default function PregnancyTracker() {
       <div className="p-2 md:p-5">
         {" "}
         <div className=" md:mt-10 ">
-          {userData?.token && (
-             <div className="  ">
-             <div>
-               <h1 className="text-lg md:text-2xl head font-bold">
-                Pregnancy Tracker (Cattle)
-               </h1>
-               <p className=" mt-1">Monitor expected calving date (ecd) in livestock</p>
-             </div>
- 
-             <p
-               className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
-               onClick={addProfile}
-             >
-               <span>+ </span> Add Record
-             </p>
-           </div>
+          {userData?.token && !formModal && (
+            <div className="  ">
+              <div>
+                <h1 className="text-lg md:text-2xl head font-bold">
+                  Pregnancy Tracker (Cattle)
+                </h1>
+                <p className=" mt-1">
+                  Monitor expected calving date (ecd) in livestock
+                </p>
+              </div>
+
+              <p
+                className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
+                onClick={addProfile}
+              >
+                <span>+ </span> Add Record
+              </p>
+            </div>
 
             //   {/* <input
             //   type="text"
@@ -399,7 +383,7 @@ export default function PregnancyTracker() {
             // /> */}
           )}
         </div>
-        {userData?.token && !fetchError ? (
+        {userData?.token && !fetchError && !formModal ? (
           <div
             className={`flex  flex-col justify-between min-h-screen ${
               editFormModal && "hidden"
@@ -485,7 +469,7 @@ export default function PregnancyTracker() {
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                          <p>{row.entryPregnancyId}</p>
+                          <p>{row.tagId}</p>
                         </div>
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
@@ -554,14 +538,14 @@ export default function PregnancyTracker() {
                         <div className="">
                           <button
                             title="Edit"
-                            onClick={() => editBtnFn(row.entryPregnancyId)}
+                            onClick={() => editBtnFn(row._id)}
                             className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
                           >
                             {/* Edit */}
                             <FaRegEdit style={{ fontSize: "14px" }} />
                           </button>
 
-                          {viewing && viewId === row.entryPregnancyId ? (
+                          {viewing && viewId === row._id ? (
                             <button
                               title="More info"
                               className=" px-3 py-1 ml-2 animate-pulse   hover:bg-green-600 text-white bg-green-500 rounded-md"
@@ -571,20 +555,16 @@ export default function PregnancyTracker() {
                           ) : (
                             <button
                               title="More info"
-                              onClick={() =>
-                                handleViewPregnancy(row.entryPregnancyId)
-                              }
+                              onClick={() => handleViewPregnancy(row._id)}
                               className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
                             >
                               <MdRemoveRedEye style={{ fontSize: "14px" }} />
                             </button>
                           )}
-                          {deleting ? (
+                          {deleting && deleteId === row._id ? (
                             <button
                               className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
-                              onClick={() =>
-                                handledeleteRecord(row.entryPregnancyId)
-                              }
+                              onClick={() => handledeleteRecord(row._id)}
                             >
                               {/* Delete */}
                               <AiOutlineLoading3Quarters
@@ -598,9 +578,7 @@ export default function PregnancyTracker() {
                             <button
                               title="Delete"
                               className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
-                              onClick={() =>
-                                handledeleteRecord(row.entryPregnancyId)
-                              }
+                              onClick={() => handledeleteRecord(row._id)}
                             >
                               {/* Delete */}
                               <RiDeleteBin6Line style={{ fontSize: "14px" }} />
@@ -678,151 +656,153 @@ export default function PregnancyTracker() {
         //pregnancy input form
 
         formModal && (
-          <div
-            className="dashboard-main2 bg-[#01000D] transition  duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
-            id="modal"
-          >
-            <p
-              className="form-header mt-0 pb:0 md:pt-5"
-              style={{ color: "white" }}
-            >
-              Pregnancy Details
-            </p>
-
+        
             <div
-              role="alert"
-              className="container mx-auto w-11/12 md:w-2/3 max-w-xl"
+              className="form-backdrop py-12 bg-[#01000D] overflow-y-auto  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
+              id="modal"
             >
-              <div className="w-[auto] bg-white relative mt-4 md:mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
-                <form>
-                  <div className="general-form">
-                    <div className=" w-full">
-                      <label className="input-label" htmlFor="entryPregnancyId">
-                        Tag ID
-                      </label>
-                      <input
-                        title="Enter Tag Id of the livestock"
-                        placeholder="Cattle294"
-                        maxLength={20}
-                        required
-                        value={formInput.entryPregnancyId}
-                        onChange={handleChange}
-                        name="entryPregnancyId"
-                        id="entryPregnancyId"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-                      <label className="input-label" htmlFor="breed">
-                        Breed
-                      </label>
-                      <input
-                        title="Enter breed of the livestock"
-                        maxLength={40}
-                        required
-                        value={formInput.breed}
-                        onChange={handleChange}
-                        id="breed"
-                        name="breed"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-                      <label className="input-label" for="breedingDate">
-                        Breeding Date & Time
-                      </label>
-                      <input
-                        type="datetime-local"
-                        id="breedingDate"
-                        value={formInput.breedingDate}
-                        onChange={handleChange}
-                        name="breedingDate"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
+              <p
+                className="form-header   mt-14  pb:0 md:pt-5"
+                style={{ color: "white" }}
+              >
+                Pregnancy Details
+              </p>
 
-                      <label className="input-label" for="gestationPeriod">
-                        Gestation Period
-                      </label>
-                      <input
-                        type="number"
-                        id="gestationPeriod"
-                        placeholder="Enter gestation period for the livestock"
-                        value={formInput.gestationPeriod}
-                        onChange={handleChange}
-                        name="gestationPeriod"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-                      <label className="input-label" for="status">
-                        Pregnancy Confirmation
-                      </label>
-                      <select
-                        id="name"
-                        value={formInput.status}
-                        name="status"
-                        onChange={handleChange}
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      >
-                        <option value={""}>Select status</option>
-                        <option>Yes</option>
-                        <option>No</option>
-                      </select>
-                      <label className="input-label" for="name">
-                        Remark
-                      </label>
-                      <input
-                        title="Add additional remarks about the pregnancy here. Make it brief for easy readablility."
-                        id="name"
-                        value={formInput.remark}
-                        onChange={handleChange}
-                        type="text"
-                        name="remark"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-                    </div>
-                  </div>
-                </form>
+              <div
+                role="alert"
+                className="container mx-auto w-11/12 md:w-2/3 max-w-xl"
+              >
+                <div className="w-[auto] bg-white relative mt-4 md:mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
+                  <form>
+                    <div className="general-form">
+                      <div className=" w-full">
+                        <label className="input-label" htmlFor="tagId">
+                          Tag ID
+                        </label>
+                        <input
+                          title="Enter Tag Id of the livestock"
+                          placeholder="Cattle294"
+                          maxLength={20}
+                          required
+                          value={formInput.tagId}
+                          onChange={handleChange}
+                          name="tagId"
+                          id="tagId"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                        <label className="input-label" htmlFor="breed">
+                          Breed
+                        </label>
+                        <input
+                          title="Enter breed of the livestock"
+                          maxLength={40}
+                          required
+                          value={formInput.breed}
+                          onChange={handleChange}
+                          id="breed"
+                          name="breed"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                        <label className="input-label" for="breedingDate">
+                          Breeding Date & Time
+                        </label>
+                        <input
+                          type="datetime-local"
+                          id="breedingDate"
+                          value={formInput.breedingDate}
+                          onChange={handleChange}
+                          name="breedingDate"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
 
-                <div className="relative mb-5 mt-2">
-                  <div className="absolute text-gray-600 flex items-center px-4 border-r h-full"></div>
-                </div>
-                {/* <label for="expiry" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
-                <div className="relative mb-5 mt-2">
-                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
-                </div>
-                {/* <label for="cvc" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
-                <div className="relative mb-5 mt-2">
-                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
-                  {/* <input id="cvc" className="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
-                </div>
-                <div className="form-btns">
-                  <button
-                    className="btn"
-                    onClick={(e) => handleCreate(e)}
-                    disabled={creating}
-                  >
-                    {creating ? (
-                      <div className="flex items-center space-x-2">
-                        <AiOutlineLoading3Quarters className="animate-spin" />{" "}
-                        <p>Processing...</p>
+                        <label className="input-label" for="gestationPeriod">
+                          Gestation Period
+                        </label>
+                        <input
+                          type="number"
+                          id="gestationPeriod"
+                          placeholder="Enter gestation period for the livestock"
+                          value={formInput.gestationPeriod}
+                          onChange={handleChange}
+                          name="gestationPeriod"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
+                        <label className="input-label" for="status">
+                          Pregnancy Confirmation
+                        </label>
+                        <select
+                          id="name"
+                          value={formInput.status}
+                          name="status"
+                          onChange={handleChange}
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        >
+                          <option value={""}>Select status</option>
+                          <option>Yes</option>
+                          <option>No</option>
+                        </select>
+                        <label className="input-label" for="name">
+                          Remark
+                        </label>
+                        <input
+                          title="Add additional remarks about the pregnancy here. Make it brief for easy readablility."
+                          id="name"
+                          value={formInput.remark}
+                          onChange={handleChange}
+                          type="text"
+                          name="remark"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        />
                       </div>
-                    ) : (
-                      "    Submit"
-                    )}
-                  </button>
-                  {!creating && (
-                    <button className="btn2" onClick={closeFormModal}>
-                      Cancel
+                    </div>
+                  </form>
+
+                  <div className="relative mb-5 mt-2">
+                    <div className="absolute text-gray-600 flex items-center px-4 border-r h-full"></div>
+                  </div>
+                  {/* <label for="expiry" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
+                  <div className="relative mb-5 mt-2">
+                    <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
+                  </div>
+                  {/* <label for="cvc" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
+                  <div className="relative mb-5 mt-2">
+                    <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
+                    {/* <input id="cvc" className="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
+                  </div>
+                  <div className="form-btns">
+                    <button
+                      className="btn"
+                      onClick={(e) => handleCreate(e)}
+                      disabled={creating}
+                    >
+                      {creating ? (
+                        <div className="flex items-center space-x-2">
+                          <AiOutlineLoading3Quarters className="animate-spin" />{" "}
+                          <p>Processing...</p>
+                        </div>
+                      ) : (
+                        "    Submit"
+                      )}
                     </button>
-                  )}
+                    {!creating && (
+                      <button className="btn2" onClick={closeFormModal}>
+                        Cancel
+                      </button>
+                    )}
+                  </div>
+                  <button
+                    onClick={closeFormModal}
+                    className="cursor-pointer text-xl absolute top-0 right-0 mt-4 mr-5 text-gray-700 hover:text-gray-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
+                    aria-label="close modal"
+                    role="button"
+                  >
+                    <IoMdClose />
+                  </button>
                 </div>
-                <button
-                  onClick={closeFormModal}
-                  className="cursor-pointer text-xl absolute top-0 right-0 mt-4 mr-5 text-gray-700 hover:text-gray-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
-                  aria-label="close modal"
-                  role="button"
-                >
-                  <IoMdClose />
-                </button>
+                {/* <button className="close-btn" onClick={show()}>hsh</button> */}
               </div>
-              {/* <button className="close-btn" onClick={show()}>hsh</button> */}
             </div>
-          </div>
+   
         )
       }
 
@@ -846,17 +826,17 @@ export default function PregnancyTracker() {
                 <form>
                   <div className="general-form">
                     <div className="w-full">
-                      <label className="input-label" for="entryPregnancyId">
+                      <label className="input-label" for="tagId">
                         Tag Id
                       </label>
                       <input
                         title="Enter the Tag Id of livestock"
                         placeholder="Cattle294"
                         maxLength={20}
-                        value={editformInput.entryPregnancyId}
+                        value={editformInput.tagId}
                         onChange={handleChange}
-                        name="entryPregnancyId"
-                        id="entryPregnancyId"
+                        name="tagId"
+                        id="tagId"
                         className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
 
@@ -995,7 +975,7 @@ export default function PregnancyTracker() {
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Tag Id</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.entryPregnancyId}
+                  {selected.tagId}
                 </p>
               </div>
 
@@ -1048,9 +1028,11 @@ export default function PregnancyTracker() {
         </div>
       )}
 
-      <div className="md:mt-0 mt-20   ">
-        <Footer />
-      </div>
+      {!formModal && !editFormModal && (
+        <div className="md:mt-0 mt-20   ">
+          <Footer />
+        </div>
+      )}
     </div>
   );
 }
