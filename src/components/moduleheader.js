@@ -55,7 +55,6 @@ function ModuleHeader() {
     const storedToken = localStorage.getItem("token");
     setToken(storedToken);
     if (newToken) {
-      console.log("gotten new token");
     }
   }, [newToken]);
 
@@ -64,7 +63,6 @@ function ModuleHeader() {
       try {
         const decoded = jwtDecode(token);
         const currentTime = Date.now() / 1000;
-
         if (decoded.exp < currentTime) {
           setUserData(null);
           localStorage.removeItem("token");
@@ -100,7 +98,7 @@ function ModuleHeader() {
   }
 
   return (
-    <div className="">
+    <div className=" ">
       <div
         className={`admin-header  ${
           currentPath === "/" ||
@@ -143,7 +141,7 @@ function ModuleHeader() {
           </Link>
         </div>
 
-        <div className="module-nav-list">
+        <div className="module-nav-list ">
           <ul>
             <li className={router.pathname === "/" ? "active" : ""}>
               <Link href={"/"} className="menu-nav2" title="Home">
@@ -222,7 +220,7 @@ function ModuleHeader() {
       </div>
 
       <div
-        className={`mobile-header z-50 relative top-0 right-0 left-0    ${
+        className={`mobile-header z-50 relative top-0 right-0 left-0     ${
           currentPath === "/" ||
           currentPath === "/login" ||
           currentPath === "/signup"
@@ -245,7 +243,7 @@ function ModuleHeader() {
             src="/image/mobilelogo.png"
             width={40}
             height={70}
-            className="main-image"
+            className="main-imae"
           />
         </Link>
         {hamburg && (

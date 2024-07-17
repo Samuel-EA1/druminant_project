@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export const Footer = () => {
+  const router = useRouter();
   return (
     <div className="  mx-auto">
       <footer className="p-4    sm:p-6 bg-[#008000]">
@@ -31,7 +33,7 @@ export const Footer = () => {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="mailto:druminant@gmail.com"
                     target="_blank"
                     rel="nofollow"
                     className="hover:underline text-gray-200"
@@ -48,21 +50,24 @@ export const Footer = () => {
               <ul>
                 <li className="mb-4">
                   <a
-                    href="#"
+                    href="/help"
                     target="_blank"
                     className="hover:underline text-gray-200"
                   >
                     Help
                   </a>
                 </li>
-                <li className="mb-4">
-                  <a
-                    href="#"
+                <li className="mb-4 cursor-pointer">
+                  <p
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      router.push("/login");
+                    }}
                     target="_blank"
                     className="hover:underline text-gray-200"
                   >
                     Log out
-                  </a>
+                  </p>
                 </li>
                 <li>
                   <a

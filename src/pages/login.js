@@ -23,8 +23,7 @@ import { useRecoilValue } from "recoil";
 
 export default function Login() {
   const BASE_URL =
-    process.env.NEXT_PUBLIC_API_BASE_URL ||
-    "http://localhost:5000/api/v1/farmland";
+    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api/v1";
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -42,7 +41,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      console.log(formData);
+    
       setLoading(true);
       const res = await axios.post(`${BASE_URL}/auth/login`, formData);
       localStorage.setItem("token", res.data.token);
@@ -79,12 +78,12 @@ export default function Login() {
         <Header />
         <div className="mt-36">
           <div className="flex justify-center items-center    px-2  ">
-            <div className="md:bg-white p-8 rounded shadow-md max-w-xl   w-full  ">
+            <div className="bg-white p-8 rounded shadow-md max-w-xl   w-full  ">
               <h2 className="text-2xl flex items-center space-x-3 font-bold mb-4">
                 <FaUser className="md:text-[#008000] text-[#24c024]" />
-                <p className="text-white md:text-black">Log In</p>
+                <p className="text-green-900   ">Log In</p>
               </h2>
-              <form onSubmit={login}>
+              <form className="mb-2" onSubmit={login}>
                 <div className="mb-4">
                   <label
                     htmlFor="username"
@@ -157,8 +156,14 @@ export default function Login() {
                   </p>
                 )}
               </form>
+              <Link
+                className="text-green-900 "
+                href={"/reset-link"}
+              >
+                Forgot password?
+              </Link>
               <div className="mt-10 text-sm text-center flex justify-between w-full items-center max-w-xs mx-auto">
-                <p className=" mx-auto text-sm text-white md:text-black">
+                <p className=" mx-auto text-sm text-black">
                   You don&apos;t have an account?
                   <Link href={"/signup"} className="md:text-[#008000]">
                     {" "}
