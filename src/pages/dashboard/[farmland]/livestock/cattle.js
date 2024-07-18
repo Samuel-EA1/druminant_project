@@ -50,6 +50,7 @@ import { formatDateString } from "@/helperFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
 import { HiDotsHorizontal } from "react-icons/hi";
+import { BsSearch } from "react-icons/bs";
 
 // import 'react-smart-data-table/dist/react-smart-data-table.css';
 
@@ -64,6 +65,9 @@ export default function Livestock() {
   const [deleting, setdelete] = useState(false);
   const [edittagId, setEditTagId] = useState("");
   const [editFormModal, setEditFormModal] = useState(false);
+  const [query, setQuery] = useState("");
+  const [searchData, setSearchData] = useState([]);
+  const [searching, setSearching] = useState(false);
   const [editformInput, setEditFormInput] = useState({
     breed: "",
     tagId: "",
@@ -178,16 +182,6 @@ export default function Livestock() {
 
   console.log(livestockData.length, fetching);
 
-  const getCurrentDateTime = () => {
-    const now = new Date();
-    const offset = now.getTimezoneOffset() * 60000; // offset in milliseconds
-    const localISOTime = new Date(now - offset)
-      .toISOString()
-      .slice(0, 19)
-      .replace("T", " ");
-    return localISOTime;
-  };
-
   const handledeleteRecord = async (id) => {
     setdeleteId(id);
     setdelete(true);
@@ -204,6 +198,7 @@ export default function Livestock() {
           id
         );
 
+        setSearchData([]);
         setdelete(false);
         toast.success(response);
       } catch (error) {
@@ -264,18 +259,6 @@ export default function Livestock() {
     }
   }
 
-  const dummy = {
-    breed: "Bosss",
-    tagId: "EE11  ",
-    sex: "Male",
-    birthDate: "July 30th 2022",
-  };
-
-  console.log(tagIdError);
-  function addRecord() {
-    setLivestockData((num) => [...num, dummy]);
-  }
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -287,6 +270,36 @@ export default function Livestock() {
       setQuarantinForm((prevData) => ({ ...prevData, [name]: value }));
     }
   };
+
+  const handleSearchChange = (e) => {
+    setSearching(false);
+    setSearchData([]);
+    setQuery(e.target.value);
+  };
+
+  async function handleSearch(e) {
+       if (!query.trim()) {
+         return toast.error("Please, enter a search query!");
+       }
+       setSearching(true);
+       e.preventDefault();
+    try {
+      const selectedRecord = await viewRecord(
+        userData.token,
+        userData.farmland,
+        "livestock",
+        "cattle",
+        query
+      );
+      setSearchData([selectedRecord.data.message]);
+    } catch (error) {
+      setSearchData([]);
+      console.log(error);
+      if (error.code === "ERR_BAD_REQUEST") {
+        toast.error(error.response.data.message);
+      }
+    }
+  }
 
   // edit livestock
   function editBtnFn(tagId) {
@@ -487,21 +500,35 @@ export default function Livestock() {
                 </h1>
                 <p className=" mt-1">Keep track of your livestock profile</p>
               </div>
+              <div className="flex items-center space-x-5 ">
+                <p
+                  className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
+                  onClick={addProfile}
+                >
+                  <span>+ </span> Add Profile
+                </p>
 
-              <p
-                className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
-                onClick={addProfile}
-              >
-                <span>+ </span> Add Profile
-              </p>
+                <form onSubmit={handleSearch}>
+                  <div className="relative w-40 md:w-full mt-3">
+                    <input
+                      type="text"
+                      name="search"
+                      placeholder="Tag Id..."
+                      className="w-full px-4 py-2 border-2 rounded-lg bg-input text-primary placeholder-primary-foreground focus:outline-none focus:ring ring-primary"
+                      value={query}
+                      onChange={handleSearchChange}
+                    />
+                    <button
+                      type="submit"
+                      className="absolute right-0 top-0 h-full px-4 bg-[#008000]  text-white rounded-r-lg flex items-center justify-center"
+                      onClick={handleSearch}
+                    >
+                      <BsSearch />
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
-
-            //   {/* <input
-            //   type="text"
-            //   className="search-input"
-            //   maxLength={15}
-            //   placeholder="Search here (Tag id)"
-            // /> */}
           )}
         </div>
         {userData?.token && (
@@ -557,9 +584,184 @@ export default function Livestock() {
                   </th>
                 </tr>
               </thead>
-              {!fetching && livestockData.length > 0 && (
+              {!fetching && !searching && livestockData.length > 0 && (
                 <tbody>
                   {livestockData.map((row, key) => (
+                    <tr
+                      key={key}
+                      className="  md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap my-5 md:mb-0 shadow-md bg-gray-100 shadow-gray-800 md:shadow-none"
+                    >
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          ID
+                        </span>
+                        <div style={{ fontSize: "14px", color: "black" }}>
+                          {key + 1}
+                        </div>
+                      </td>
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Breed
+                        </span>
+                        <div style={{ fontSize: "14px", color: "black" }}>
+                          {row.breed}
+                        </div>
+                      </td>
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Tag ID
+                        </span>
+                        <div style={{ fontSize: "14px", color: "black" }}>
+                          {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
+                          <p>{row.tagId}</p>
+                        </div>
+                      </td>
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Sex
+                        </span>
+                        <div style={{ fontSize: "14px", color: "black" }}>
+                          {row.sex}
+                        </div>
+                      </td>
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Birth Date
+                        </span>
+                        <span style={{ fontSize: "14px", color: "black" }}>
+                          {moment(row.birthDate).format(
+                            "MMMM Do, YYYY, h:mm:ss A"
+                          )}
+                        </span>
+                      </td>
+                      <td className="w-full md:w-auto  flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Weight
+                        </span>
+                        <span style={{ fontSize: "14px", color: "black" }}>
+                          {row.weight}
+                        </span>
+                      </td>
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
+                        <span
+                          className="md:hidden w-20 top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Actions
+                        </span>
+
+                        <div className=" flex items-center justify-center ">
+                          <button
+                            title="Edit"
+                            onClick={() => editBtnFn(row.tagId)}
+                            className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
+                          >
+                            {/* Edit */}
+                            <FaRegEdit style={{ fontSize: "14px" }} />
+                          </button>
+
+                          {viewing && viewId === row.tagId ? (
+                            <button
+                              title="More info"
+                              className=" px-3 py-1 ml-2 animate-pulse   hover:bg-green-600 text-white bg-green-500 rounded-md"
+                            >
+                              <HiDotsHorizontal style={{ fontSize: "14px" }} />
+                            </button>
+                          ) : (
+                            <button
+                              title="More info"
+                              onClick={() => handleViewLivestock(row.tagId)}
+                              className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
+                            >
+                              <MdRemoveRedEye style={{ fontSize: "14px" }} />
+                            </button>
+                          )}
+                          {row.tagId === deleteId ? (
+                            <button
+                              className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
+                              onClick={() => handledeleteRecord(row.tagId)}
+                            >
+                              {/* Delete */}
+                              <AiOutlineLoading3Quarters
+                                className={`${
+                                  row.tagId === deleteId && "animate-spin"
+                                } `}
+                                style={{ fontSize: "14px" }}
+                              />
+                            </button>
+                          ) : (
+                            <button
+                              title="Delete"
+                              className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
+                              onClick={() => handledeleteRecord(row.tagId)}
+                            >
+                              {/* Delete */}
+                              <RiDeleteBin6Line style={{ fontSize: "14px" }} />
+                            </button>
+                          )}
+                          <button
+                            onClick={() => prepareQurantine(row.tagId)}
+                            title="Quarantine"
+                            className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
+                          >
+                            <FaWarehouse style={{ fontSize: "14px" }} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
+
+              {query && searchData.length > 0 && (
+                <tbody>
+                  {searchData.map((row, key) => (
                     <tr
                       key={key}
                       className="  md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap my-5 md:mb-0 shadow-md bg-gray-100 shadow-gray-800 md:shadow-none"
@@ -776,7 +978,6 @@ export default function Livestock() {
         </div>
       )}
 
-     
       {
         //Livestock input form
 

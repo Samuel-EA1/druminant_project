@@ -60,6 +60,9 @@ function Profile() {
   async function UpdateProfile(e) {
     e.preventDefault();
 
+//     npx create-next-app@latest --tailwind harnah-empire
+// cd harnah-empire
+
     const { email, password, username } = formData;
 
     const updateData = {};

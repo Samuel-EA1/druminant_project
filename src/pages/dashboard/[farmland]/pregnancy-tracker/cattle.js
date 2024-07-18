@@ -50,6 +50,7 @@ import { formatDateString } from "@/helperFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
 import { HiDotsHorizontal } from "react-icons/hi";
+import { BsSearch } from "react-icons/bs";
 
 // import 'react-smart-data-table/dist/react-smart-data-table.css';
 
@@ -57,7 +58,9 @@ export default function PregnancyTracker() {
   const [formModal, setFormModal] = useState(false);
   const [viewId, setviewId] = useState(null);
   const [deleteId, setdeleteId] = useState(null);
-
+  const [query, setQuery] = useState("");
+  const [searchData, setSearchData] = useState([]);
+  const [searching, setSearching] = useState(false);
   const [fetching, setFetching] = useState(false);
   const userData = useRecoilValue(userState);
   const [deleting, setdelete] = useState(false);
@@ -174,6 +177,7 @@ export default function PregnancyTracker() {
         );
 
         setdelete(false);
+        setSearchData([]);
         toast.success(response);
       } catch (error) {
         setdelete(false);
@@ -283,6 +287,36 @@ export default function PregnancyTracker() {
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearching(false);
+    setSearchData([]);
+    setQuery(e.target.value);
+  };
+
+  async function handleSearch(e) {
+    if (!query.trim()) {
+      return toast.error("Please, enter a search query!");
+    }
+    setSearching(true);
+    e.preventDefault();
+    try {
+      const selectedRecord = await viewRecord(
+        userData.token,
+        userData.farmland,
+        "pregnancy",
+        "cattle",
+        query
+      );
+      setSearchData([selectedRecord.data.message]);
+    } catch (error) {
+      setSearchData([]);
+      console.log(error);
+      if (error.code === "ERR_BAD_REQUEST") {
+        toast.error(error.response.data.message);
+      }
+    }
+  }
+
   const handleEditFormSubmit = async (e) => {
     setEditting(true);
     e.preventDefault(); // Prpregnancy default form submission behavior
@@ -367,12 +401,34 @@ export default function PregnancyTracker() {
                 </p>
               </div>
 
-              <p
-                className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
-                onClick={addProfile}
-              >
-                <span>+ </span> Add Record
-              </p>
+              <div className="flex items-center space-x-5 ">
+                <p
+                  className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
+                  onClick={addProfile}
+                >
+                  <span>+ </span> Add Record
+                </p>
+
+                <form onSubmit={handleSearch}>
+                  <div className="relative w-40 md:w-full mt-3">
+                    <input
+                      type="text"
+                      name="search"
+                      placeholder="Tag Id..."
+                      className="w-full px-4 py-2 border-2 rounded-lg bg-input text-primary placeholder-primary-foreground focus:outline-none focus:ring ring-primary"
+                      value={query}
+                      onChange={handleSearchChange}
+                    />
+                    <button
+                      type="submit"
+                      className="absolute right-0 top-0 h-full px-4 bg-[#008000]  text-white rounded-r-lg flex items-center justify-center"
+                      onClick={handleSearch}
+                    >
+                      <BsSearch />
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
 
             //   {/* <input
@@ -433,7 +489,7 @@ export default function PregnancyTracker() {
                   </th>
                 </tr>
               </thead>
-              {!fetching && pregnancyData.length > 0 && (
+              {!fetching && !searching && pregnancyData.length > 0 && (
                 <tbody>
                   {pregnancyData.map((row, key) => (
                     <tr
@@ -555,7 +611,164 @@ export default function PregnancyTracker() {
                           ) : (
                             <button
                               title="More info"
-                              onClick={() => handleViewPregnancy(row._id)}
+                              onClick={() => handleViewPregnancy(row.tagId)}
+                              className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
+                            >
+                              <MdRemoveRedEye style={{ fontSize: "14px" }} />
+                            </button>
+                          )}
+                          {deleting && deleteId === row._id ? (
+                            <button
+                              className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
+                              onClick={() => handledeleteRecord(row._id)}
+                            >
+                              {/* Delete */}
+                              <AiOutlineLoading3Quarters
+                                className={`${
+                                  row.tagId === deleteId && "animate-spin"
+                                } `}
+                                style={{ fontSize: "14px" }}
+                              />
+                            </button>
+                          ) : (
+                            <button
+                              title="Delete"
+                              className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
+                              onClick={() => handledeleteRecord(row._id)}
+                            >
+                              {/* Delete */}
+                              <RiDeleteBin6Line style={{ fontSize: "14px" }} />
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
+              {query && searching && searchData.length > 0 && (
+                <tbody>
+                  {searchData.map((row, key) => (
+                    <tr
+                      key={key}
+                      className="  md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap my-5 md:mb-0 shadow-md bg-gray-100 shadow-gray-800 md:shadow-none"
+                    >
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          N/A
+                        </span>
+                        <div style={{ fontSize: "14px", color: "black" }}>
+                          {key + 1}
+                        </div>
+                      </td>
+
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Tag ID
+                        </span>
+                        <div style={{ fontSize: "14px", color: "black" }}>
+                          {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
+                          <p>{row.tagId}</p>
+                        </div>
+                      </td>
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Breed
+                        </span>
+                        <div style={{ fontSize: "14px", color: "black" }}>
+                          {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
+                          <p>{row.breed}</p>
+                        </div>
+                      </td>
+
+                      <td className="w-full md:w-auto flex  justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Breeding Date
+                        </span>
+                        <span style={{ fontSize: "14px", color: "black" }}>
+                          {moment(row.breedingDate).format(
+                            "MMMM Do, YYYY, h:mm:ss A"
+                          )}
+                        </span>
+                      </td>
+
+                      <td className="w-full md:w-auto flex   space-x-3  justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Breeding Date
+                        </span>
+                        <span style={{ fontSize: "14px", color: "black" }}>
+                          {moment(row.ecd).format("MMMM Do, YYYY")}
+                        </span>
+                      </td>
+
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
+                        <span
+                          className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Actions
+                        </span>
+
+                        <div className="">
+                          <button
+                            title="Edit"
+                            onClick={() => editBtnFn(row._id)}
+                            className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
+                          >
+                            {/* Edit */}
+                            <FaRegEdit style={{ fontSize: "14px" }} />
+                          </button>
+
+                          {viewing && viewId === row._id ? (
+                            <button
+                              title="More info"
+                              className=" px-3 py-1 ml-2 animate-pulse   hover:bg-green-600 text-white bg-green-500 rounded-md"
+                            >
+                              <HiDotsHorizontal style={{ fontSize: "14px" }} />
+                            </button>
+                          ) : (
+                            <button
+                              title="More info"
+                              onClick={() => handleViewPregnancy(row.tagId)}
                               className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
                             >
                               <MdRemoveRedEye style={{ fontSize: "14px" }} />
@@ -656,153 +869,151 @@ export default function PregnancyTracker() {
         //pregnancy input form
 
         formModal && (
-        
-            <div
-              className="form-backdrop py-12 bg-[#01000D] overflow-y-auto  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
-              id="modal"
+          <div
+            className="form-backdrop py-12 bg-[#01000D] overflow-y-auto  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
+            id="modal"
+          >
+            <p
+              className="form-header   mt-14  pb:0 md:pt-5"
+              style={{ color: "white" }}
             >
-              <p
-                className="form-header   mt-14  pb:0 md:pt-5"
-                style={{ color: "white" }}
-              >
-                Pregnancy Details
-              </p>
+              Pregnancy Details
+            </p>
 
-              <div
-                role="alert"
-                className="container mx-auto w-11/12 md:w-2/3 max-w-xl"
-              >
-                <div className="w-[auto] bg-white relative mt-4 md:mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
-                  <form>
-                    <div className="general-form">
-                      <div className=" w-full">
-                        <label className="input-label" htmlFor="tagId">
-                          Tag ID
-                        </label>
-                        <input
-                          title="Enter Tag Id of the livestock"
-                          placeholder="Cattle294"
-                          maxLength={20}
-                          required
-                          value={formInput.tagId}
-                          onChange={handleChange}
-                          name="tagId"
-                          id="tagId"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                        />
-                        <label className="input-label" htmlFor="breed">
-                          Breed
-                        </label>
-                        <input
-                          title="Enter breed of the livestock"
-                          maxLength={40}
-                          required
-                          value={formInput.breed}
-                          onChange={handleChange}
-                          id="breed"
-                          name="breed"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                        />
-                        <label className="input-label" for="breedingDate">
-                          Breeding Date & Time
-                        </label>
-                        <input
-                          type="datetime-local"
-                          id="breedingDate"
-                          value={formInput.breedingDate}
-                          onChange={handleChange}
-                          name="breedingDate"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                        />
+            <div
+              role="alert"
+              className="container mx-auto w-11/12 md:w-2/3 max-w-xl"
+            >
+              <div className="w-[auto] bg-white relative mt-4 md:mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
+                <form>
+                  <div className="general-form">
+                    <div className=" w-full">
+                      <label className="input-label" htmlFor="tagId">
+                        Tag ID
+                      </label>
+                      <input
+                        title="Enter Tag Id of the livestock"
+                        placeholder="Cattle294"
+                        maxLength={20}
+                        required
+                        value={formInput.tagId}
+                        onChange={handleChange}
+                        name="tagId"
+                        id="tagId"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
+                      <label className="input-label" htmlFor="breed">
+                        Breed
+                      </label>
+                      <input
+                        title="Enter breed of the livestock"
+                        maxLength={40}
+                        required
+                        value={formInput.breed}
+                        onChange={handleChange}
+                        id="breed"
+                        name="breed"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
+                      <label className="input-label" for="breedingDate">
+                        Breeding Date & Time
+                      </label>
+                      <input
+                        type="datetime-local"
+                        id="breedingDate"
+                        value={formInput.breedingDate}
+                        onChange={handleChange}
+                        name="breedingDate"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
 
-                        <label className="input-label" for="gestationPeriod">
-                          Gestation Period
-                        </label>
-                        <input
-                          type="number"
-                          id="gestationPeriod"
-                          placeholder="Enter gestation period for the livestock"
-                          value={formInput.gestationPeriod}
-                          onChange={handleChange}
-                          name="gestationPeriod"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                        />
-                        <label className="input-label" for="status">
-                          Pregnancy Confirmation
-                        </label>
-                        <select
-                          id="name"
-                          value={formInput.status}
-                          name="status"
-                          onChange={handleChange}
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                        >
-                          <option value={""}>Select status</option>
-                          <option>Yes</option>
-                          <option>No</option>
-                        </select>
-                        <label className="input-label" for="name">
-                          Remark
-                        </label>
-                        <input
-                          title="Add additional remarks about the pregnancy here. Make it brief for easy readablility."
-                          id="name"
-                          value={formInput.remark}
-                          onChange={handleChange}
-                          type="text"
-                          name="remark"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                        />
-                      </div>
+                      <label className="input-label" for="gestationPeriod">
+                        Gestation Period
+                      </label>
+                      <input
+                        type="number"
+                        id="gestationPeriod"
+                        placeholder="Enter gestation period for the livestock"
+                        value={formInput.gestationPeriod}
+                        onChange={handleChange}
+                        name="gestationPeriod"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
+                      <label className="input-label" for="status">
+                        Pregnancy Confirmation
+                      </label>
+                      <select
+                        id="name"
+                        value={formInput.status}
+                        name="status"
+                        onChange={handleChange}
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      >
+                        <option value={""}>Select status</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                      </select>
+                      <label className="input-label" for="name">
+                        Remark
+                      </label>
+                      <input
+                        title="Add additional remarks about the pregnancy here. Make it brief for easy readablility."
+                        id="name"
+                        value={formInput.remark}
+                        onChange={handleChange}
+                        type="text"
+                        name="remark"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                      />
                     </div>
-                  </form>
+                  </div>
+                </form>
 
-                  <div className="relative mb-5 mt-2">
-                    <div className="absolute text-gray-600 flex items-center px-4 border-r h-full"></div>
-                  </div>
-                  {/* <label for="expiry" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
-                  <div className="relative mb-5 mt-2">
-                    <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
-                  </div>
-                  {/* <label for="cvc" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
-                  <div className="relative mb-5 mt-2">
-                    <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
-                    {/* <input id="cvc" className="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
-                  </div>
-                  <div className="form-btns">
-                    <button
-                      className="btn"
-                      onClick={(e) => handleCreate(e)}
-                      disabled={creating}
-                    >
-                      {creating ? (
-                        <div className="flex items-center space-x-2">
-                          <AiOutlineLoading3Quarters className="animate-spin" />{" "}
-                          <p>Processing...</p>
-                        </div>
-                      ) : (
-                        "    Submit"
-                      )}
-                    </button>
-                    {!creating && (
-                      <button className="btn2" onClick={closeFormModal}>
-                        Cancel
-                      </button>
-                    )}
-                  </div>
-                  <button
-                    onClick={closeFormModal}
-                    className="cursor-pointer text-xl absolute top-0 right-0 mt-4 mr-5 text-gray-700 hover:text-gray-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
-                    aria-label="close modal"
-                    role="button"
-                  >
-                    <IoMdClose />
-                  </button>
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute text-gray-600 flex items-center px-4 border-r h-full"></div>
                 </div>
-                {/* <button className="close-btn" onClick={show()}>hsh</button> */}
+                {/* <label for="expiry" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
+                </div>
+                {/* <label for="cvc" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
+                  {/* <input id="cvc" className="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
+                </div>
+                <div className="form-btns">
+                  <button
+                    className="btn"
+                    onClick={(e) => handleCreate(e)}
+                    disabled={creating}
+                  >
+                    {creating ? (
+                      <div className="flex items-center space-x-2">
+                        <AiOutlineLoading3Quarters className="animate-spin" />{" "}
+                        <p>Processing...</p>
+                      </div>
+                    ) : (
+                      "    Submit"
+                    )}
+                  </button>
+                  {!creating && (
+                    <button className="btn2" onClick={closeFormModal}>
+                      Cancel
+                    </button>
+                  )}
+                </div>
+                <button
+                  onClick={closeFormModal}
+                  className="cursor-pointer text-xl absolute top-0 right-0 mt-4 mr-5 text-gray-700 hover:text-gray-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
+                  aria-label="close modal"
+                  role="button"
+                >
+                  <IoMdClose />
+                </button>
               </div>
+              {/* <button className="close-btn" onClick={show()}>hsh</button> */}
             </div>
-   
+          </div>
         )
       }
 

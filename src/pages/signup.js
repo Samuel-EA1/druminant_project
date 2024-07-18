@@ -11,7 +11,7 @@ import {
   AiOutlineMail,
   AiOutlineUser,
 } from "react-icons/ai";
-import { FaKey, FaUser } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaKey, FaUser } from "react-icons/fa";
 import { GoKey } from "react-icons/go";
 import { MdMoney, MdRotateLeft } from "react-icons/md";
 import { PiPlantLight } from "react-icons/pi";
@@ -24,6 +24,8 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+
   const [formData, setformData] = useState({
     username: "",
     email: "",
@@ -32,6 +34,9 @@ export default function SignUp() {
     role: "",
   });
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setformData((prevData) => ({ ...prevData, [name]: value }));
@@ -89,9 +94,7 @@ export default function SignUp() {
               <div className=" bg-white h-full p-8 rounded shadow-md max-w-xl  w-full  ">
                 <h2 className="text-2xl flex items-center space-x-3 font-bold mb-4">
                   <FaUser className="md:text-[#008000] text-[#24c024]" />
-                  <p className="text-green-900  ">
-                    Sign Up
-                  </p>
+                  <p className="text-green-900  ">Sign Up</p>
                 </h2>
                 <form onSubmit={signUp}>
                   <div className="  w-11/12 gap-8 mx-auto md:grid-cols-2 md:gap-16 md:w-4/5">
@@ -122,7 +125,7 @@ export default function SignUp() {
                     <div className="mb-4">
                       <label
                         htmlFor="email"
-                        className="text-sm text-white md:text-black"
+                        className="text-base text-white md:text-black"
                       >
                         Email
                       </label>
@@ -145,31 +148,37 @@ export default function SignUp() {
 
                     <div className="mb-4">
                       <label
-                        htmlFor="ethAddress"
-                        className="text-sm text-white md:text-black"
+                        htmlFor="password"
+                        className="text-base text-white md:text-black"
                       >
                         Password
                       </label>
                       <div className="flex items-center border rounded mt-1">
                         <span className="pl-3">
-                          <GoKey className="md:text-[#008000] text-white" />
+                          <GoKey className="md:text-[#008000]" />
                         </span>
                         <input
-                          type="password"
+                          type={showPassword ? "text" : "password"}
                           id="password"
                           name="password"
-                          className="w-full py-2 px-2 outline-none text-white md:text-black h-10 bg-transparent"
+                          className="w-full py-2 px-2 outline-none text-base h-12 md:text-black bg-transparent"
                           placeholder="Enter password"
                           required
                           value={formData.password}
                           onChange={(e) => handleChange(e)}
                         />
+                        <span
+                          className="pr-3 cursor-pointer"
+                          onClick={togglePasswordVisibility}
+                        >
+                          {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </span>
                       </div>
                     </div>
                     <div className="mb-4">
                       <label
                         htmlFor="ethAddress"
-                        className="text-sm text-white md:text-black"
+                        className="text-base text-white md:text-black"
                       >
                         Farmland name
                       </label>
@@ -193,7 +202,7 @@ export default function SignUp() {
                     <div className="mb-4">
                       <label
                         htmlFor="ethAddress"
-                        className="text-sm text-white md:text-black"
+                        className="text-base text-white md:text-black"
                       >
                         Role
                       </label>
@@ -222,7 +231,7 @@ export default function SignUp() {
                   </div>
 
                   {/* <div className="mb-4">
-                    <label htmlFor="image" className="text-sm">
+                    <label htmlFor="image" className="text-base">
                       Profile Image
                     </label>
                     <input
@@ -258,7 +267,7 @@ export default function SignUp() {
                     </p>
                   )}
                 </form>
-                <div className="mt-5 text-sm text-center flex justify-between w-full items-center max-w-xs mx-auto">
+                <div className="mt-5 text-base text-center flex justify-between w-full items-center max-w-xs mx-auto">
                   <p className="mx-auto text-black">
                     You have an account?{" "}
                     <Link href={"/login"} className="md:text-[#008000]">

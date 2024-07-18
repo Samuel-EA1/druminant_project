@@ -50,6 +50,7 @@ import { formatDateString } from "@/helperFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
 import { HiDotsHorizontal } from "react-icons/hi";
+import { BsSearch } from "react-icons/bs";
 
 // import 'react-smart-data-table/dist/react-smart-data-table.css';
 
@@ -71,7 +72,9 @@ export default function Event() {
   const [viewing, setViewing] = useState(false);
   const [fetchError, setFetchError] = useState("");
   const [editting, setEditting] = useState(false);
-
+  const [query, setQuery] = useState("");
+  const [searchData, setSearchData] = useState([]);
+  const [searching, setSearching] = useState(false);
   const [creating, setCreating] = useState(false);
   const [viewEvent, setviewEvent] = useState(false);
   const [tagIdError, setTagIdError] = useState("");
@@ -167,7 +170,7 @@ export default function Event() {
           "pig",
           id
         );
-
+        setSearchData([]);
         setdelete(false);
         toast.success(response);
       } catch (error) {
@@ -284,6 +287,36 @@ export default function Event() {
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearching(false);
+    setSearchData([]);
+    setQuery(e.target.value);
+  };
+
+  async function handleSearch(e) {
+     if (!query.trim()) {
+       return toast.error("Please, enter a search query!");
+     }
+     setSearching(true);
+     e.preventDefault();
+    try {
+      const selectedRecord = await viewRecord(
+        userData.token,
+        userData.farmland,
+        "event",
+        "pig",
+        query
+      );
+      setSearchData([selectedRecord.data.message]);
+    } catch (error) {
+      setSearchData([]);
+      console.log(error);
+      if (error.code === "ERR_BAD_REQUEST") {
+        toast.error(error.response.data.message);
+      }
+    }
+  }
+
   const handleEditFormSubmit = async (e) => {
     setEditting(true);
     e.preventDefault(); // Prevent default form submission behavior
@@ -336,6 +369,7 @@ export default function Event() {
     setFormModal(!formModal);
   }
 
+  console.log(searchData);
   return (
     <div className="livestock">
       <Head>
@@ -363,13 +397,34 @@ export default function Event() {
                 </h1>
                 <p className=" mt-1">Keep track of events in livestock</p>
               </div>
+              <div className="flex items-center space-x-5 ">
+                <p
+                  className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
+                  onClick={addProfile}
+                >
+                  <span>+ </span> Add Event
+                </p>
 
-              <p
-                className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
-                onClick={addProfile}
-              >
-                <span>+ </span> Add Event
-              </p>
+                <form onSubmit={handleSearch}>
+                  <div className="relative w-40 md:w-full mt-3">
+                    <input
+                      type="text"
+                      name="search"
+                      placeholder="Tag Id..."
+                      className="w-full px-4 py-2 border-2 rounded-lg bg-input text-primary placeholder-primary-foreground focus:outline-none focus:ring ring-primary"
+                      value={query}
+                      onChange={handleSearchChange}
+                    />
+                    <button
+                      type="submit"
+                      className="absolute right-0 top-0 h-full px-4 bg-[#008000]  text-white rounded-r-lg flex items-center justify-center"
+                      onClick={handleSearch}
+                    >
+                      <BsSearch />
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
 
             //   {/* <input
@@ -422,7 +477,7 @@ export default function Event() {
                   </th>
                 </tr>
               </thead>
-              {!fetching && eventData.length > 0 && (
+              {!fetching && !searching && eventData.length > 0 && (
                 <tbody>
                   {eventData.map((row, key) => (
                     <tr
@@ -537,7 +592,157 @@ export default function Event() {
                           ) : (
                             <button
                               title="More info"
-                              onClick={() => handleviewEvent(row._id)}
+                              onClick={() => handleviewEvent(row.tagId)}
+                              className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
+                            >
+                              <MdRemoveRedEye style={{ fontSize: "14px" }} />
+                            </button>
+                          )}
+                          {deleting && row._id == deleteId ? (
+                            <button
+                              className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
+                              onClick={() => handledeleteRecord(row._id)}
+                            >
+                              {/* Delete */}
+                              <AiOutlineLoading3Quarters
+                                className={`${
+                                  row.tagId === deleteId && "animate-spin"
+                                } `}
+                                style={{ fontSize: "14px" }}
+                              />
+                            </button>
+                          ) : (
+                            <button
+                              title="Delete"
+                              className=" mr-2 px-3 py-1 ml-2   hover:bg-red-600 text-white bg-red-500 rounded-md"
+                              onClick={() => handledeleteRecord(row._id)}
+                            >
+                              {/* Delete */}
+                              <RiDeleteBin6Line style={{ fontSize: "14px" }} />
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
+              {query && searching && searchData.length > 0 && (
+                <tbody>
+                  {searchData.map((row, key) => (
+                    <tr
+                      key={key}
+                      className="   md:hover:bg-gray-100 flex md:table-row  flex-row md:flex-row flex-wrap md:flex-no-wrap my-5 md:mb-0 shadow-md bg-gray-100 shadow-gray-800 md:shadow-none"
+                    >
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-20 top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          ID
+                        </span>
+                        <div style={{ fontSize: "14px", color: "black" }}>
+                          {key + 1}
+                        </div>
+                      </td>
+
+                      <td className=" md:w-auto  space-x-2 flex w-full justify-between items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
+                        <span
+                          className="md:hidden    rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Tag Id
+                        </span>
+                        <div
+                          className=""
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
+                          {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
+                          <p className=" text-ellipsis overflow-hidden ...">
+                            {row.tagId}
+                          </p>
+                        </div>
+                      </td>
+                      <td className=" md:w-auto  space-x-2 flex w-full justify-between items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
+                        <span
+                          className="md:hidden    rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Event Type
+                        </span>
+                        <div
+                          className=""
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
+                          {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
+                          <p className=" text-ellipsis overflow-hidden ...">
+                            {row.eventType}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Date & Time
+                        </span>
+                        <span style={{ fontSize: "14px", color: "black" }}>
+                          {moment(row.eventDate).format(
+                            "MMMM Do, YYYY, h:mm:ss A"
+                          )}
+                        </span>
+                      </td>
+
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
+                        <span
+                          className="md:hidden  w-20 top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Actions
+                        </span>
+
+                        <div className="">
+                          <button
+                            title="Edit"
+                            onClick={() => editBtnFn(row._id)}
+                            className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
+                          >
+                            {/* Edit */}
+                            <FaRegEdit style={{ fontSize: "14px" }} />
+                          </button>
+
+                          {viewing && viewId === row._id ? (
+                            <button
+                              title="More info"
+                              className=" px-3 py-1 ml-2 animate-pulse   hover:bg-green-600 text-white bg-green-500 rounded-md"
+                            >
+                              <HiDotsHorizontal style={{ fontSize: "14px" }} />
+                            </button>
+                          ) : (
+                            <button
+                              title="More info"
+                              onClick={() => handleviewEvent(row.tagId)}
                               className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
                             >
                               <MdRemoveRedEye style={{ fontSize: "14px" }} />
