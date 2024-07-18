@@ -50,6 +50,7 @@ import { formatDateString } from "@/helperFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
 import { HiDotsHorizontal } from "react-icons/hi";
+import { BsSearch } from "react-icons/bs";
 
 // import 'react-smart-data-table/dist/react-smart-data-table.css';
 
@@ -63,6 +64,9 @@ export default function Quarantine() {
   const userData = useRecoilValue(userState);
   const [deleting, setdelete] = useState(false);
   const [edittagId, setEditTagId] = useState("");
+  const [query, setQuery] = useState("");
+  const [searchData, setSearchData] = useState([]);
+  const [searching, setSearching] = useState(false);
   const [editFormModal, setEditFormModal] = useState(false);
   const [editformInput, setEditFormInput] = useState({
     breed: "",
@@ -354,6 +358,37 @@ export default function Quarantine() {
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearching(false);
+    setSearchData([]);
+    setQuery(e.target.value);
+  };
+
+  async function handleSearch(e) {
+       if (!query.trim()) {
+         return toast.error("Please, enter a search query!");
+       }
+       setSearching(true);
+       e.preventDefault();
+
+    try {
+      const selectedRecord = await viewRecord(
+        userData.token,
+        userData.farmland,
+        "quarantine",
+        "pig",
+        query
+      );
+      setSearchData([selectedRecord.data.message]);
+    } catch (error) {
+      setSearchData([]);
+      console.log(error);
+      if (error.code === "ERR_BAD_REQUEST") {
+        toast.error(error.response.data.message);
+      }
+    }
+  }
+
   const handleEditFormSubmit = async (e) => {
     setEditting(true);
     e.preventDefault(); // Prevent default form submission behavior
@@ -478,6 +513,27 @@ export default function Quarantine() {
                 </h1>
                 <p className=" mt-1">Keep track of quarantined profiles</p>
               </div>
+              <div className="  sm:flex items-center space-x-5  ">
+                <form onSubmit={handleSearch}>
+                  <div className="relative w-full mt-3">
+                    <input
+                      type="text"
+                      name="search"
+                      placeholder="Tag Id..."
+                      className="w-full px-4 py-2 border-2 rounded-lg bg-input text-primary placeholder-primary-foreground focus:outline-none focus:ring ring-primary"
+                      value={query}
+                      onChange={handleSearchChange}
+                    />
+                    <button
+                      type="submit"
+                      className="absolute right-0 top-0 h-full px-4 bg-[#008000]  text-white rounded-r-lg flex items-center justify-center"
+                      onClick={handleSearch}
+                    >
+                      <BsSearch />
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
 
             //   {/* <input
@@ -541,9 +597,152 @@ export default function Quarantine() {
                   </th>
                 </tr>
               </thead>
-              {!fetching && quarantineData.length > 0 && (
+              {!fetching && !searching && quarantineData.length > 0 && (
                 <tbody>
                   {quarantineData.map((row, key) => (
+                    <tr
+                      key={key}
+                      className="  md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap my-5 md:mb-0 shadow-md bg-gray-100 shadow-gray-800 md:shadow-none"
+                    >
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b   md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          ID
+                        </span>
+                        <div style={{ fontSize: "14px", color: "black" }}>
+                          {key + 1}
+                        </div>
+                      </td>
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Breed
+                        </span>
+                        <div style={{ fontSize: "14px", color: "black" }}>
+                          {row.breed}
+                        </div>
+                      </td>
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Tag ID
+                        </span>
+                        <div style={{ fontSize: "14px", color: "black" }}>
+                          {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
+                          <p>{row.tagId}</p>
+                        </div>
+                      </td>
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Sex
+                        </span>
+                        <div style={{ fontSize: "14px", color: "black" }}>
+                          {row.sex}
+                        </div>
+                      </td>
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Birth Date
+                        </span>
+                        <span style={{ fontSize: "14px", color: "black" }}>
+                          {moment(row.birthDate).format(
+                            "MMMM Do, YYYY, h:mm:ss A"
+                          )}
+                        </span>
+                      </td>
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
+                        <span
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Weight
+                        </span>
+                        <span style={{ fontSize: "14px", color: "black" }}>
+                          {row.weight}
+                        </span>
+                      </td>
+                      <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
+                        <span
+                          className="md:hidden w-20  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                          style={{
+                            backgroundColor: "#9be49b",
+                            color: "#01000D",
+                            fontSize: "11px",
+                          }}
+                        >
+                          Actions
+                        </span>
+
+                        <div className="flex  justify-center max-w-sm space-x-5">
+                          {viewing && viewId === row.tagId ? (
+                            <button
+                              title="More info"
+                              className=" px-3 py-1 ml-2 animate-pulse   hover:bg-green-600 text-white bg-green-500 rounded-md"
+                            >
+                              <HiDotsHorizontal style={{ fontSize: "14px" }} />
+                            </button>
+                          ) : (
+                            <button
+                              title="More info"
+                              onClick={() => handleViewquarantine(row.tagId)}
+                              className=" px-3 py-1 ml-2   hover:bg-green-600 text-white bg-green-500 rounded-md"
+                            >
+                              <MdRemoveRedEye style={{ fontSize: "14px" }} />
+                            </button>
+                          )}
+
+                          <button
+                            onClick={() => prepareQurantine(row.tagId)}
+                            title="Release livestock"
+                            className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
+                          >
+                            Release
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
+              {!fetching && searchData.length > 0 && (
+                <tbody>
+                  {searchData.map((row, key) => (
                     <tr
                       key={key}
                       className="  md:hover:bg-gray-100 flex md:table-row flex-row md:flex-row flex-wrap md:flex-no-wrap my-5 md:mb-0 shadow-md bg-gray-100 shadow-gray-800 md:shadow-none"
@@ -720,225 +919,6 @@ export default function Quarantine() {
           </div>
         </div>
       )}
-
-      {
-        //quarantine input form
-
-        formModal && (
-          <div
-            className="dashboard-main2 py-12 bg-[#01000D]  transition overflow-y-auto  duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
-            id="modal"
-          >
-            <p
-              className="form-header pt-10 pb:0 md:pt-0"
-              style={{ color: "white" }}
-            >
-              quarantine Profile Details
-            </p>
-
-            <div
-              role="alert"
-              className="container mx-auto w-11/12 md:w-2/3 max-w-xl"
-            >
-              <div className="w-[auto] bg-white relative mt-4 md:mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
-                <form>
-                  <div className="general-form">
-                    <div>
-                      <label className="input-label" htmlFor="breed">
-                        Breed
-                      </label>
-                      <input
-                        title="Enter the breed of the quarantine here."
-                        placeholder="E.g. Holstein Friesian"
-                        maxLength={20}
-                        required
-                        value={formInput.breed}
-                        onChange={handleChange}
-                        name="breed"
-                        id="breed"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-
-                      <label className="input-label" htmlFor="tag Id">
-                        Tag ID
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the quarantine tag."
-                        maxLength={10}
-                        required
-                        value={formInput.tagId}
-                        onChange={handleChange}
-                        id="name"
-                        name="tagId"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-                      {tagIdError && <span>{tagIdError}</span>}
-                      <label className="input-label" for="name">
-                        Tag Location
-                      </label>
-                      <input
-                        title="Specify where the quarantine tag is located on the animal (e.g., ear, leg)."
-                        maxLength={10}
-                        value={formInput.tagLocation}
-                        onChange={handleChange}
-                        id="taglocation"
-                        name="tagLocation"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-
-                      <label className="input-label" for="name">
-                        Sex
-                      </label>
-                      <select
-                        id="name"
-                        value={formInput.sex}
-                        name="sex"
-                        onChange={handleChange}
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      >
-                        <option value={""}>Select a sex</option>
-                        <option value={"Male"}>Male</option>
-                        <option value={"Female"}>Female</option>
-                      </select>
-
-                      <label className="input-label" for="name">
-                        Birth Date
-                      </label>
-                      <input
-                        type="datetime-local"
-                        id="name"
-                        value={formInput.birthDate}
-                        onChange={handleChange}
-                        name="birthDate"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-                    </div>
-                    <div>
-                      <label className="input-label" for="name">
-                        Weight
-                      </label>
-                      <input
-                        title="Enter the weight of the quarantine in kilograms (kg)."
-                        maxLength={10}
-                        value={formInput.weight}
-                        onChange={handleChange}
-                        type="number"
-                        name="weight"
-                        id="name"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-
-                      <label className="input-label" for="name">
-                        Status
-                      </label>
-                      <select
-                        id="name"
-                        value={formInput.status}
-                        onChange={handleChange}
-                        name="status"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      >
-                        <option value={""}>Select a status</option>
-                        <option>Sick</option>
-                        <option>Healthy</option>
-                        <option>Deceased</option>
-                        <option>Pregnant</option>
-                        <option>Injured</option>
-                      </select>
-
-                      <label className="input-label" for="name">
-                        Origin
-                      </label>
-                      <select
-                        id="name"
-                        value={formInput.origin}
-                        onChange={handleChange}
-                        name="origin"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      >
-                        <option value={""}>Select origin</option>
-                        <option>Purchased</option>
-                        <option>Born on farm</option>
-                        <option>Donated</option>
-                        <option>Inherited</option>
-                        <option>Adopted</option>
-                      </select>
-
-                      {/* <label className="input-label" for="name">
-                        Staff in charge
-                      </label>
-                      <input
-                        title="Name of staff creating this quarantine profile"
-                        id="name"
-                        value={formInput.staff}
-                        onChange={handleChange}
-                        type="text"
-                        name="staff"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      /> */}
-                      <label className="input-label" for="name">
-                        Remark
-                      </label>
-                      <input
-                        title="Add additional remarks about the quarantine here. Make it brief for easy readablility."
-                        id="name"
-                        value={formInput.remark}
-                        onChange={handleChange}
-                        type="text"
-                        name="remark"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-                    </div>
-                  </div>
-                </form>
-
-                <div className="relative mb-5 mt-2">
-                  <div className="absolute text-gray-600 flex items-center px-4 border-r h-full"></div>
-                </div>
-                {/* <label for="expiry" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
-                <div className="relative mb-5 mt-2">
-                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
-                </div>
-                {/* <label for="cvc" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
-                <div className="relative mb-5 mt-2">
-                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
-                  {/* <input id="cvc" className="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
-                </div>
-                <div className="form-btns">
-                  <button
-                    className="btn"
-                    onClick={(e) => handleCreate(e)}
-                    disabled={creating}
-                  >
-                    {creating ? (
-                      <div className="flex items-center space-x-2">
-                        <AiOutlineLoading3Quarters className="animate-spin" />{" "}
-                        <p>Processing...</p>
-                      </div>
-                    ) : (
-                      "    Submit"
-                    )}
-                  </button>
-                  {!creating && (
-                    <button className="btn2" onClick={closeFormModal}>
-                      Cancel
-                    </button>
-                  )}
-                </div>
-                <button
-                  onClick={closeFormModal}
-                  className="cursor-pointer text-xl absolute top-0 right-0 mt-4 mr-5 text-gray-700 hover:text-gray-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
-                  aria-label="close modal"
-                  role="button"
-                >
-                  <IoMdClose />
-                </button>
-              </div>
-              {/* <button className="close-btn" onClick={show()}>hsh</button> */}
-            </div>
-          </div>
-        )
-      }
 
       {
         //quarantine EDIT form

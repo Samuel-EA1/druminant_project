@@ -14,7 +14,7 @@ import {
   AiOutlineMail,
   AiOutlineUser,
 } from "react-icons/ai";
-import { FaArrowRight, FaTruckLoading, FaUser } from "react-icons/fa";
+import { FaArrowRight, FaEye, FaEyeSlash, FaTruckLoading, FaUser } from "react-icons/fa";
 import { GoKey } from "react-icons/go";
 import { PiPlantLight } from "react-icons/pi";
 import { RiAdminLine } from "react-icons/ri";
@@ -27,10 +27,17 @@ export default function Login() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+
   const [formData, setformData] = useState({
     username: "",
     password: "",
   });
+
+
+    const togglePasswordVisibility = () => {
+      setShowPassword(!showPassword);
+    };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,7 +48,6 @@ export default function Login() {
     e.preventDefault();
 
     try {
-    
       setLoading(true);
       const res = await axios.post(`${BASE_URL}/auth/login`, formData);
       localStorage.setItem("token", res.data.token);
@@ -78,27 +84,27 @@ export default function Login() {
         <Header />
         <div className="mt-36">
           <div className="flex justify-center items-center    px-2  ">
-            <div className="bg-white p-8 rounded shadow-md max-w-xl   w-full  ">
+            <div className="bg-white  p-8 rounded shadow-md max-w-xl   w-full  ">
               <h2 className="text-2xl flex items-center space-x-3 font-bold mb-4">
-                <FaUser className="md:text-[#008000] text-[#24c024]" />
+                <FaUser className="text-[#008000]" />
                 <p className="text-green-900   ">Log In</p>
               </h2>
               <form className="mb-2" onSubmit={login}>
                 <div className="mb-4">
                   <label
                     htmlFor="username"
-                    className="text-sm text-white md:text-black"
+                    className="text-base   md:text-black"
                   >
                     Username
                   </label>
                   <div className="flex items-center border rounded mt-1">
                     <span className="pl-3">
-                      <AiOutlineUser className="md:text-[#008000] text-white" />
+                      <AiOutlineUser className="text-[#008000]  " />
                     </span>
                     <input
                       type="text"
                       id="username"
-                      className="w-full py-2 px-2 outline-none text-base text-white h-12 md:text-black bg-transparent  "
+                      className="w-full py-2 px-2 outline-none text-base   h-12 md:text-black bg-transparent  "
                       placeholder="Enter your username"
                       required
                       maxLength={12}
@@ -111,25 +117,31 @@ export default function Login() {
 
                 <div className="mb-4">
                   <label
-                    htmlFor="ethAddress"
-                    className="text-sm text-white md:text-black"
+                    htmlFor="password"
+                    className="text-base text-white md:text-black"
                   >
                     Password
                   </label>
                   <div className="flex items-center border rounded mt-1">
                     <span className="pl-3">
-                      <GoKey className="md:text-[#008000] text-white" />
+                      <GoKey className="md:text-[#008000]" />
                     </span>
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       id="password"
                       name="password"
-                      className="w-full py-2 px-2 outline-none text-base h-12 text-white md:text-black bg-transparent"
+                      className="w-full py-2 px-2 outline-none text-base h-12 md:text-black bg-transparent"
                       placeholder="Enter password"
                       required
                       value={formData.password}
                       onChange={(e) => handleChange(e)}
                     />
+                    <span
+                      className="pr-3 cursor-pointer"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </span>
                   </div>
                 </div>
 
@@ -156,14 +168,11 @@ export default function Login() {
                   </p>
                 )}
               </form>
-              <Link
-                className="text-green-900 "
-                href={"/reset-link"}
-              >
+              <Link className="text-green-900 " href={"/reset-link"}>
                 Forgot password?
               </Link>
-              <div className="mt-10 text-sm text-center flex justify-between w-full items-center max-w-xs mx-auto">
-                <p className=" mx-auto text-sm text-black">
+              <div className="mt-10 text-base text-center flex justify-between w-full items-center max-w-xs mx-auto">
+                <p className=" mx-auto text-base text-black">
                   You don&apos;t have an account?
                   <Link href={"/signup"} className="md:text-[#008000]">
                     {" "}
