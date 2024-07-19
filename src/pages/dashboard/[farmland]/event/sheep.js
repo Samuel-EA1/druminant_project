@@ -292,30 +292,38 @@ export default function Event() {
     setSearchData([]);
     setQuery(e.target.value);
   };
+   async function handleSearch(e) {
+     const BASE_URL =
+       process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api/v1";
+     let url = `${BASE_URL}/farmland/${userData.farmland}/event/cattle/${query}`;
 
-  async function handleSearch(e) {
-       if (!query.trim()) {
-         return toast.error("Please, enter a search query!");
+     console.log(userData.token);
+     if (!query.trim()) {
+       return toast.error("Please, enter a search query!");
+     }
+     setSearching(true);
+     e.preventDefault();
+     try {
+       const res = await axios.get(url, {
+         headers: {
+           Authorization: `Bearer ${userData.token}`,
+         },
+         params: {
+           search: true,
+         },
+       });
+       console.log(res);
+
+       setSearchData([res.data.message]);
+     } catch (error) {
+       setSearchData([]);
+       console.log(error);
+       if (error.code === "ERR_BAD_REQUEST") {
+         toast.error(error.response.data.message);
        }
-       setSearching(true);
-       e.preventDefault();
-    try {
-      const selectedRecord = await viewRecord(
-        userData.token,
-        userData.farmland,
-        "event",
-        "sheep",
-        query
-      );
-      setSearchData([selectedRecord.data.message]);
-    } catch (error) {
-      setSearchData([]);
-      console.log(error);
-      if (error.code === "ERR_BAD_REQUEST") {
-        toast.error(error.response.data.message);
-      }
-    }
-  }
+     }
+   }
+
 
   const handleEditFormSubmit = async (e) => {
     setEditting(true);
@@ -386,7 +394,7 @@ export default function Event() {
 
       <ModuleHeader />
 
-      <div className="p-2 md:p-5">
+      <div className="livestock p-2 md:p-5  border-2  my-10 lg:mt-2">
         {" "}
         <div className=" md:mt-10 ">
           {userData?.token && (
@@ -629,7 +637,7 @@ export default function Event() {
               )}
               {query && searching && searchData.length > 0 && (
                 <tbody>
-                  {searchData.map((row, key) => (
+                  {searchData[0].map((row, key) => (
                     <tr
                       key={key}
                       className="   md:hover:bg-gray-100 flex md:table-row  flex-row md:flex-row flex-wrap md:flex-no-wrap my-5 md:mb-0 shadow-md bg-gray-100 shadow-gray-800 md:shadow-none"

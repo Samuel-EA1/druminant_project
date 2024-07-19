@@ -328,7 +328,6 @@ function FinanceRecord() {
     }
   };
 
-  console.log(fetchError);
   return (
     <div>
       <Head>
@@ -344,7 +343,11 @@ function FinanceRecord() {
       </Head>
       <ModuleHeader />
       {userData && !fetchError ? (
-        <div className="livestock p-2 md:p-5  border-2">
+        <div
+          className={`${
+            !financeForm && !editModal && "livestock"
+          } p-2 md:p-5  border-2  my-10 lg:mt-2`}
+        >
           <div>
             <h1 className="text-lg md:text-2xl head2 px-1 md:px-0 font-bold">
               Income/Expense (goat)
@@ -374,7 +377,7 @@ function FinanceRecord() {
                   N<span>{financeTotal?.incomeAmountTotal}</span>
                 </h3>
               </div>
-              <div className="w-2/4  mr-2  flex space-x-3  items-center  mt-2">
+              <div className="w-2/4  mr-2    flex flex-col justify-center space-y-2 sm:flex-row sm:space-y-0 space-x-3 items-center  mt-2">
                 <button
                   className="  hidden sm:flex border-green-700 py-2 lg:px-10 px-4 bg-[#008000]  text-white    rounded-md  border-2   self-center "
                   onClick={handleViewIncomeClick}
@@ -420,7 +423,7 @@ function FinanceRecord() {
                   N<span>{financeTotal?.expenseAmountTotal}</span>
                 </h3>
               </div>
-              <div className="w-2/4  mr-2  flex space-x-3  items-center  mt-2">
+              <div className="w-2/4  mr-2    flex flex-col justify-center space-y-2 sm:flex-row sm:space-y-0 space-x-3 items-center  mt-2">
                 <button
                   className="  hidden sm:flex border-green-700 py-2 lg:px-10 px-4 bg-[#008000]  text-white    rounded-md  border-2   self-center "
                   onClick={handleAddExpenseClick}
@@ -658,19 +661,21 @@ function FinanceRecord() {
 
             financeForm && (
               <div
-                className="form-backdrop"
-                class="  py-9 bg-[#01000D] transition duration-150   ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
+                className="dashboard-main2 py-12 bg-[#01000D] min-h-screen    h-fit transition   duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
                 id="modal"
               >
-                <p className="form-header2 first-letter:capitalize">
+                <p
+                  className="form-header pt-10 pb:0 md:pt-10   first-letter:capitalize"
+                  style={{ color: "white" }}
+                >
                   {financeType} Record Details
                 </p>
 
                 <div
                   role="alert"
-                  class="container bg-white rounded mx-auto w-11/12 md:w-2/3 max-w-xl"
+                  className="container mx-auto w-11/12 md:w-2/3 max-w-xl"
                 >
-                  <div class="w-[auto] relative mt-4 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
+                  <div className="w-[auto] bg-white relative mt-4 md:mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
                     <form onSubmit={handleFinanceSubmit}>
                       <div>
                         <label className="input-label" htmlFor="desc">
@@ -856,17 +861,21 @@ function FinanceRecord() {
 
             editModal && (
               <div
-                className="form-backdrop "
-                class="  py-9 bg-[#01000D] transition duration-150     ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
+                className="dashboard-main2 py-12 bg-[#01000D] min-h-screen    h-fit transition   duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
                 id="modal"
               >
-                <p className="form-header2">Edit {financeType} Details</p>
+                <p
+                  className="form-header pt-10 pb:0 md:pt-10   first-letter:capitalize"
+                  style={{ color: "white" }}
+                >
+                  Edit {financeType} Record Details
+                </p>
 
                 <div
                   role="alert"
-                  class="container bg-white mx-auto w-11/12 rounded md:w-2/3 max-w-xl"
+                  className="container mx-auto w-11/12 md:w-2/3 max-w-xl"
                 >
-                  <div class="w-[auto] relative mt-4 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
+                  <div className="w-[auto] bg-white relative mt-4 md:mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
                     <form onSubmit={(e) => handleEditRecord(e)}>
                       <div>
                         <label className="input-label" htmlFor="description">

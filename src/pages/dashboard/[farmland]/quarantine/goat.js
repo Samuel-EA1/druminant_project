@@ -502,8 +502,7 @@ export default function Quarantine() {
       </Head>
 
       <ModuleHeader />
-
-      <div className="p-2 md:p-5">
+      <div className="livestock p-2 md:p-5  border-2  my-10 lg:mt-2">
         {" "}
         <div className=" md:mt-10 ">
           {userData?.token && (

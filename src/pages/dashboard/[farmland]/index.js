@@ -204,7 +204,7 @@ export default function Dashboard() {
                       <br className="break" /> Dashboard
                     </p>
                   </div>
-                  <div className=" my-20 max-w-7xl  mx-auto    md:flex flex-wrap items-center justify-center border border-transparent  text-gray-800">
+                  <div className=" md:my-20 max-w-7xl  mx-auto    md:flex flex-wrap items-center justify-center border border-transparent  text-gray-800">
                     {" "}
                     {/* livestock */}
                     <div className="p-2 basis-80 lg:basis-96 md:m-5  ">

@@ -1,10 +1,7 @@
-export const formatDateString = (isoString) => {
-  const date = new Date(isoString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
+import moment from "moment";
 
-  return `${year}-${month}-${day}T${hours}:${minutes}`;
+export const formatDateString = (isoString) => {
+  if (!isoString) return "";
+  const localDate = moment.utc(isoString).local();
+  return localDate.format("YYYY-MM-DDTHH:mm");
 };

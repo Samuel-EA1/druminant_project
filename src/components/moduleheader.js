@@ -84,7 +84,8 @@ function ModuleHeader() {
   }, [token]);
 
   function logOut() {
-    confirm("Are you sure you want to log out?");
+    const confirmIt = confirm("Are you sure you want to log out?");
+    if (!confirmIt) return;
     localStorage.removeItem("token");
     setUserData(null);
     router.push("/");
@@ -98,7 +99,7 @@ function ModuleHeader() {
   }
 
   return (
-    <div className=" ">
+    <div className="fixed right-0 left-0 top-0 z-50">
       <div
         className={`admin-header  ${
           currentPath === "/" ||
