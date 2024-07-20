@@ -270,11 +270,11 @@ export default function Lactation() {
   };
 
   async function handleSearch(e) {
+    e.preventDefault();
     if (!query.trim()) {
       return toast.error("Please, enter a search query!");
     }
     setSearching(true);
-    e.preventDefault();
     try {
       const selectedRecord = await viewRecord(
         userData.token,
@@ -320,7 +320,7 @@ export default function Lactation() {
       );
 
       if (res.data) {
-        toast.success(res.data);
+        toast.success(res.data.message);
         setCreating(false);
         setFormModal(false);
         setformInput({});
@@ -566,7 +566,7 @@ export default function Lactation() {
                           </span>
                           <span style={{ fontSize: "14px", color: "black" }}>
                             {moment(row.deliveryDate).format(
-                              "MMM D, YYYY, h:mm:ss A"
+                              "MMM D, YYYY, HH:mm:ss"
                             )}
                           </span>
                         </td>
@@ -710,7 +710,7 @@ export default function Lactation() {
                           </span>
                           <span style={{ fontSize: "14px", color: "black" }}>
                             {moment(row.deliveryDate).format(
-                              "MMM D, YYYY, h:mm:ss A"
+                              "MMM D, YYYY, HH:mm:ss"
                             )}
                           </span>
                         </td>
@@ -885,7 +885,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           name="tagId"
                           id="tagId"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -896,10 +896,10 @@ export default function Lactation() {
                         <input
                           type="datetime-local"
                           id="deliveryDate"
-                          value={formInput.deliveryDate}
+                          value={formatDateString(formInput.deliveryDate)}
                           onChange={handleChange}
                           name="deliveryDate"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal min-w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal min-w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
                       <div className=" w-full md:w-[40%]">
@@ -918,7 +918,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="offspringNumber"
                           name="offspringNumber"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -935,7 +935,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="milkYield"
                           name="milkYield"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -952,7 +952,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="weight"
                           name="weight"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -967,7 +967,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           type="text"
                           name="observation"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -984,7 +984,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="fat"
                           name="fat"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -1001,7 +1001,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="snf"
                           name="snf"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
                       <div className=" w-full md:w-[40%]">
@@ -1017,7 +1017,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="lactose"
                           name="lactose"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -1034,7 +1034,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="salt"
                           name="salt"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -1051,7 +1051,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="protein"
                           name="protein"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -1068,7 +1068,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="water"
                           name="water"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
                     </div>
@@ -1151,7 +1151,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           name="tagId"
                           id="tagId"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -1165,7 +1165,7 @@ export default function Lactation() {
                           value={formatDateString(editformInput.deliveryDate)}
                           onChange={handleChange}
                           name="deliveryDate"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal min-w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal min-w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
                       <div className=" w-full md:w-[40%]">
@@ -1184,7 +1184,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="offspringNumber"
                           name="offspringNumber"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -1201,7 +1201,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="milkYield"
                           name="milkYield"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -1218,7 +1218,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="weight"
                           name="weight"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -1233,7 +1233,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           type="text"
                           name="observation"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -1250,7 +1250,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="fat"
                           name="fat"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -1267,7 +1267,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="snf"
                           name="snf"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
                       <div className=" w-full md:w-[40%]">
@@ -1283,7 +1283,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="lactose"
                           name="lactose"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -1300,7 +1300,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="salt"
                           name="salt"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -1317,7 +1317,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="protein"
                           name="protein"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
 
@@ -1334,7 +1334,7 @@ export default function Lactation() {
                           onChange={handleChange}
                           id="water"
                           name="water"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
                     </div>
@@ -1416,7 +1416,7 @@ export default function Lactation() {
                 <p className="text-sm text-gray-600">Delivery Date & Time</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
                   {moment(selected.deliveryDate).format(
-                    "MMM Do, YYYY, h:mm:ss A"
+                    "MMM D, YYYY, HH:mm:ss"
                   )}
                 </p>
               </div>
@@ -1452,12 +1452,12 @@ export default function Lactation() {
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Entry Date</p>
                 <p className="text-base font-medium text-navy-700  dark:text-green-700">
-                  {moment(selected.createdAt).format("MMM Do, YYYY, h:mm:ss A")}
+                  {moment(selected.createdAt).format("MMM D, YYYY, HH:mm:ss")}
                 </p>
               </div>
 
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Staff in Charge</p>
+                <p class="text-sm text-gray-600">User In charge</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
                   {selected.inCharge}
                 </p>

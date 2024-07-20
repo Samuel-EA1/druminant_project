@@ -32,7 +32,7 @@ function LivestockSelection() {
         <ModuleHeader />
         <div className="dashboard-main  mx-auto">
           <h1
-            className=" text-white mt-5 text-center md:mt-16"
+                 className=" text-white mt-14 text-center md:mt-16"
             style={{
               fontFamily: "verdana",
               fontWeight: "bold",

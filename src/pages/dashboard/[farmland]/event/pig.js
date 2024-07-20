@@ -46,7 +46,7 @@ import {
   fetchAllRecords,
   viewRecord,
 } from "@/helperFunctions/handleRecord";
-import { formatDateString } from "@/helperFunctions/formatTime";
+import { formatDateString, formatDateTimeLocal } from "@/helperFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
 import { HiDotsHorizontal } from "react-icons/hi";
@@ -100,7 +100,7 @@ export default function Event() {
     const selectedRecord = // Logic to fetch the record based on `id`
       setEditFormInput({
         tagId: selectedRecord.tagId,
-        eventDate: selectedRecord.eventDate,
+         eventDate: formatDateTimeLocal(selectedRecord.eventDate),
         eventType: selectedRecord.eventType,
 
         remark: selectedRecord.remark,
@@ -241,7 +241,7 @@ export default function Event() {
 
     setEditFormInput({
       tagId: selectedRecord.tagId,
-      eventDate: selectedRecord.eventDate,
+       eventDate: formatDateTimeLocal(selectedRecord.eventDate),
       eventType: selectedRecord.eventType,
       remark: selectedRecord.remark,
     });
@@ -564,7 +564,7 @@ export default function Event() {
                         </span>
                         <span style={{ fontSize: "14px", color: "black" }}>
                           {moment(row.eventDate).format(
-                            "MMMM Do, YYYY, h:mm:ss A"
+                            "MMMM D, YYYY, HH:mm:ss"
                           )}
                         </span>
                       </td>
@@ -714,7 +714,7 @@ export default function Event() {
                         </span>
                         <span style={{ fontSize: "14px", color: "black" }}>
                           {moment(row.eventDate).format(
-                            "MMMM Do, YYYY, h:mm:ss A"
+                            "MMMM D, YYYY, HH:mm:ss"
                           )}
                         </span>
                       </td>
@@ -875,15 +875,15 @@ export default function Event() {
                         Tag Id
                       </label>
                       <input
-                        title="Assign a unique id to event"
-                        placeholder="Assign a unique id to event"
+                        title="Enter tag id of livestock"
+                        placeholder="Enter tag id of livestock"
                         maxLength={10}
                         required
                         value={formInput.tagId}
                         onChange={handleChange}
                         name="tagId"
                         id="tagId"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
                       <label className="input-label" htmlFor="eventType">
                         Event Type
@@ -897,7 +897,7 @@ export default function Event() {
                         onChange={handleChange}
                         id="eventType"
                         name="eventType"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
                       <label className="input-label" for="eventDate">
                         Event Date & Time
@@ -905,10 +905,10 @@ export default function Event() {
                       <input
                         type="datetime-local"
                         id="eventDate"
-                        value={formInput.eventDate}
+                        value={formatDateString(formInput.eventDate)}
                         onChange={handleChange}
                         name="eventDate"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -921,7 +921,7 @@ export default function Event() {
                         onChange={handleChange}
                         type="text"
                         name="remark"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
                     </div>
                   </div>
@@ -1002,14 +1002,14 @@ export default function Event() {
                         Tag Id
                       </label>
                       <input
-                        title="Assign a unique id to event"
-                        placeholder="Assign a unique id to event"
+                        title="Enter tag id of livestock"
+                        placeholder="Enter tag id of livestock"
                         maxLength={10}
                         value={editformInput.tagId}
                         onChange={handleChange}
                         name="tagId"
                         id="tagId"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="eventType">
@@ -1023,7 +1023,7 @@ export default function Event() {
                         onChange={handleChange}
                         id="eventType"
                         name="eventType"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -1035,7 +1035,7 @@ export default function Event() {
                         value={formatDateString(editformInput.eventDate)}
                         onChange={handleChange}
                         name="eventDate"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -1048,7 +1048,7 @@ export default function Event() {
                         value={editformInput.remark}
                         onChange={handleChange}
                         name="remark"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
                     </div>
                   </div>
@@ -1133,7 +1133,7 @@ export default function Event() {
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Event Date & Time</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {moment(selected.eventDate).format("MMM Do, YYYY, h:mm:ss A")}
+                  {moment(selected.eventDate).format("MMM D, YYYY, HH:mm:ss")}
                 </p>
               </div>
 
@@ -1153,7 +1153,7 @@ export default function Event() {
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Created</p>
                 <p className="text-base font-medium text-navy-700  dark:text-green-700">
-                  {moment(selected.createdAt).format("MMM Do, YYYY, h:mm:ss A")}
+                  {moment(selected.createdAt).format("MMM D, YYYY, HH:mm:ss")}
                 </p>
               </div>
 

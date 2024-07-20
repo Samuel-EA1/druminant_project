@@ -188,7 +188,7 @@ function Profile() {
               <div className="mb-4">
                 <label
                   htmlFor="username"
-                  className="block text-sm  font-medium"
+                  className="block text-base font-medium"
                 >
                   Username
                 </label>
@@ -202,7 +202,7 @@ function Profile() {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="email" className="block text-sm  font-medium">
+                <label htmlFor="email" className="block text-base font-medium">
                   Email
                 </label>
                 <input
@@ -217,7 +217,7 @@ function Profile() {
               <div className="mb-4">
                 <label
                   htmlFor="password"
-                  className="block text-sm  font-medium"
+                  className="block text-base font-medium"
                 >
                   Password
                 </label>

@@ -340,7 +340,7 @@ export default function Quarantine() {
       );
 
       if (res.data) {
-        toast.success(res.data);
+        toast.success(res.data.message);
         setCreating(false);
         setFormModal(false);
         setformInput({});
@@ -365,11 +365,11 @@ export default function Quarantine() {
   };
 
   async function handleSearch(e) {
+    e.preventDefault();
     if (!query.trim()) {
       return toast.error("Please, enter a search query!");
     }
     setSearching(true);
-    e.preventDefault();
 
     try {
       const selectedRecord = await viewRecord(
@@ -463,7 +463,7 @@ export default function Quarantine() {
       );
 
       if (res.data) {
-        toast.success(res.data);
+        toast.success(res.data.message);
         setquarantining(false);
         setReleaseModal(false);
         toast.success(res.data.message);
@@ -678,7 +678,7 @@ export default function Quarantine() {
                         </span>
                         <span style={{ fontSize: "14px", color: "black" }}>
                           {moment(row.birthDate).format(
-                            "MMMM Do, YYYY, h:mm:ss A"
+                            "MMMM D, YYYY, HH:mm:ss"
                           )}
                         </span>
                       </td>
@@ -821,7 +821,7 @@ export default function Quarantine() {
                         </span>
                         <span style={{ fontSize: "14px", color: "black" }}>
                           {moment(row.birthDate).format(
-                            "MMMM Do, YYYY, h:mm:ss A"
+                            "MMMM D, YYYY, HH:mm:ss"
                           )}
                         </span>
                       </td>
@@ -1011,7 +1011,7 @@ export default function Quarantine() {
                         onChange={handleChange}
                         name="breed"
                         id="breed"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -1024,7 +1024,7 @@ export default function Quarantine() {
                         onChange={handleChange}
                         id="name"
                         name="tagId"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -1037,7 +1037,7 @@ export default function Quarantine() {
                         onChange={handleChange}
                         id="taglocation"
                         name="tagLocation"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -1048,7 +1048,7 @@ export default function Quarantine() {
                         value={editformInput.sex}
                         name="sex"
                         onChange={handleChange}
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       >
                         <option value={""}>Select a sex</option>
                         <option value={"Male"}>Male</option>
@@ -1064,7 +1064,7 @@ export default function Quarantine() {
                         value={formatDateString(editformInput.birthDate)}
                         onChange={handleChange}
                         name="birthDate"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
                     </div>
                     <div>
@@ -1079,7 +1079,7 @@ export default function Quarantine() {
                         type="number"
                         name="weight"
                         id="name"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -1090,7 +1090,7 @@ export default function Quarantine() {
                         value={editformInput.status}
                         onChange={handleChange}
                         name="status"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       >
                         <option value={""}>Select a status</option>
                         <option>Sick</option>
@@ -1108,7 +1108,7 @@ export default function Quarantine() {
                         value={editformInput.origin}
                         onChange={handleChange}
                         name="origin"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       >
                         <option value={""}>Select origin</option>
                         <option>Purchased</option>
@@ -1128,7 +1128,7 @@ export default function Quarantine() {
                         onChange={handleChange}
                         type="text"
                         name="remark"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
                     </div>
                   </div>
@@ -1212,7 +1212,7 @@ export default function Quarantine() {
                 <p className="text-sm text-gray-600">Quarantine Date</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
                   {moment(selected.quarantineDate).format(
-                    "MMM Do, YYYY, h:mm:ss A"
+                    "MMM D, YYYY, HH:mm:ss"
                   )}
                 </p>
               </div>
@@ -1245,7 +1245,7 @@ export default function Quarantine() {
               </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Staff in charge</p>
+                <p class="text-sm text-gray-600">User In charge</p>
                 <p className="text-base font-medium text-navy-700  dark:text-green-700">
                   {selected.inCharge}
                 </p>
@@ -1254,7 +1254,7 @@ export default function Quarantine() {
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Entry Date</p>
                 <p className="text-base font-medium text-navy-700  dark:text-green-700">
-                  {moment(selected.createdAt).format("MMM Do, YYYY, h:mm:ss A")}
+                  {moment(selected.createdAt).format("MMM D, YYYY, HH:mm:ss")}
                 </p>
               </div>
 
