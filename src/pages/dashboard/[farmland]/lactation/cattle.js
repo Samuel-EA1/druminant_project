@@ -584,9 +584,9 @@ export default function Lactation() {
                             DELIVERY DATE
                           </span>
                           <span style={{ fontSize: "14px", color: "black" }}>
-                            {moment(row.deliveryDate).format(
-                              "MMM D, YYYY, HH:mm:ss"
-                            )}
+                            {moment(
+                              formatDateTimeLocal(row.deliveryDate)
+                            ).format("MMM D, YYYY, HH:mm:ss")}
                           </span>
                         </td>
 
