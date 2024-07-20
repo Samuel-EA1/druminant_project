@@ -6,6 +6,15 @@ export const formatDateString = (isoString) => {
   return localDate.format("YYYY-MM-DDTHH:mm");
 };
 
+export const formatDateLocal = (isoString) => {
+  const date = new Date(isoString);
+  const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, 16);
+  return localDate;
+};
+
+
 export const formatDateTimeLocal = (isoString) => {
   const date = new Date(isoString);
   const year = date.getFullYear();

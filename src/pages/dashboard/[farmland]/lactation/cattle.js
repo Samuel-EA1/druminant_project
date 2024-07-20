@@ -46,7 +46,10 @@ import {
   fetchAllRecords,
   viewRecord,
 } from "@/helperFunctions/handleRecord";
-import { formatDateString, formatDateTimeLocal } from "@/helperFunctions/formatTime";
+import {
+  formatDateString,
+  formatDateTimeLocal,
+} from "@/helperFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
 import { HiDotsHorizontal } from "react-icons/hi";
@@ -584,9 +587,9 @@ export default function Lactation() {
                             DELIVERY DATE
                           </span>
                           <span style={{ fontSize: "14px", color: "black" }}>
-                            {moment(
-                              formatDateTimeLocal(row.deliveryDate)
-                            ).format("MMM D, YYYY, HH:mm:ss")}
+                            {moment(row.deliveryDate).format(
+                              "MMM D, YYYY, HH:mm:ss"
+                            )}
                           </span>
                         </td>
 
