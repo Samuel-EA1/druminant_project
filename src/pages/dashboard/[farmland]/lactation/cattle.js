@@ -256,9 +256,7 @@ export default function Lactation() {
 
     let convertedValue = value;
     if (name === "deliveryDate") {
-      console.log("before", convertedValue);
       convertedValue = moment(value).utc().format();
-      console.log("after", convertedValue);
     }
     if (formModal) {
       setformInput((prevData) => ({ ...prevData, [name]: convertedValue }));
@@ -1245,21 +1243,6 @@ export default function Lactation() {
                       </div>
 
                       <div className=" w-full md:w-[40%]">
-                        <label className="input-label" for="observation">
-                          Observation
-                        </label>
-                        <input
-                          title="Add additional remarks about the lactation here. Make it brief for easy readablility."
-                          id="observation"
-                          value={editformInput.observation}
-                          onChange={handleChange}
-                          type="text"
-                          name="observation"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
-                        />
-                      </div>
-
-                      <div className=" w-full md:w-[40%]">
                         <label className="input-label" htmlFor="fat">
                           Fat
                         </label>
@@ -1357,6 +1340,20 @@ export default function Lactation() {
                           id="water"
                           name="water"
                           className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                        />
+                      </div>
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" for="observation">
+                          Observation
+                        </label>
+                        <textarea
+                          title="Add additional remarks about the lactation here. Make it brief for easy readablility."
+                          id="observation"
+                          value={editformInput.observation}
+                          onChange={handleChange}
+                          type="text"
+                          name="observation"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
                     </div>

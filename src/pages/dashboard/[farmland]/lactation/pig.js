@@ -28,7 +28,7 @@ import { HiAtSymbol, HiHashtag, HiTag } from "react-icons/hi2";
 import { MdDelete, MdOutlineHelp, MdRemoveRedEye } from "react-icons/md";
 import { MdAdd } from "react-icons/md";
 import { GoSearch } from "react-icons/go";
-import { IoIosMore, IoMdClose } from "react-icons/io";
+import { IoIosMore, IoMdAdd, IoMdClose } from "react-icons/io";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { PiHouseBold, PiHouseLineLight } from "react-icons/pi";
 import Head from "next/head";
@@ -46,7 +46,11 @@ import {
   fetchAllRecords,
   viewRecord,
 } from "@/helperFunctions/handleRecord";
-import { formatDateString } from "@/helperFunctions/formatTime";
+import {
+  formatDateLocal,
+  formatDateString,
+  formatDateTimeLocal,
+} from "@/helperFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
 import { HiDotsHorizontal } from "react-icons/hi";
@@ -234,10 +238,32 @@ export default function Lactation() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    // Check if the field is numeric and if the value length exceeds 6
+    const numericFields = [
+      "offspringNumber",
+      "milkYield",
+      "weight",
+      "fat",
+      "snf",
+      "lactose",
+      "salt",
+      "protein",
+      "water",
+    ];
+    if (numericFields.includes(name) && value.length > 6) {
+      return; // Do not update the state if length exceeds 6
+    }
+
+    let convertedValue = value;
+    if (name === "deliveryDate") {
+      console.log("before", convertedValue);
+      convertedValue = moment(value).utc().format();
+      console.log("after", convertedValue);
+    }
     if (formModal) {
-      setformInput((prevData) => ({ ...prevData, [name]: value }));
+      setformInput((prevData) => ({ ...prevData, [name]: convertedValue }));
     } else if (editFormModal) {
-      setEditFormInput((prevData) => ({ ...prevData, [name]: value }));
+      setEditFormInput((prevData) => ({ ...prevData, [name]: convertedValue }));
     }
   };
 
@@ -249,7 +275,7 @@ export default function Lactation() {
 
     setEditFormInput({
       tagId: selectedRecord.tagId,
-      deliveryDate: selectedRecord.deliveryDate,
+      deliveryDate: formatDateTimeLocal(selectedRecord.deliveryDate),
       offspringNumber: selectedRecord.offspringNumber,
       milkYield: selectedRecord.milkYield,
       weight: selectedRecord.weight,
@@ -270,11 +296,11 @@ export default function Lactation() {
   };
 
   async function handleSearch(e) {
-    e.preventDefault();
     if (!query.trim()) {
       return toast.error("Please, enter a search query!");
     }
     setSearching(true);
+    e.preventDefault();
     try {
       const selectedRecord = await viewRecord(
         userData.token,
@@ -409,7 +435,7 @@ export default function Lactation() {
       <div>
         <ModuleHeader />
 
-        <div className="livestock p-2 md:p-5  border-2  my-10 lg:mt-2">
+        <div className="  p-2 md:p-5    my-10 lg:mt-2">
           {" "}
           <div
             className={`md:mt-10 ${(editFormModal || formModal) && "hidden"}`}
@@ -417,24 +443,27 @@ export default function Lactation() {
             {userData?.token && (
               <div className="  ">
                 <div>
-                  <h1 className="text-lg md:text-2xl head  font-bold">
+                  <h1 className="text-lg md:text-2xl head font-bold">
                     Lactation Tracker (pig)
                   </h1>
                   <p className=" mt-1">
                     Keep track of livestock lactation records
                   </p>
                 </div>
-
-                <div className="flex items-center space-x-5 ">
-                  <p
-                    className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
+                <div className="flex items-center  space-x-5 mt-3 ">
+                  <div
+                    className="text-white w-fit cursor-pointer bg-[#008000] flex items-center p-2 space-x-2 justify-center"
                     onClick={addProfile}
                   >
-                    <span>+ </span> Add Event
-                  </p>
+                    <div>
+                      {" "}
+                      <IoMdAdd />
+                    </div>
+                    <p>Add profile {/*  */}</p>
+                  </div>
 
                   <form onSubmit={handleSearch}>
-                    <div className="relative w-40 md:w-full mt-3">
+                    <div className="relative w-36 sm:w-40 md:w-full  ">
                       <input
                         type="text"
                         name="search"
@@ -507,7 +536,7 @@ export default function Lactation() {
                       >
                         <td className="w-full md:w-auto   justify-between items-center p-3 text-gray-800 text-center border border-b   flex md:table-cell relative md:static">
                           <span
-                            className="md:hidden w-32  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                            className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                             style={{
                               backgroundColor: "#9be49b",
                               color: "#01000D",
@@ -523,7 +552,7 @@ export default function Lactation() {
 
                         <td className="w-full md:w-auto  justify-between items-center p-3 text-gray-800 text-center border border-b flex md:table-cell relative md:static">
                           <span
-                            className="md:hidden w-32  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                            className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                             style={{
                               backgroundColor: "#9be49b",
                               color: "#01000D",
@@ -539,7 +568,7 @@ export default function Lactation() {
                         </td>
                         <td className="w-full md:w-auto  justify-between items-center p-3 text-gray-800 text-center border border-b flex md:table-cell relative md:static">
                           <span
-                            className="md:hidden w-32  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                            className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                             style={{
                               backgroundColor: "#9be49b",
                               color: "#01000D",
@@ -555,7 +584,7 @@ export default function Lactation() {
                         </td>
                         <td className="w-full md:w-auto  space-x-2  justify-between items-center p-3 text-gray-800  border border-b text-center flex md:table-cell relative md:static">
                           <span
-                            className="md:hidden w-32  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                            className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                             style={{
                               backgroundColor: "#9be49b",
                               color: "#01000D",
@@ -565,15 +594,16 @@ export default function Lactation() {
                             DELIVERY DATE
                           </span>
                           <span style={{ fontSize: "14px", color: "black" }}>
-                            {moment(row.deliveryDate).format(
-                              "MMM D, YYYY, HH:mm:ss"
-                            )}
+                            {moment
+                              .utc(row.deliveryDate)
+                              .local()
+                              .format("MMM D, YYYY, HH:mm:ss")}
                           </span>
                         </td>
 
-                        <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center  flex md:table-cell relative md:static ">
+                        <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center   md:table-cell relative md:static ">
                           <span
-                            className="md:hidden w-32  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                            className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                             style={{
                               backgroundColor: "#9be49b",
                               color: "#01000D",
@@ -583,7 +613,7 @@ export default function Lactation() {
                             Actions
                           </span>
 
-                          <div className="">
+                          <div className=" ">
                             <button
                               title="Edit"
                               onClick={() => editBtnFn(row._id)}
@@ -651,7 +681,7 @@ export default function Lactation() {
                       >
                         <td className="w-full md:w-auto   justify-between items-center p-3 text-gray-800 text-center border border-b   flex md:table-cell relative md:static">
                           <span
-                            className="md:hidden w-32  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                            className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                             style={{
                               backgroundColor: "#9be49b",
                               color: "#01000D",
@@ -667,7 +697,7 @@ export default function Lactation() {
 
                         <td className="w-full md:w-auto  justify-between items-center p-3 text-gray-800 text-center border border-b flex md:table-cell relative md:static">
                           <span
-                            className="md:hidden w-32  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                            className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                             style={{
                               backgroundColor: "#9be49b",
                               color: "#01000D",
@@ -683,7 +713,7 @@ export default function Lactation() {
                         </td>
                         <td className="w-full md:w-auto  justify-between items-center p-3 text-gray-800 text-center border border-b flex md:table-cell relative md:static">
                           <span
-                            className="md:hidden w-32  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                            className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                             style={{
                               backgroundColor: "#9be49b",
                               color: "#01000D",
@@ -699,7 +729,7 @@ export default function Lactation() {
                         </td>
                         <td className="w-full md:w-auto  space-x-2  justify-between items-center p-3 text-gray-800  border border-b text-center flex md:table-cell relative md:static">
                           <span
-                            className="md:hidden w-32  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                            className="md:hidden w-28  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                             style={{
                               backgroundColor: "#9be49b",
                               color: "#01000D",
@@ -709,15 +739,16 @@ export default function Lactation() {
                             DELIVERY DATE
                           </span>
                           <span style={{ fontSize: "14px", color: "black" }}>
-                            {moment(row.deliveryDate).format(
-                              "MMM D, YYYY, HH:mm:ss"
-                            )}
+                            {moment
+                              .utc(row.deliveryDate)
+                              .local()
+                              .format("MMM D, YYYY, HH:mm:ss")}
                           </span>
                         </td>
 
                         <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800  border border-b text-center  flex md:table-cell relative md:static ">
                           <span
-                            className="md:hidden w-32  top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
+                            className="md:hidden w-32   top-0 left-0 rounded-md  px-2 py-1  font-bold uppercase"
                             style={{
                               backgroundColor: "#9be49b",
                               color: "#01000D",
@@ -727,7 +758,7 @@ export default function Lactation() {
                             Actions
                           </span>
 
-                          <div className="">
+                          <div className=" ">
                             <button
                               title="Edit"
                               onClick={() => editBtnFn(row._id)}
@@ -853,14 +884,8 @@ export default function Lactation() {
         //lactation input form
 
         formModal && (
-          <div
-            className="  -mt-12  md:mt-0 py-12 bg-[#01000D]        duration-150 ease-in-out   "
-            id="modal"
-          >
-            <p
-              className="form-header pt-10 pb:0 md:pt-0"
-              style={{ color: "white" }}
-            >
+          <div className="form-backdrop py-12 bg-[#01000D]  transition duration-150 ease-in-out  z-50 absolute right-0 left-0">
+            <p className="form-header  pb:0 md:pt-0" style={{ color: "white" }}>
               Lactation Details
             </p>
 
@@ -879,7 +904,7 @@ export default function Lactation() {
                         <input
                           title="Enter the lactationEntryId of the lactation here."
                           placeholder="E.g. pig321"
-                          maxLength={20}
+                          maxLength={10}
                           required
                           value={formInput.tagId}
                           onChange={handleChange}
@@ -911,7 +936,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={formInput.offspringNumber}
@@ -928,7 +953,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={formInput.milkYield}
@@ -945,7 +970,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={formInput.weight}
@@ -977,7 +1002,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={formInput.fat}
@@ -994,7 +1019,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={formInput.snf}
@@ -1010,7 +1035,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={formInput.lactose}
@@ -1027,7 +1052,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={formInput.salt}
@@ -1044,7 +1069,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={formInput.protein}
@@ -1061,7 +1086,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={formInput.water}
@@ -1119,10 +1144,7 @@ export default function Lactation() {
         //lactation EDIT form
 
         editFormModal && (
-          <div
-            className="form-backdrop py-12 bg-[#01000D] overflow-y-auto  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
-            id="modal"
-          >
+          <div className="form-backdrop py-12 bg-[#01000D]  transition duration-150 ease-in-out  z-50 absolute right-0 left-0">
             <p
               className="form-header pt-10 pb:0 md:pt-0"
               style={{ color: "white" }}
@@ -1145,7 +1167,7 @@ export default function Lactation() {
                         <input
                           title="Enter the lactationEntryId of the lactation here."
                           placeholder="E.g. pig321"
-                          maxLength={20}
+                          maxLength={10}
                           required
                           value={editformInput.tagId}
                           onChange={handleChange}
@@ -1177,7 +1199,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={editformInput.offspringNumber}
@@ -1194,7 +1216,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={editformInput.milkYield}
@@ -1211,7 +1233,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={editformInput.weight}
@@ -1223,27 +1245,12 @@ export default function Lactation() {
                       </div>
 
                       <div className=" w-full md:w-[40%]">
-                        <label className="input-label" for="observation">
-                          Observation
-                        </label>
-                        <input
-                          title="Add additional remarks about the lactation here. Make it brief for easy readablility."
-                          id="observation"
-                          value={editformInput.observation}
-                          onChange={handleChange}
-                          type="text"
-                          name="observation"
-                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
-                        />
-                      </div>
-
-                      <div className=" w-full md:w-[40%]">
                         <label className="input-label" htmlFor="fat">
                           Fat
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={editformInput.fat}
@@ -1260,7 +1267,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={editformInput.snf}
@@ -1276,7 +1283,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={editformInput.lactose}
@@ -1293,7 +1300,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={editformInput.salt}
@@ -1310,7 +1317,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={editformInput.protein}
@@ -1327,7 +1334,7 @@ export default function Lactation() {
                         </label>
                         <input
                           title="Input the unique identification number assigned to the lactation tag."
-                          maxLength={10}
+                          max={99999}
                           required
                           type="number"
                           value={editformInput.water}
@@ -1335,6 +1342,20 @@ export default function Lactation() {
                           id="water"
                           name="water"
                           className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                        />
+                      </div>
+                      <div className=" w-full md:w-[40%]">
+                        <label className="input-label" for="observation">
+                          Observation
+                        </label>
+                        <textarea
+                          title="Add additional remarks about the lactation here. Make it brief for easy readablility."
+                          id="observation"
+                          value={editformInput.observation}
+                          onChange={handleChange}
+                          type="text"
+                          name="observation"
+                          className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full  h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                         />
                       </div>
                     </div>
@@ -1444,9 +1465,13 @@ export default function Lactation() {
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Observation</p>
-                <p className="text-base font-medium text-navy-700  dark:text-green-700">
+                <textarea
+                  readOnly
+                  className="text-base font-medium text-navy-700 h-20 dark:text-green-700 border-none focus:outline-none active:outline-none resize-none"
+                  style={{ border: "none", resize: "none", outline: "none" }}
+                >
                   {selected.observation}
-                </p>
+                </textarea>
               </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">

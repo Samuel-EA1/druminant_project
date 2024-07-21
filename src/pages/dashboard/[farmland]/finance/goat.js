@@ -1,7 +1,11 @@
 import { userState } from "@/atom";
 import { Footer } from "@/components/footer";
 import ModuleHeader from "@/components/moduleheader";
-import { formatBalance, formatDateString, formatDateTimeLocal } from "@/helperFunctions/formatTime";
+import {
+  formatBalance,
+  formatDateString,
+  formatDateTimeLocal,
+} from "@/helperFunctions/formatTime";
 import {
   createRecord,
   deleteRecord,
@@ -212,21 +216,32 @@ function FinanceRecord() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    let convertedValue = value;
+    if (name === "transactionDate") {
+      convertedValue = moment(value).utc().format();
+    }
+
     if (name === "amount" && value.length > 15) {
       return; // Prevent setting value if it exceeds length
     }
-    setformInput((prevData) => ({ ...prevData, [name]: value }));
+    setformInput((prevData) => ({ ...prevData, [name]: convertedValue }));
   };
 
   const handleEditChange = (e) => {
     const { name, value } = e.target;
+
+    let convertedValue = value;
+    if (name === "transactionDate") {
+      convertedValue = moment(value).utc().format();
+    }
 
     if (name === "amount" && value.length > 15) {
       return; // Prevent setting value if it exceeds length
     }
     seteditform((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: convertedValue,
     }));
   };
 
@@ -568,9 +583,9 @@ function FinanceRecord() {
                           Txn Date
                         </span>
                         <span style={{ fontSize: "14px" }}>
-                          {moment(formatDateString(row.transactionDate)).format(
-                            "MMMM D, YYYY, HH:mm:ss"
-                          )}
+                          {moment(row.transactionDate)
+                            .local()
+                            .format("MMMM D, YYYY, HH:mm:ss")}
                         </span>
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3  border-green-200 text-gray-800  border border-b text-center blockryur md:table-cell relative md:static ">
@@ -688,7 +703,7 @@ function FinanceRecord() {
                         </label>
                         <input
                           type="datetime-local"
-                          value={formInput.transactionDate}
+                          value={formatDateString(formInput.transactionDate)}
                           onChange={handleChange}
                           name="transactionDate"
                           id="breed"

@@ -46,7 +46,10 @@ import {
   fetchAllRecords,
   viewRecord,
 } from "@/helperFunctions/handleRecord";
-import { formatDateString, formatDateTimeLocal } from "@/helperFunctions/formatTime";
+import {
+  formatDateString,
+  formatDateTimeLocal,
+} from "@/helperFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
 import { HiDotsHorizontal } from "react-icons/hi";
@@ -100,7 +103,7 @@ export default function Event() {
     const selectedRecord = // Logic to fetch the record based on `id`
       setEditFormInput({
         tagId: selectedRecord.tagId,
-         eventDate: formatDateTimeLocal(selectedRecord.eventDate),
+        eventDate: formatDateTimeLocal(selectedRecord.eventDate),
         eventType: selectedRecord.eventType,
 
         remark: selectedRecord.remark,
@@ -226,10 +229,14 @@ export default function Event() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    let convertedValue = value;
+    if (name === "eventDate") {
+      convertedValue = moment(value).utc().format();
+    }
     if (formModal) {
-      setformInput((prevData) => ({ ...prevData, [name]: value }));
+      setformInput((prevData) => ({ ...prevData, [name]: convertedValue }));
     } else if (editFormModal) {
-      setEditFormInput((prevData) => ({ ...prevData, [name]: value }));
+      setEditFormInput((prevData) => ({ ...prevData, [name]: convertedValue }));
     }
   };
 
@@ -241,7 +248,7 @@ export default function Event() {
 
     setEditFormInput({
       tagId: selectedRecord.tagId,
-       eventDate: formatDateTimeLocal(selectedRecord.eventDate),
+      eventDate: formatDateTimeLocal(selectedRecord.eventDate),
       eventType: selectedRecord.eventType,
       remark: selectedRecord.remark,
     });

@@ -2,7 +2,7 @@ import moment from "moment";
 
 export const formatDateString = (isoString) => {
   if (!isoString) return "";
-  const localDate = moment(isoString)
+  const localDate = moment(isoString);
   return localDate.format("YYYY-MM-DDTHH:mm");
 };
 
@@ -13,6 +13,7 @@ export const formatDateLocal = (isoString) => {
     .slice(0, 16);
   return localDate;
 };
+
 
 
 export const formatDateTimeLocal = (isoString) => {
@@ -33,9 +34,8 @@ export const formatBalance = (number) => {
   } else if (number >= 1000000) {
     // Millions
     return (number / 1000000).toFixed(1) + "M";
-  }   else {
+  } else {
     // Less than a thousand
     return new Intl.NumberFormat("en-US").format(number);
   }
 };
-

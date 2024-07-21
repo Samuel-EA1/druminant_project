@@ -46,7 +46,10 @@ import {
   fetchAllRecords,
   viewRecord,
 } from "@/helperFunctions/handleRecord";
-import { formatDateString, formatDateTimeLocal } from "@/helperFunctions/formatTime";
+import {
+  formatDateString,
+  formatDateTimeLocal,
+} from "@/helperFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
 import { HiDotsHorizontal } from "react-icons/hi";
@@ -100,7 +103,7 @@ export default function Event() {
     const selectedRecord = // Logic to fetch the record based on `id`
       setEditFormInput({
         tagId: selectedRecord.tagId,
-         eventDate: formatDateTimeLocal(selectedRecord.eventDate),
+        eventDate: formatDateTimeLocal(selectedRecord.eventDate),
         eventType: selectedRecord.eventType,
 
         remark: selectedRecord.remark,
@@ -226,10 +229,14 @@ export default function Event() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    let convertedValue = value;
+    if (name === "eventDate") {
+      convertedValue = moment(value).utc().format();
+    }
     if (formModal) {
-      setformInput((prevData) => ({ ...prevData, [name]: value }));
+      setformInput((prevData) => ({ ...prevData, [name]: convertedValue }));
     } else if (editFormModal) {
-      setEditFormInput((prevData) => ({ ...prevData, [name]: value }));
+      setEditFormInput((prevData) => ({ ...prevData, [name]: convertedValue }));
     }
   };
 
@@ -241,7 +248,7 @@ export default function Event() {
 
     setEditFormInput({
       tagId: selectedRecord.tagId,
-       eventDate: formatDateTimeLocal(selectedRecord.eventDate),
+      eventDate: formatDateTimeLocal(selectedRecord.eventDate),
       eventType: selectedRecord.eventType,
       remark: selectedRecord.remark,
     });
@@ -293,38 +300,37 @@ export default function Event() {
     setQuery(e.target.value);
   };
 
-   async function handleSearch(e) {
-     const BASE_URL =
-       process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api/v1";
-     let url = `${BASE_URL}/farmland/${userData.farmland}/event/ig/${query}`;
+  async function handleSearch(e) {
+    const BASE_URL =
+      process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api/v1";
+    let url = `${BASE_URL}/farmland/${userData.farmland}/event/pig/${query}`;
 
-     console.log(userData.token);
-     if (!query.trim()) {
-       return toast.error("Please, enter a search query!");
-     }
-     setSearching(true);
-     e.preventDefault();
-     try {
-       const res = await axios.get(url, {
-         headers: {
-           Authorization: `Bearer ${userData.token}`,
-         },
-         params: {
-           search: true,
-         },
-       });
-       console.log(res);
+    console.log(userData.token);
+    e.preventDefault();
+    if (!query.trim()) {
+      return toast.error("Please, enter a search query!");
+    }
+    setSearching(true);
+    try {
+      const res = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+        params: {
+          search: true,
+        },
+      });
+      console.log(res);
 
-       setSearchData([res.data.message]);
-     } catch (error) {
-       setSearchData([]);
-       console.log(error);
-       if (error.code === "ERR_BAD_REQUEST") {
-         toast.error(error.response.data.message);
-       }
-     }
-   }
-
+      setSearchData([res.data.message]);
+    } catch (error) {
+      setSearchData([]);
+      console.log(error);
+      if (error.code === "ERR_BAD_REQUEST") {
+        toast.error(error.response.data.message);
+      }
+    }
+  }
 
   const handleEditFormSubmit = async (e) => {
     setEditting(true);
@@ -378,7 +384,6 @@ export default function Event() {
     setFormModal(!formModal);
   }
 
-  console.log(searchData);
   return (
     <div className="livestock">
       <Head>
@@ -883,7 +888,7 @@ export default function Event() {
                         onChange={handleChange}
                         name="tagId"
                         id="tagId"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
                       <label className="input-label" htmlFor="eventType">
                         Event Type
@@ -897,7 +902,7 @@ export default function Event() {
                         onChange={handleChange}
                         id="eventType"
                         name="eventType"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
                       <label className="input-label" for="eventDate">
                         Event Date & Time
@@ -908,7 +913,7 @@ export default function Event() {
                         value={formatDateString(formInput.eventDate)}
                         onChange={handleChange}
                         name="eventDate"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -921,7 +926,7 @@ export default function Event() {
                         onChange={handleChange}
                         type="text"
                         name="remark"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
                     </div>
                   </div>
@@ -1009,7 +1014,7 @@ export default function Event() {
                         onChange={handleChange}
                         name="tagId"
                         id="tagId"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="eventType">
@@ -1023,7 +1028,7 @@ export default function Event() {
                         onChange={handleChange}
                         id="eventType"
                         name="eventType"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -1035,7 +1040,7 @@ export default function Event() {
                         value={formatDateString(editformInput.eventDate)}
                         onChange={handleChange}
                         name="eventDate"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -1048,7 +1053,7 @@ export default function Event() {
                         value={editformInput.remark}
                         onChange={handleChange}
                         name="remark"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
                       />
                     </div>
                   </div>

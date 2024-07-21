@@ -687,7 +687,7 @@ export default function Livestock() {
                           Birth Date
                         </span>
                         <span style={{ fontSize: "14px", color: "black" }}>
-                          {moment(row.birthDate).format(
+                          {moment(row.birthDate).local().format(
                             "MMMM D, YYYY, HH:mm:ss"
                           )}
                         </span>
@@ -1560,7 +1560,7 @@ export default function Livestock() {
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Birth Date</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {moment(selected.birthDate).format("MMM D, YYYY, HH:mm:ss")}
+                  {moment(selected.birthDate).local().format("MMM D, YYYY, HH:mm:ss")}
                 </p>
               </div>
 
