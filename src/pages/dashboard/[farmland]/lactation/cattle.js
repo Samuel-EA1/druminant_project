@@ -253,9 +253,12 @@ export default function Lactation() {
     if (numericFields.includes(name) && value.length > 6) {
       return; // Do not update the state if length exceeds 6
     }
+
     let convertedValue = value;
     if (name === "deliveryDate") {
+      console.log("before", convertedValue);
       convertedValue = moment(value).utc().format();
+      console.log("after", convertedValue);
     }
     if (formModal) {
       setformInput((prevData) => ({ ...prevData, [name]: convertedValue }));
@@ -918,7 +921,7 @@ export default function Lactation() {
                         <input
                           type="datetime-local"
                           id="deliveryDate"
-                          value={formInput.deliveryDate}
+                          value={formatDateString(formInput.deliveryDate)}
                           onChange={handleChange}
                           name="deliveryDate"
                           className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal min-w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
@@ -1181,7 +1184,7 @@ export default function Lactation() {
                         <input
                           type="datetime-local"
                           id="deliveryDate"
-                          value={editformInput.deliveryDate}
+                          value={formatDateString(editformInput.deliveryDate)}
                           onChange={handleChange}
                           name="deliveryDate"
                           className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal min-w-full   h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
