@@ -254,9 +254,9 @@ export default function Lactation() {
       return; // Do not update the state if length exceeds 6
     }
     let convertedValue = value;
-    // if (name === "deliveryDate") {
-    //   convertedValue = moment(value).utc().format();
-    // }
+    if (name === "deliveryDate") {
+      convertedValue = moment(value).utc().format();
+    }
     if (formModal) {
       setformInput((prevData) => ({ ...prevData, [name]: convertedValue }));
     } else if (editFormModal) {
