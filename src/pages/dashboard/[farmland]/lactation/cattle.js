@@ -253,11 +253,14 @@ export default function Lactation() {
     if (numericFields.includes(name) && value.length > 6) {
       return; // Do not update the state if length exceeds 6
     }
-
+    let convertedValue = value;
+    // if (name === "deliveryDate") {
+    //   convertedValue = moment(value).utc().format();
+    // }
     if (formModal) {
-      setformInput((prevData) => ({ ...prevData, [name]: value }));
+      setformInput((prevData) => ({ ...prevData, [name]: convertedValue }));
     } else if (editFormModal) {
-      setEditFormInput((prevData) => ({ ...prevData, [name]: value }));
+      setEditFormInput((prevData) => ({ ...prevData, [name]: convertedValue }));
     }
   };
 
@@ -588,9 +591,10 @@ export default function Lactation() {
                             DELIVERY DATE
                           </span>
                           <span style={{ fontSize: "14px", color: "black" }}>
-                            {moment(row.deliveryDate).format(
-                              "MMM D, YYYY, HH:mm:ss"
-                            )}
+                            {moment
+                              .utc(row.deliveryDate)
+                              .local()
+                              .format("MMM D, YYYY, HH:mm:ss")}
                           </span>
                         </td>
 
@@ -734,6 +738,7 @@ export default function Lactation() {
                           <span style={{ fontSize: "14px", color: "black" }}>
                             {moment
                               .utc(row.deliveryDate)
+                              .local()
                               .format("MMM D, YYYY, HH:mm:ss")}
                           </span>
                         </td>
