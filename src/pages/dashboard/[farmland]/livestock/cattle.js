@@ -47,7 +47,10 @@ import {
   fetchAllRecords,
   viewRecord,
 } from "@/helperFunctions/handleRecord";
-import { formatDateString, formatDateTimeLocal } from "@/helperFunctions/formatTime";
+import {
+  formatDateString,
+  formatDateTimeLocal,
+} from "@/helperFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
 import { HiDotsHorizontal } from "react-icons/hi";
@@ -323,13 +326,13 @@ export default function Livestock() {
     setEditTagId(id);
     setEditFormModal(true);
     const selectedRecord = livestockData.find((record) => record._id === id);
-    console.log(selectedRecord);
+
     setEditFormInput({
       breed: selectedRecord.breed,
       tagId: selectedRecord.tagId,
       tagLocation: selectedRecord.tagLocation,
       sex: selectedRecord.sex,
-      birthDate: formatDateTimeLocal(selectedRecord.eventDate),
+      birthDate: formatDateTimeLocal(selectedRecord.birthDate),
       weight: selectedRecord.weight,
       status: selectedRecord.status,
       origin: selectedRecord.origin,
@@ -473,7 +476,7 @@ export default function Livestock() {
         toast.success(res.data.message);
         setquarantining(false);
         setQuarantineModal(false);
-        toast.success("Quarantined!");
+
         setQuarantinForm({ action: "Quarantine" });
       }
     } catch (error) {
@@ -505,7 +508,7 @@ export default function Livestock() {
 
       <ModuleHeader />
 
-      <div className="livestock p-2 md:p-5  border-2  my-10 lg:mt-2">
+      <div className="  p-2 md:p-5     my-10 lg:mt-2">
         {" "}
         <div className={`md:mt-10 ${(editFormModal || formModal) && "hidden"}`}>
           {userData?.token && (
@@ -687,9 +690,9 @@ export default function Livestock() {
                           Birth Date
                         </span>
                         <span style={{ fontSize: "14px", color: "black" }}>
-                          {moment(row.birthDate).local().format(
-                            "MMMM D, YYYY, HH:mm:ss"
-                          )}
+                          {moment(row.birthDate)
+                            .local()
+                            .format("MMMM D, YYYY, HH:mm:ss")}
                         </span>
                       </td>
                       <td className="w-full md:w-auto  flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
@@ -988,7 +991,7 @@ export default function Livestock() {
       </div>
 
       {!userData?.token && !fetching && (
-        <div className="text-center border-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
+        <div className="text-center   text-gray-800 mx-0 h-screen flex items-center justify-center">
           <div className="flex items-center justify-center flex-col">
             <p className="dashboard-mssg">
               You are not logged in! <br />
@@ -1560,7 +1563,9 @@ export default function Livestock() {
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Birth Date</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {moment(selected.birthDate).local().format("MMM D, YYYY, HH:mm:ss")}
+                  {moment(selected.birthDate)
+                    .local()
+                    .format("MMM D, YYYY, HH:mm:ss")}
                 </p>
               </div>
 

@@ -130,7 +130,7 @@ export default function Livestock() {
         tagId: selectedRecord.tagId,
         tagLocation: selectedRecord.tagLocation,
         sex: selectedRecord.sex,
-        birthDate: formatDateTimeLocal(selectedRecord.eventDate),
+        birthDate: formatDateTimeLocal(selectedRecord.birthDate),
         weight: selectedRecord.weight,
         status: selectedRecord.status,
         origin: selectedRecord.origin,
@@ -476,7 +476,7 @@ export default function Livestock() {
         toast.success(res.data.message);
         setquarantining(false);
         setQuarantineModal(false);
-        toast.success("Quarantined!");
+
         setQuarantinForm({ action: "Quarantine" });
       }
     } catch (error) {
@@ -508,7 +508,7 @@ export default function Livestock() {
 
       <ModuleHeader />
 
-      <div className="livestock p-2 md:p-5  border-2  my-10 lg:mt-2">
+      <div className="  p-2 md:p-5     my-10 lg:mt-2">
         {" "}
         <div className={`md:mt-10 ${(editFormModal || formModal) && "hidden"}`}>
           {userData?.token && (

@@ -400,7 +400,7 @@ export default function Event() {
 
       <ModuleHeader />
 
-      <div className="livestock p-2 md:p-5  border-2  my-10 lg:mt-2">
+      <div className="  p-2 md:p-5     my-10 lg:mt-2">
         {" "}
         <div className=" md:mt-10 ">
           {userData?.token && (
@@ -840,7 +840,7 @@ export default function Event() {
       </div>
 
       {!userData?.token && !fetching && (
-        <div className="text-center border-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
+        <div className="text-center   text-gray-800 mx-0 h-screen flex items-center justify-center">
           <div className="flex items-center justify-center flex-col">
             <p className="dashboard-mssg">
               You are not logged in! <br />
@@ -858,7 +858,7 @@ export default function Event() {
 
         formModal && (
           <div
-            className="dashboard-main2 py-12 bg-[#01000D]  transition   duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
+            className="dashboard-main2 py-12 md:my-10 bg-[#01000D]  transition   duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
             id="modal"
           >
             <p

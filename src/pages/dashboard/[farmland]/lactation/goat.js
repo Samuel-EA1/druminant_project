@@ -867,7 +867,7 @@ export default function Lactation() {
       </div>
 
       {!userData?.token && !fetching && (
-        <div className="text-center border-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
+        <div className="text-center   text-gray-800 mx-0 h-screen flex items-center justify-center">
           <div className="flex items-center justify-center flex-col">
             <p className="dashboard-mssg">
               You are not logged in! <br />

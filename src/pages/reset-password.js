@@ -8,6 +8,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { GoKey } from "react-icons/go";
 import { toast } from "react-toastify";
 import { useRecoilValue } from "recoil";
 
@@ -22,6 +24,8 @@ const PasswordReset = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const userData = useRecoilValue(userState);
+  const [shownewPassword, setShownewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     if (token && userId) {
@@ -71,6 +75,13 @@ const PasswordReset = () => {
     }
   };
 
+  const togglenewPasswordVisibility = () => {
+    setShownewPassword(!shownewPassword);
+  };
+  const toggleconfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   if (error) {
     return <div>{error}</div>;
   }
@@ -97,15 +108,28 @@ const PasswordReset = () => {
               >
                 New Password
               </label>
-              <input
-                id="new-password"
-                type="password"
-                className="mt-1 block w-full px-3 py-2 border border-input rounded-md text-base shadow-sm focus:outline-none focus:ring focus:ring-primary focus:border-primary"
-                placeholder="Enter your new password"
-                required
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
+              <div className="flex items-center border rounded mt-1">
+                <span className="pl-3">
+                  <GoKey className="md:text-[#008000]" />
+                </span>
+                <input
+                  maxLength={20}
+                  type={shownewPassword ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  className="w-full py-2 px-2 outline-none text-base h-12 md:text-black bg-transparent"
+                  placeholder="Enter password"
+                  required
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+                <span
+                  className="pr-3 cursor-pointer"
+                  onClick={togglenewPasswordVisibility}
+                >
+                  {shownewPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
             </div>
             <div>
               <label
@@ -114,15 +138,28 @@ const PasswordReset = () => {
               >
                 Confirm Password
               </label>
-              <input
-                id="confirm-password"
-                type="password"
-                className="mt-1 block w-full px-3 py-2 border border-input rounded-md text-base shadow-sm focus:outline-none focus:ring focus:ring-primary focus:border-primary"
-                placeholder="Confirm your new password"
-                required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
+              <div className="flex items-center border rounded mt-1">
+                <span className="pl-3">
+                  <GoKey className="md:text-[#008000]" />
+                </span>
+                <input
+                  maxLength={20}
+                  type={showConfirmPassword ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  className="w-full py-2 px-2 outline-none text-base h-12 md:text-black bg-transparent"
+                  placeholder="Enter password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                <span
+                  className="pr-3 cursor-pointer"
+                  onClick={toggleconfirmPasswordVisibility}
+                >
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
             </div>
             <button
               disabled={loading}

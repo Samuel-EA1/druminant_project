@@ -365,11 +365,11 @@ export default function Quarantine() {
   };
 
   async function handleSearch(e) {
-       if (!query.trim()) {
-         return toast.error("Please, enter a search query!");
-       }
-       setSearching(true);
-       e.preventDefault();
+    e.preventDefault();
+    if (!query.trim()) {
+      return toast.error("Please, enter a search query!");
+    }
+    setSearching(true);
 
     try {
       const selectedRecord = await viewRecord(
@@ -466,7 +466,6 @@ export default function Quarantine() {
         toast.success(res.data.message);
         setquarantining(false);
         setReleaseModal(false);
-        toast.success(res.data.message);
       }
     } catch (error) {
       setquarantining(false);
@@ -501,8 +500,205 @@ export default function Quarantine() {
       </Head>
 
       <ModuleHeader />
+      <div className="relative">
+        {viewquarantine && (
+          <div className="absolute  bg-white/50 min-h-screen h-full  inset-0  flex  items-center justify-center   z-50">
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="absolute  top-0 flex flex-col items-center mt-14 md:mt-20  border-2 border-gray-600   rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3"
+            >
+              <div className="mt-2 mb-8 w-full flex justify-between">
+                <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
+                  Quarantine Profile
+                </h4>
+                <IoMdClose
+                  className="text-black cursor-pointer text-2xl"
+                  onClick={() => setviewquarantine(false)}
+                />
+              </div>
+              <div className="grid grid-cols-2  grid-rows-2 gap-4 px-1 w-full">
+                <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Reason for Quarantine</p>
+                  <p className="text-base  line-clamp-5 font-medium text-navy-700 dark:text-green-700">
+                    {selected.reason}
+                  </p>
+                </div>
+                <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Quarantine Date</p>
+                  <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                    {moment(selected.quarantineDate).format(
+                      "MMM D, YYYY, HH:mm:ss"
+                    )}
+                  </p>
+                </div>
 
-      <div className="livestock p-2 md:p-5  border-2  my-10 lg:mt-2">
+                <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Tag Location</p>
+                  <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                    {selected.tagLocation}
+                  </p>
+                </div>
+                <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Tag Id</p>
+                  <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                    {selected.tagId}
+                  </p>
+                </div>
+
+                <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Status</p>
+                  <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                    {selected.status}
+                  </p>
+                </div>
+
+                <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Origin</p>
+                  <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                    {selected.origin}
+                  </p>
+                </div>
+
+                <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p class="text-sm text-gray-600">User In charge</p>
+                  <p className="text-base font-medium text-navy-700  dark:text-green-700">
+                    {selected.inCharge}
+                  </p>
+                </div>
+
+                <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Entry Date</p>
+                  <p className="text-base font-medium text-navy-700  dark:text-green-700">
+                    {moment(selected.createdAt).format("MMM D, YYYY, HH:mm:ss")}
+                  </p>
+                </div>
+
+                <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Remark</p>
+                  <p
+                    className="text-base font-medium text-navy-700  dark:text-green-700"
+                    style={{ width: "100%", overflow: "auto" }}
+                  >
+                    {selected.remark}
+                  </p>
+                </div>
+
+                <div>
+                  <button
+                    className="close-btn"
+                    onClick={() => setviewquarantine(false)}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="relative">
+        {viewquarantine && (
+          <div className="fixed inset-0 flex  items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="absolute  top-0 flex flex-col items-center mt-14 md:mt-20  border-2 border-gray-600   rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3"
+            >
+              <div className="mt-2 mb-8 w-full flex justify-between">
+                <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
+                  Quarantine Profile
+                </h4>
+                <IoMdClose
+                  className="text-black cursor-pointer text-2xl"
+                  onClick={() => setviewquarantine(false)}
+                />
+              </div>
+              <div className="grid grid-cols-2  grid-rows-2 gap-4 px-1 w-full">
+                <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Reason for Quarantine</p>
+                  <textarea
+                    readOnly
+                    className="text-base font-medium text-navy-700 h-20 dark:text-green-700 border-none focus:outline-none active:outline-none resize-none"
+                    style={{ border: "none", resize: "none", outline: "none" }}
+                  >
+                    {selected.reason}
+                  </textarea>
+                </div>
+                <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Quarantine Date</p>
+                  <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                    {moment(selected.quarantineDate).format(
+                      "MMM D, YYYY, HH:mm:ss"
+                    )}
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Tag Location</p>
+                  <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                    {selected.tagLocation}
+                  </p>
+                </div>
+                <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Tag Id</p>
+                  <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                    {selected.tagId}
+                  </p>
+                </div>
+
+                <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Status</p>
+                  <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                    {selected.status}
+                  </p>
+                </div>
+
+                <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Origin</p>
+                  <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                    {selected.origin}
+                  </p>
+                </div>
+
+                <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p class="text-sm text-gray-600">User In charge</p>
+                  <p className="text-base font-medium text-navy-700  dark:text-green-700">
+                    {selected.inCharge}
+                  </p>
+                </div>
+
+                <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Entry Date</p>
+                  <p className="text-base font-medium text-navy-700  dark:text-green-700">
+                    {moment(selected.createdAt).format("MMM D, YYYY, HH:mm:ss")}
+                  </p>
+                </div>
+
+                <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                  <p className="text-sm text-gray-600">Remark</p>
+                  <p
+                    className="text-base font-medium text-navy-700  dark:text-green-700"
+                    style={{ width: "100%", overflow: "auto" }}
+                  >
+                    {selected.remark}
+                  </p>
+                </div>
+
+                <div>
+                  <button
+                    className="close-btn"
+                    onClick={() => setviewquarantine(false)}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="  p-2 md:p-5    my-10 lg:mt-2">
         {" "}
         <div className=" md:mt-10 ">
           {userData?.token && (
@@ -907,7 +1103,7 @@ export default function Quarantine() {
       </div>
 
       {!userData?.token && !fetching && (
-        <div className="text-center border-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
+        <div className="text-center  text-gray-800 mx-0 h-screen flex items-center justify-center">
           <div className="flex items-center justify-center flex-col">
             <p className="dashboard-mssg">
               You are not logged in! <br />
@@ -932,7 +1128,7 @@ export default function Quarantine() {
               role="alert"
               className="container mx-auto w-11/12 md:w-2/3 max-w-xl"
             >
-              <div className="w-[auto] bg-white relative md:mt-0  mt-10 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
+              <div className="w-[auto] bg-white relative md:mt-5  mt-10 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
                 <div className="  text-center text-lg">
                   {" "}
                   Are sure you want to release this livestock?
@@ -1186,100 +1382,6 @@ export default function Quarantine() {
         )
       }
 
-      {viewquarantine && (
-        <div className="absolute  bg-white/50 min-h-screen h-full  inset-0  flex  items-center justify-center   z-50">
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="absolute  top-0 flex flex-col items-center mt-14 md:mt-20  border-2 border-gray-600   rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3"
-          >
-            <div className="mt-2 mb-8 w-full flex justify-between">
-              <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
-                Quarantine Profile
-              </h4>
-              <IoMdClose
-                className="text-black cursor-pointer text-2xl"
-                onClick={() => setviewquarantine(false)}
-              />
-            </div>
-            <div className="grid grid-cols-2  grid-rows-2 gap-4 px-1 w-full">
-              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Reason for Quarantine</p>
-                <p className="text-base  line-clamp-5 font-medium text-navy-700 dark:text-green-700">
-                  {selected.reason}
-                </p>
-              </div>
-              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Quarantine Date</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {moment(selected.quarantineDate).format(
-                    "MMM D, YYYY, HH:mm:ss"
-                  )}
-                </p>
-              </div>
-
-              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Tag Location</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.tagLocation}
-                </p>
-              </div>
-              <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Tag Id</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.tagId}
-                </p>
-              </div>
-
-              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Status</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.status}
-                </p>
-              </div>
-
-              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Origin</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {selected.origin}
-                </p>
-              </div>
-
-              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p class="text-sm text-gray-600">User In charge</p>
-                <p className="text-base font-medium text-navy-700  dark:text-green-700">
-                  {selected.inCharge}
-                </p>
-              </div>
-
-              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Entry Date</p>
-                <p className="text-base font-medium text-navy-700  dark:text-green-700">
-                  {moment(selected.createdAt).format("MMM D, YYYY, HH:mm:ss")}
-                </p>
-              </div>
-
-              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Remark</p>
-                <p
-                  className="text-base font-medium text-navy-700  dark:text-green-700"
-                  style={{ width: "100%", overflow: "auto" }}
-                >
-                  {selected.remark}
-                </p>
-              </div>
-
-              <div>
-                <button
-                  className="close-btn"
-                  onClick={() => setviewquarantine(false)}
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
       {!viewquarantine && (
         <div className="md:mt-0 mt-20    ">
           <Footer />

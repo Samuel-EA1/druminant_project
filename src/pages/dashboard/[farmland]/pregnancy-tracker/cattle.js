@@ -46,7 +46,10 @@ import {
   fetchAllRecords,
   viewRecord,
 } from "@/helperFunctions/handleRecord";
-import { formatDateString, formatDateTimeLocal } from "@/helperFunctions/formatTime";
+import {
+  formatDateString,
+  formatDateTimeLocal,
+} from "@/helperFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
 import { HiDotsHorizontal } from "react-icons/hi";
@@ -232,11 +235,17 @@ export default function PregnancyTracker() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    let convertedValue = value;
+
+    if (name === "breedingDate") {
+      convertedValue = moment(value).utc().format();
+    }
+
     if (name === "gestationPeriod" && value.length > 10) return;
     if (formModal) {
-      setformInput((prevData) => ({ ...prevData, [name]: value }));
+      setformInput((prevData) => ({ ...prevData, [name]: convertedValue }));
     } else if (editFormModal) {
-      setEditFormInput((prevData) => ({ ...prevData, [name]: value }));
+      setEditFormInput((prevData) => ({ ...prevData, [name]: convertedValue }));
     }
   };
 
@@ -391,7 +400,7 @@ export default function PregnancyTracker() {
       </Head>
 
       <ModuleHeader />
-      <div className=" h-fit ">
+      <div className="h-fit">
         {
           //pregnancy input form
 
@@ -445,7 +454,7 @@ export default function PregnancyTracker() {
                         <input
                           type="datetime-local"
                           id="breedingDate"
-                          value={formInput.breedingDate}
+                          value={formatDateString(formInput.breedingDate)}
                           onChange={handleChange}
                           name="breedingDate"
                           className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
@@ -696,7 +705,7 @@ export default function PregnancyTracker() {
         }
       </div>
 
-      <div className="livestock p-2 md:p-5  border-2  my-10 lg:mt-2">
+      <div className=" p-2 md:p-5    my-10 lg:mt-2">
         {" "}
         <div className=" md:mt-10 ">
           {userData?.token && (
@@ -1167,7 +1176,7 @@ export default function PregnancyTracker() {
         ) : (
           userData &&
           fetchError === "Unauthorized" && (
-            <div className="livestock text-center border-2 p-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
+            <div className="livestock text-center   p-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
               <div className="flex items-center justify-center flex-col">
                 <p className="dashboard-mssg">
                   You are not allowed to access this Farmland pregnancy
@@ -1185,7 +1194,7 @@ export default function PregnancyTracker() {
       </div>
 
       {!userData?.token && !fetching && (
-        <div className="text-center border-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
+        <div className="text-center   text-gray-800 mx-0 h-screen flex items-center justify-center">
           <div className="flex items-center justify-center flex-col">
             <p className="dashboard-mssg">
               You are not logged in! <br />
