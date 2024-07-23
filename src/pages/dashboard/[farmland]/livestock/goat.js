@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import {
+  FaAddressBook,
   FaEdit,
   FaEye,
   FaRegEdit,
@@ -28,7 +29,7 @@ import { HiAtSymbol, HiHashtag, HiTag } from "react-icons/hi2";
 import { MdDelete, MdOutlineHelp, MdRemoveRedEye } from "react-icons/md";
 import { MdAdd } from "react-icons/md";
 import { GoSearch } from "react-icons/go";
-import { IoIosMore, IoMdClose } from "react-icons/io";
+import { IoIosMore, IoMdAdd, IoMdClose } from "react-icons/io";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { PiHouseBold, PiHouseLineLight } from "react-icons/pi";
 import Head from "next/head";
@@ -46,7 +47,7 @@ import {
   fetchAllRecords,
   viewRecord,
 } from "@/helperFunctions/handleRecord";
-import { formatDateString } from "@/helperFunctions/formatTime";
+import { formatDateString, formatDateTimeLocal } from "@/helperFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
 import { HiDotsHorizontal } from "react-icons/hi";
@@ -126,7 +127,7 @@ export default function Livestock() {
         tagId: selectedRecord.tagId,
         tagLocation: selectedRecord.tagLocation,
         sex: selectedRecord.sex,
-        birthDate: selectedRecord.birthDate,
+        birthDate: formatDateTimeLocal(selectedRecord.birthDate),
         weight: selectedRecord.weight,
         status: selectedRecord.status,
         origin: selectedRecord.origin,
@@ -262,12 +263,28 @@ export default function Livestock() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (formModal) {
-      setformInput((prevData) => ({ ...prevData, [name]: value }));
-    } else if (editFormModal) {
-      setEditFormInput((prevData) => ({ ...prevData, [name]: value }));
-    } else if (quarantineModal) {
-      setQuarantinForm((prevData) => ({ ...prevData, [name]: value }));
+    if (name === "weight" && value.length > 6) {
+      return; // Prevent setting value if it exceeds length
+    }
+
+    if (name === "birthDate") {
+      // Convert local date and time to UTC
+      const utcDate = moment(value).utc().format();
+      if (formModal) {
+        setformInput((prevData) => ({ ...prevData, [name]: utcDate }));
+      } else if (editFormModal) {
+        setEditFormInput((prevData) => ({ ...prevData, [name]: utcDate }));
+      } else if (quarantineModal) {
+        setQuarantinForm((prevData) => ({ ...prevData, [name]: utcDate }));
+      }
+    } else {
+      if (formModal) {
+        setformInput((prevData) => ({ ...prevData, [name]: value }));
+      } else if (editFormModal) {
+        setEditFormInput((prevData) => ({ ...prevData, [name]: value }));
+      } else if (quarantineModal) {
+        setQuarantinForm((prevData) => ({ ...prevData, [name]: value }));
+      }
     }
   };
 
@@ -278,11 +295,11 @@ export default function Livestock() {
   };
 
   async function handleSearch(e) {
-       if (!query.trim()) {
-         return toast.error("Please, enter a search query!");
-       }
-       setSearching(true);
-       e.preventDefault();
+    e.preventDefault();
+    if (!query.trim()) {
+      return toast.error("Please, enter a search query!");
+    }
+    setSearching(true);
     try {
       const selectedRecord = await viewRecord(
         userData.token,
@@ -301,21 +318,18 @@ export default function Livestock() {
     }
   }
 
-  console.log(searchData.length, "length");
-
   // edit livestock
-  function editBtnFn(tagId) {
-    setEditTagId(tagId);
+  function editBtnFn(id) {
+    setEditTagId(id);
     setEditFormModal(true);
-    const selectedRecord = livestockData.find(
-      (record) => record.tagId === tagId
-    );
+    const selectedRecord = livestockData.find((record) => record._id === id);
+    console.log(selectedRecord);
     setEditFormInput({
       breed: selectedRecord.breed,
       tagId: selectedRecord.tagId,
       tagLocation: selectedRecord.tagLocation,
       sex: selectedRecord.sex,
-      birthDate: selectedRecord.birthDate,
+      birthDate: formatDateTimeLocal(selectedRecord.birthDate),
       weight: selectedRecord.weight,
       status: selectedRecord.status,
       origin: selectedRecord.origin,
@@ -364,7 +378,7 @@ export default function Livestock() {
       );
 
       if (res.data) {
-        toast.success(res.data);
+        toast.success(res.data.message);
         setCreating(false);
         setFormModal(false);
         setformInput({});
@@ -456,10 +470,10 @@ export default function Livestock() {
       );
 
       if (res.data) {
-        toast.success(res.data);
+        toast.success(res.data.message);
         setquarantining(false);
         setQuarantineModal(false);
-        toast.success("Quarantined!");
+
         setQuarantinForm({ action: "Quarantine" });
       }
     } catch (error) {
@@ -476,7 +490,7 @@ export default function Livestock() {
   };
 
   return (
-    <div className="livestock ">
+    <div className="livestock">
       <Head>
         <title>Druminant - Livestock Profile (goat)</title>
         <meta name="description" content="Druminant Livestock goat" />
@@ -491,7 +505,7 @@ export default function Livestock() {
 
       <ModuleHeader />
 
-      <div className="p-2 md:p-5">
+      <div className="  p-2 md:p-5     my-10 lg:mt-2">
         {" "}
         <div className={`md:mt-10 ${(editFormModal || formModal) && "hidden"}`}>
           {userData?.token && (
@@ -502,16 +516,20 @@ export default function Livestock() {
                 </h1>
                 <p className=" mt-1">Keep track of your livestock profile</p>
               </div>
-              <div className="flex items-center space-x-5 ">
-                <p
-                  className="text-white bg-[#008000]  cursor-pointer w-fit p-3 text-center mt-3 rounded-md"
+              <div className="flex items-center  space-x-5 mt-3 ">
+                <div
+                  className="text-white w-fit cursor-pointer bg-[#008000] flex items-center p-2 space-x-2 justify-center"
                   onClick={addProfile}
                 >
-                  <span>+ </span> Add Profile
-                </p>
+                  <div>
+                    {" "}
+                    <IoMdAdd />
+                  </div>
+                  <p>Add profile {/*  */}</p>
+                </div>
 
                 <form onSubmit={handleSearch}>
-                  <div className="relative w-40 md:w-full mt-3">
+                  <div className="relative w-36 sm:w-40 md:w-full  ">
                     <input
                       type="text"
                       name="search"
@@ -619,7 +637,10 @@ export default function Livestock() {
                         >
                           Breed
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className=""
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.breed}
                         </div>
                       </td>
@@ -667,7 +688,7 @@ export default function Livestock() {
                         </span>
                         <span style={{ fontSize: "14px", color: "black" }}>
                           {moment(row.birthDate).format(
-                            "MMMM Do, YYYY, h:mm:ss A"
+                            "MMMM D, YYYY, HH:mm:ss"
                           )}
                         </span>
                       </td>
@@ -701,7 +722,7 @@ export default function Livestock() {
                         <div className=" flex items-center justify-center ">
                           <button
                             title="Edit"
-                            onClick={() => editBtnFn(row.tagId)}
+                            onClick={() => editBtnFn(row._id)}
                             className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
                           >
                             {/* Edit */}
@@ -842,7 +863,7 @@ export default function Livestock() {
                         </span>
                         <span style={{ fontSize: "14px", color: "black" }}>
                           {moment(row.birthDate).format(
-                            "MMMM Do, YYYY, h:mm:ss A"
+                            "MMMM D, YYYY, HH:mm:ss"
                           )}
                         </span>
                       </td>
@@ -967,7 +988,7 @@ export default function Livestock() {
       </div>
 
       {!userData?.token && !fetching && (
-        <div className="text-center border-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
+        <div className="text-center   text-gray-800 mx-0 h-screen flex items-center justify-center">
           <div className="flex items-center justify-center flex-col">
             <p className="dashboard-mssg">
               You are not logged in! <br />
@@ -989,7 +1010,7 @@ export default function Livestock() {
             id="modal"
           >
             <p
-              className="form-header pt-10 pb:0 md:pt-0"
+              className="form-header pt-10 pb:0 md:pt-10 "
               style={{ color: "white" }}
             >
               Livestock Profile Details
@@ -1009,30 +1030,30 @@ export default function Livestock() {
                       <input
                         title="Enter the breed of the livestock here."
                         placeholder="E.g. Holstein Friesian"
-                        maxLength={40}
+                        maxLength={17}
                         required
                         value={formInput.breed}
                         onChange={handleChange}
                         name="breed"
                         id="breed"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
 
-                      <label className="input-label" htmlFor="tag Id">
+                      <label className="input-label" htmlFor="tagId">
                         Tag ID
                       </label>
                       <input
                         title="Input the unique identification number assigned to the livestock tag."
-                        maxLength={20}
+                        maxLength={10}
                         required
                         value={formInput.tagId}
                         onChange={handleChange}
-                        id="name"
+                        id="tagId"
                         name="tagId"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
                       {tagIdError && <span>{tagIdError}</span>}
-                      <label className="input-label" for="name">
+                      <label className="input-label" for="tagLocation">
                         Tag Location
                       </label>
                       <input
@@ -1040,51 +1061,51 @@ export default function Livestock() {
                         maxLength={10}
                         value={formInput.tagLocation}
                         onChange={handleChange}
-                        id="taglocation"
+                        id="tagLocation"
                         name="tagLocation"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
 
-                      <label className="input-label" for="name">
+                      <label className="input-label" for="sex">
                         Sex
                       </label>
                       <select
-                        id="name"
+                        id="sex"
                         value={formInput.sex}
                         name="sex"
                         onChange={handleChange}
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       >
                         <option value={""}>Select a sex</option>
                         <option value={"Male"}>Male</option>
                         <option value={"Female"}>Female</option>
                       </select>
 
-                      <label className="input-label" for="name">
+                      <label className="input-label" for="birthDate">
                         Birth Date
                       </label>
                       <input
                         type="datetime-local"
-                        id="name"
-                        value={formInput.birthDate}
+                        id="birthDate"
+                        value={formatDateString(formInput.birthDate)}
                         onChange={handleChange}
                         name="birthDate"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
                     </div>
                     <div>
-                      <label className="input-label" for="name">
+                      <label className="input-label" for="weight">
                         Weight
                       </label>
                       <input
                         title="Enter the weight of the livestock in kilograms (kg)."
-                        maxLength={10}
+                        max={999999}
                         value={formInput.weight}
                         onChange={handleChange}
                         type="number"
                         name="weight"
-                        id="name"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        id="weight"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -1095,7 +1116,7 @@ export default function Livestock() {
                         value={formInput.status}
                         onChange={handleChange}
                         name="status"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       >
                         <option value={""}>Select a status</option>
                         <option>Sick</option>
@@ -1113,7 +1134,7 @@ export default function Livestock() {
                         value={formInput.origin}
                         onChange={handleChange}
                         name="origin"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       >
                         <option value={""}>Select origin</option>
                         <option>Purchased</option>
@@ -1132,7 +1153,7 @@ export default function Livestock() {
                         onChange={handleChange}
                         type="text"
                         name="remark"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
                     </div>
                   </div>
@@ -1189,13 +1210,222 @@ export default function Livestock() {
       {
         //Livestock EDIT form
 
-        quarantineModal && (
+        editFormModal && (
           <div
-            className="form-backdrop py-12 bg-[#01000D] overflow-y-auto  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
+            className="dashboard-main2 py-12 bg-[#01000D] min-h-screen    h-fit transition   duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
             id="modal"
           >
             <p
-              className="form-header pt-10 pb:0 md:pt-0 text-lg"
+              className="form-header pt-10 pb:0 md:pt-10 "
+              style={{ color: "white" }}
+            >
+              Edit livetock
+            </p>
+
+            <div
+              role="alert"
+              className="container mx-auto w-11/12 md:w-2/3 max-w-xl"
+            >
+              <div className="w-[auto] bg-white relative mt-4 md:mt-6 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
+                <form>
+                  <div className="general-form">
+                    <div>
+                      <label className="input-label" for="breed">
+                        Breed
+                      </label>
+                      <input
+                        title="Enter the breed of the livestock here."
+                        placeholder="E.g. Holstein Friesian"
+                        maxLength={17}
+                        value={editformInput.breed}
+                        onChange={handleChange}
+                        name="breed"
+                        id="breed"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                      />
+
+                      <label className="input-label" for="tagId">
+                        Tag ID
+                      </label>
+                      <input
+                        title="Input the unique identification number assigned to the livestock tag."
+                        maxLength={17}
+                        value={editformInput.tagId}
+                        onChange={handleChange}
+                        id="tagId"
+                        name="tagId"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                      />
+
+                      <label className="input-label" for="tagLocation">
+                        Tag Location
+                      </label>
+                      <input
+                        title="Specify where the livestock tag is located on the animal (e.g., ear, leg)."
+                        maxLength={17}
+                        value={editformInput.tagLocation}
+                        onChange={handleChange}
+                        id="taglocation"
+                        name="tagLocation"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                      />
+
+                      <label className="input-label" for="sex">
+                        Sex
+                      </label>
+                      <select
+                        id="sex"
+                        value={editformInput.sex}
+                        name="sex"
+                        onChange={handleChange}
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                      >
+                        <option value={""}>Select a sex</option>
+                        <option value={"Male"}>Male</option>
+                        <option value={"Female"}>Female</option>
+                      </select>
+
+                      <label className="input-label" for="birthDate">
+                        Birth Date
+                      </label>
+                      <input
+                        type="Datetime-local"
+                        id="birthDate"
+                        value={formatDateString(editformInput.birthDate)}
+                        onChange={handleChange}
+                        name="birthDate"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                      />
+                    </div>
+                    <div>
+                      <label className="input-label" for="weight">
+                        Weight
+                      </label>
+                      <input
+                        title="Enter the weight of the livestock in kilograms (kg)."
+                        max={999999}
+                        value={editformInput.weight}
+                        onChange={handleChange}
+                        type="number"
+                        name="weight"
+                        id="weight"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                      />
+
+                      <label className="input-label" for="name">
+                        Status
+                      </label>
+                      <select
+                        id="name"
+                        value={editformInput.status}
+                        onChange={handleChange}
+                        name="status"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                      >
+                        <option value={""}>Select a status</option>
+                        <option>Sick</option>
+                        <option>Healthy</option>
+                        <option>Deceased</option>
+                        <option>Pregnant</option>
+                        <option>Injured</option>
+                      </select>
+
+                      <label className="input-label" for="origin">
+                        Origin
+                      </label>
+                      <select
+                        id="origin"
+                        value={editformInput.origin}
+                        onChange={handleChange}
+                        name="origin"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                      >
+                        <option value={""}>Select origin</option>
+                        <option>Purchased</option>
+                        <option>Born on farm</option>
+                        <option>Donated</option>
+                        <option>Inherited</option>
+                        <option>Adopted</option>
+                      </select>
+
+                      <label className="input-label" for="remark">
+                        Remark
+                      </label>
+                      <input
+                        title="Add any additional notes and remarks about the livestock here."
+                        id="remark"
+                        value={editformInput.remark}
+                        onChange={handleChange}
+                        type="text"
+                        name="remark"
+                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
+                      />
+                    </div>
+                  </div>
+                </form>
+
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute text-gray-600 flex items-center px-4 border-r h-full"></div>
+                </div>
+                {/* <label for="expiry" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
+                </div>
+                {/* <label for="cvc" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
+                <div className="relative mb-5 mt-2">
+                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
+                  {/* <input id="cvc" className="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
+                </div>
+                {!editting ? (
+                  <div className="form-btns">
+                    <button
+                      className="btn"
+                      onClick={(e) => handleEditFormSubmit(e)}
+                      style={{ width: "80px" }}
+                    >
+                      Save
+                    </button>
+                    <button className="btn2" onClick={closeEditFormModal}>
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <div className="form-btns">
+                    <button
+                      disabled={editting}
+                      className=" bg-[#008000]  text-white px-5 py-2 rounded-md  w-full       flex justify-center space-x-2 items-center"
+                      onClick={(e) => handleEditFormSubmit(e)}
+                    >
+                      <AiOutlineLoading3Quarters className="animate-spin" />{" "}
+                      <p>Processing...</p>
+                    </button>
+                  </div>
+                )}
+                <button
+                  onClick={closeEditFormModal}
+                  className="cursor-pointer text-xl absolute top-0 right-0 mt-4 mr-5 text-gray-700 hover:text-gray-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
+                  aria-label="close modal"
+                  role="button"
+                >
+                  <IoMdClose />
+                </button>
+              </div>
+              {/* <button className="close-btn" onClick={show()}>hsh</button> */}
+            </div>
+          </div>
+        )
+      }
+
+      {
+        //Livestock EDIT form
+
+        quarantineModal && (
+          <div
+            className="dashboard-main2 py-12 bg-[#01000D] min-h-screen    h-fit transition   duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
+            id="modal"
+          >
+            <p
+              className="form-header pt-10 pb:0 md:pt-10  text-lg"
               style={{ color: "white" }}
             >
               Quarantine Livestock Profile
@@ -1220,7 +1450,7 @@ export default function Livestock() {
                         )}
                         onChange={handleChange}
                         name="quarantineDate"
-                        className="mb-5 md:w-[230%] mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 md:w-[230%] mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-base border-gray-400 rounded border"
                       />
 
                       <label className="input-label" for="name">
@@ -1286,214 +1516,6 @@ export default function Livestock() {
           </div>
         )
       }
-      {
-        //Livestock EDIT form
-
-        editFormModal && (
-          <div
-            className="form-backdrop py-12 bg-[#01000D] overflow-y-auto  transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
-            id="modal"
-          >
-            <p
-              className="form-header pt-10 pb:0 md:pt-0"
-              style={{ color: "white" }}
-            >
-              Edit livestock profile
-            </p>
-
-            <div
-              role="alert"
-              className="container mx-auto w-11/12 md:w-2/3 max-w-xl"
-            >
-              <div className="w-[auto] bg-white relative mt-4 py-8 px-5 md:px-10  shadow-md rounded border border-green-700">
-                <form>
-                  <div className="general-form">
-                    <div>
-                      <label className="input-label" for="name">
-                        Breed
-                      </label>
-                      <input
-                        title="Enter the breed of the livestock here."
-                        placeholder="E.g. Holstein Friesian"
-                        maxLength={40}
-                        value={editformInput.breed}
-                        onChange={handleChange}
-                        name="breed"
-                        id="breed"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-
-                      <label className="input-label" for="name">
-                        Tag ID
-                      </label>
-                      <input
-                        title="Input the unique identification number assigned to the livestock tag."
-                        maxLength={20}
-                        value={editformInput.tagId}
-                        onChange={handleChange}
-                        id="name"
-                        name="tagId"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-
-                      <label className="input-label" for="name">
-                        Tag Location
-                      </label>
-                      <input
-                        title="Specify where the livestock tag is located on the animal (e.g., ear, leg)."
-                        maxLength={10}
-                        value={editformInput.tagLocation}
-                        onChange={handleChange}
-                        id="taglocation"
-                        name="tagLocation"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-
-                      <label className="input-label" for="name">
-                        Sex
-                      </label>
-                      <select
-                        id="name"
-                        value={editformInput.sex}
-                        name="sex"
-                        onChange={handleChange}
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      >
-                        <option value={""}>Select a sex</option>
-                        <option value={"Male"}>Male</option>
-                        <option value={"Female"}>Female</option>
-                      </select>
-
-                      <label className="input-label" for="name">
-                        Birth Date
-                      </label>
-                      <input
-                        type="Datetime-local"
-                        id="name"
-                        value={formatDateString(editformInput.birthDate)}
-                        onChange={handleChange}
-                        name="birthDate"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-                    </div>
-                    <div>
-                      <label className="input-label" for="name">
-                        Weight
-                      </label>
-                      <input
-                        title="Enter the weight of the livestock in kilograms (kg)."
-                        maxLength={10}
-                        value={editformInput.weight}
-                        onChange={handleChange}
-                        type="number"
-                        name="weight"
-                        id="name"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-
-                      <label className="input-label" for="name">
-                        Status
-                      </label>
-                      <select
-                        id="name"
-                        value={editformInput.status}
-                        onChange={handleChange}
-                        name="status"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      >
-                        <option value={""}>Select a status</option>
-                        <option>Sick</option>
-                        <option>Healthy</option>
-                        <option>Deceased</option>
-                        <option>Pregnant</option>
-                        <option>Injured</option>
-                      </select>
-
-                      <label className="input-label" for="name">
-                        Origin
-                      </label>
-                      <select
-                        id="name"
-                        value={editformInput.origin}
-                        onChange={handleChange}
-                        name="origin"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      >
-                        <option value={""}>Select origin</option>
-                        <option>Purchased</option>
-                        <option>Born on farm</option>
-                        <option>Donated</option>
-                        <option>Inherited</option>
-                        <option>Adopted</option>
-                      </select>
-
-                      <label className="input-label" for="name">
-                        Remark
-                      </label>
-                      <input
-                        title="Add any additional notes and remarks about the livestock here."
-                        id="name"
-                        value={editformInput.remark}
-                        onChange={handleChange}
-                        type="text"
-                        name="remark"
-                        className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
-                      />
-                    </div>
-                  </div>
-                </form>
-
-                <div className="relative mb-5 mt-2">
-                  <div className="absolute text-gray-600 flex items-center px-4 border-r h-full"></div>
-                </div>
-                {/* <label for="expiry" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Expiry Date</label> */}
-                <div className="relative mb-5 mt-2">
-                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
-                </div>
-                {/* <label for="cvc" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">CVC</label> */}
-                <div className="relative mb-5 mt-2">
-                  <div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
-                  {/* <input id="cvc" className="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" placeholder="MM/YY" /> */}
-                </div>
-                {!editting ? (
-                  <div className="form-btns">
-                    <button
-                      className="btn"
-                      onClick={(e) => handleEditFormSubmit(e)}
-                      style={{ width: "80px" }}
-                    >
-                      Save
-                    </button>
-                    <button className="btn2" onClick={closeEditFormModal}>
-                      Cancel
-                    </button>
-                  </div>
-                ) : (
-                  <div className="form-btns">
-                    <button
-                      disabled={editting}
-                      className=" bg-[#008000]  text-white px-5 py-2 rounded-md  w-full       flex justify-center space-x-2 items-center"
-                      onClick={(e) => handleEditFormSubmit(e)}
-                    >
-                      <AiOutlineLoading3Quarters className="animate-spin" />{" "}
-                      <p>Processing...</p>
-                    </button>
-                  </div>
-                )}
-                <button
-                  onClick={closeEditFormModal}
-                  className="cursor-pointer text-xl absolute top-0 right-0 mt-4 mr-5 text-gray-700 hover:text-gray-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
-                  aria-label="close modal"
-                  role="button"
-                >
-                  <IoMdClose />
-                </button>
-              </div>
-              {/* <button className="close-btn" onClick={show()}>hsh</button> */}
-            </div>
-          </div>
-        )
-      }
 
       {viewLivestock && (
         <div className="fixed inset-0 flex  items-center justify-center bg-gray-800 bg-opacity-50 z-50">
@@ -1538,7 +1560,7 @@ export default function Livestock() {
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Birth Date</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {moment(selected.birthDate).format("MMM Do, YYYY, h:mm:ss A")}
+                  {moment(selected.birthDate).format("MMM D, YYYY, HH:mm:ss")}
                 </p>
               </div>
 
@@ -1564,7 +1586,7 @@ export default function Livestock() {
               </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-                <p className="text-sm text-gray-600">Staff in charge</p>
+                <p class="text-sm text-gray-600">User In charge</p>
                 <p className="text-base font-medium text-navy-700  dark:text-green-700">
                   {selected.inCharge}
                 </p>
@@ -1573,7 +1595,7 @@ export default function Livestock() {
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Entry Date</p>
                 <p className="text-base font-medium text-navy-700  dark:text-green-700">
-                  {moment(selected.createdAt).format("MMM Do, YYYY, h:mm:ss A")}
+                  {moment(selected.createdAt).format("MMM D, YYYY, HH:mm:ss")}
                 </p>
               </div>
 
@@ -1599,6 +1621,7 @@ export default function Livestock() {
           </div>
         </div>
       )}
+
       <div className="md:mt-0 mt-20   ">
         <Footer />
       </div>

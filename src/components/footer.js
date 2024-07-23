@@ -1,8 +1,11 @@
+import { userState } from "@/atom";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
 
 export const Footer = () => {
+  const [userData, setUserData] = useRecoilState(userState);
   const router = useRouter();
   return (
     <div className="  mx-auto">
@@ -70,13 +73,13 @@ export const Footer = () => {
                   </p>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    target="_blank"
+                  <Link
+                    href={`/profile/${userData?.username}`}
                     className="hover:underline text-gray-200"
+                    title="View and edit profile"
                   >
                     Profile
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

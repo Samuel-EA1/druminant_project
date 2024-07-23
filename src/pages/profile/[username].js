@@ -11,6 +11,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaUser } from "react-icons/fa";
+import { GiCancel } from "react-icons/gi";
+import { MdCancel, MdClose } from "react-icons/md";
 import { toast } from "react-toastify";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -43,7 +45,7 @@ function Profile() {
     setformData((prevData) => ({ ...prevData, [name]: value }));
   };
   function logOut() {
-    if (userData.username !== profileData.username)
+    if (userData?.username !== profileData?.username)
       return toast.warn("Please login into your account to proceed");
     confirm("Are you sure you want to log out?");
     localStorage.removeItem("token");
@@ -60,8 +62,8 @@ function Profile() {
   async function UpdateProfile(e) {
     e.preventDefault();
 
-//     npx create-next-app@latest --tailwind harnah-empire
-// cd harnah-empire
+    //     npx create-next-app@latest --tailwind harnah-empire
+    // cd harnah-empire
 
     const { email, password, username } = formData;
 
@@ -80,7 +82,7 @@ function Profile() {
           updateData,
           {
             headers: {
-              Authorization: `Bearer ${userData.token}`,
+              Authorization: `Bearer ${userData?.token}`,
             },
           }
         );
@@ -119,7 +121,7 @@ function Profile() {
       axios
         .get(`${BASE_URL}/profile/${router.query.username}`, {
           headers: {
-            Authorization: `Bearer ${userData.token}`,
+            Authorization: `Bearer ${userData?.token}`,
           },
         })
         .then((res) => {
@@ -142,7 +144,7 @@ function Profile() {
   }, [userData, router.isReady, newToken, router.query.username]);
 
   return (
-    <>
+    <div className="">
       <div
         id="dashboard-main"
         onClick={(e) => setEditProfile(false)}
@@ -162,7 +164,7 @@ function Profile() {
         <ModuleHeader />
 
         {userData === null && (
-          <div className="text-center mx-0 h-screen flex items-center  justify-center">
+          <div className="text-center mx-0 h-screen  flex items-center  justify-center">
             <div className="flex items-center text-white justify-center flex-col">
               <p className="dashboard-mssg">
                 You are not logged in! <br />
@@ -174,76 +176,90 @@ function Profile() {
             </div>
           </div>
         )}
-        {editProfile && (
-          <div
-            className="      mx-2   mt-10   md:mt-32  "
-            onClick={(e) => e.stopPropagation()}
-          >
-            <form
-              onSubmit={(e) => UpdateProfile(e)}
-              className=" border-[1px] border-gray-500  shadow-lg rounded-lg p-8 flex flex-col   mx-auto  sm:w-96 lg:w-[500px]"
+        <div className="">
+          {editProfile && (
+            <div
+              className="    absolute   mx-2   mt-28 right-0 left-0    md:mt-32  "
+              onClick={(e) => e.stopPropagation()}
             >
-              <h2 className="text-2xl font-bold mb-4">Edit Profile</h2>{" "}
-              <FaUser class="w-10 h-10 text-[white] mt-8 rounded-full mx-auto" />
-              <div className="mb-4">
-                <label
-                  htmlFor="username"
-                  className="block text-sm  font-medium"
-                >
-                  Username
-                </label>
-                <input
-                  onChange={handleChange}
-                  type="text"
-                  id="username"
-                  name="username"
-                  placeholder={userData.username}
-                  className={INPUT_CLASS}
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="email" className="block text-sm  font-medium">
-                  Email
-                </label>
-                <input
-                  onChange={handleChange}
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder={"john.doe@example.com"}
-                  className={INPUT_CLASS}
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="password"
-                  className="block text-sm  font-medium"
-                >
-                  Password
-                </label>
-                <input
-                  onChange={handleChange}
-                  type="password"
-                  id="password"
-                  name="password"
-                  placeholder="min of 6 characters"
-                  className={INPUT_CLASS}
-                />
-              </div>
-              <button type="submit" className={BUTTON_CLASS}>
-                {editing ? (
-                  <>
-                    {" "}
-                    <AiOutlineLoading3Quarters className="text-white text-2xl animate-spin " />{" "}
-                    <p> Processing</p>
-                  </>
-                ) : (
-                  "  Save Changes"
-                )}
-              </button>
-            </form>
-          </div>
-        )}
+              <form
+                onSubmit={(e) => UpdateProfile(e)}
+                className=" border-[1px] border-gray-500  shadow-lg rounded-lg p-8 flex flex-col   mx-auto  sm:w-96 lg:w-[500px]"
+              >
+                <div className="flex justify-between">
+                  {" "}
+                  <h2 className="text-2xl font-bold mb-4">Edit Profile</h2>{" "}
+                  <div>
+                    <MdClose
+                      className="cursor-pointer text-2xl"
+                      onClick={() => setEditProfile(false)}
+                    />
+                  </div>
+                </div>
+                <FaUser class="w-10 h-10 text-[white] mt-8 rounded-full mx-auto" />
+                <div className="mb-4">
+                  <label
+                    htmlFor="username"
+                    className="block text-base font-medium"
+                  >
+                    Username
+                  </label>
+                  <input
+                    onChange={handleChange}
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder={userData?.username}
+                    className={INPUT_CLASS}
+                  />
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="email"
+                    className="block text-base font-medium"
+                  >
+                    Email
+                  </label>
+                  <input
+                    onChange={handleChange}
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder={"john.doe@example.com"}
+                    className={INPUT_CLASS}
+                  />
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="password"
+                    className="block text-base font-medium"
+                  >
+                    Password
+                  </label>
+                  <input
+                    onChange={handleChange}
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="min of 6 characters"
+                    className={INPUT_CLASS}
+                  />
+                </div>
+                <button type="submit" className={BUTTON_CLASS}>
+                  {editing ? (
+                    <>
+                      {" "}
+                      <AiOutlineLoading3Quarters className="text-white text-2xl animate-spin " />{" "}
+                      <p> Processing</p>
+                    </>
+                  ) : (
+                    "  Save Changes"
+                  )}
+                </button>
+              </form>
+            </div>
+          )}
+        </div>
 
         {fetching && userData && (
           <div className="text-center text-gray-200 mx-0 h-screen flex items-center justify-center">
@@ -266,23 +282,30 @@ function Profile() {
             </h1>
             {/* <Image class="w-32 h-32 rounded-full mx-auto" width={100} height={100} src="https://picsum.photos/200" alt="Profile picture"/> */}
             <FaUser class="w-32 h-32 text-[white] mt-8 rounded-full mx-auto" />
-            <h2 class="text-center text-2xl font-semibold mt-3">
-              @{profileData.username}
-            </h2>
-            {profileData.email === userData.email && (
-              <p class="text-center text-gray-200 mt-1">{profileData.email}</p>
+            <div className="flex flex-col     ">
+              <h2 class="text-center text-base font-semibold mt-3">
+                @{profileData?.username}
+              </h2>
+
+              <h3 class="text-center text-sm font-normal text-gray-300 mt-1">
+                @{profileData?.email}
+              </h3>
+            </div>
+            {profileData?.email === userData?.email && (
+              <p class="text-center text-gray-200 mt-1">{profileData?.email}</p>
             )}
+
             <div className="text-center mt-16 flex  flex-col sm:flex-row justify-between">
-              <Link href={`/dashboard/${profileData.farmland}`}>
+              <Link href={`/dashboard/${profileData?.farmland}`}>
                 <p
-                  className={`bg-[#008000] cursor-pointer py-3 px-3 rounded mb-5 md:mb-0 `}
+                  className={`bg-purple-600 cursor-pointer py-3 px-3 rounded mb-5 md:mb-0 `}
                 >
                   Go to farm
                 </p>
               </Link>
               <p
                 onClick={(e) => {
-                  if (userData.username !== profileData.username)
+                  if (userData?.username !== profileData?.username)
                     return toast.warn(
                       "Please login into your account to proceed"
                     );
@@ -290,8 +313,8 @@ function Profile() {
                   e.stopPropagation();
                   setEditProfile(true);
                 }}
-                className={`bg-[#221c7a] py-3 cursor-pointer px-3 rounded mb-5  md:mb-0  ${
-                  userData.username !== profileData.username &&
+                className={`bg-purple-600 py-3 cursor-pointer px-3 rounded mb-5  md:mb-0  ${
+                  userData?.username !== profileData?.username &&
                   "bg-gray-500 cursor-not-allowed"
                 }`}
               >
@@ -300,7 +323,7 @@ function Profile() {
               <p
                 onClick={logOut}
                 className={`bg-[red] cursor-pointer py-3 px-3 rounded mb-5  md:mb-0  ${
-                  userData.username !== profileData.username &&
+                  userData?.username !== profileData?.username &&
                   "bg-gray-500 cursor-not-allowed"
                 }`}
               >
@@ -309,20 +332,20 @@ function Profile() {
             </div>
           </div>
         ) : (
-          <div className="text-center mx-0 h-screen flex items-center  justify-center">
+          <div className="  text-center mx-0 h-screedn flex items-center  justify-center">
             <div className="flex items-center text-white justify-center flex-col">
               <p className="dashboard-mssg">{fetchError}</p>
             </div>
           </div>
         )}
 
-        <div className="mt-28 md:mt-96">
-          <Footer />
-        </div>
+        {!editProfile && (
+          <div className="mt-10">
+            <Footer />
+          </div>
+        )}
       </div>
-
-      {/* edit modal */}
-    </>
+    </div>
   );
 }
 

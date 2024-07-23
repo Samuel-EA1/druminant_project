@@ -46,7 +46,10 @@ import {
   fetchAllRecords,
   viewRecord,
 } from "@/helperFunctions/handleRecord";
-import { formatDateString } from "@/helperFunctions/formatTime";
+import {
+  formatDateString,
+  formatDateTimeLocal,
+} from "@/helperFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
 import { HiDotsHorizontal } from "react-icons/hi";
@@ -100,7 +103,7 @@ export default function Event() {
     const selectedRecord = // Logic to fetch the record based on `id`
       setEditFormInput({
         tagId: selectedRecord.tagId,
-        eventDate: selectedRecord.eventDate,
+        eventDate: formatDateTimeLocal(selectedRecord.eventDate),
         eventType: selectedRecord.eventType,
 
         remark: selectedRecord.remark,
@@ -226,10 +229,14 @@ export default function Event() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    let convertedValue = value;
+    if (name === "eventDate") {
+      convertedValue = moment(value).utc().format();
+    }
     if (formModal) {
-      setformInput((prevData) => ({ ...prevData, [name]: value }));
+      setformInput((prevData) => ({ ...prevData, [name]: convertedValue }));
     } else if (editFormModal) {
-      setEditFormInput((prevData) => ({ ...prevData, [name]: value }));
+      setEditFormInput((prevData) => ({ ...prevData, [name]: convertedValue }));
     }
   };
 
@@ -241,7 +248,7 @@ export default function Event() {
 
     setEditFormInput({
       tagId: selectedRecord.tagId,
-      eventDate: selectedRecord.eventDate,
+      eventDate: formatDateTimeLocal(selectedRecord.eventDate),
       eventType: selectedRecord.eventType,
       remark: selectedRecord.remark,
     });
@@ -294,20 +301,28 @@ export default function Event() {
   };
 
   async function handleSearch(e) {
-     if (!query.trim()) {
-       return toast.error("Please, enter a search query!");
-     }
-     setSearching(true);
-     e.preventDefault();
+    const BASE_URL =
+      process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api/v1";
+    let url = `${BASE_URL}/farmland/${userData.farmland}/event/pig/${query}`;
+
+    console.log(userData.token);
+    e.preventDefault();
+    if (!query.trim()) {
+      return toast.error("Please, enter a search query!");
+    }
+    setSearching(true);
     try {
-      const selectedRecord = await viewRecord(
-        userData.token,
-        userData.farmland,
-        "event",
-        "pig",
-        query
-      );
-      setSearchData([selectedRecord.data.message]);
+      const res = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+        params: {
+          search: true,
+        },
+      });
+      console.log(res);
+
+      setSearchData([res.data.message]);
     } catch (error) {
       setSearchData([]);
       console.log(error);
@@ -369,7 +384,6 @@ export default function Event() {
     setFormModal(!formModal);
   }
 
-  console.log(searchData);
   return (
     <div className="livestock">
       <Head>
@@ -386,7 +400,7 @@ export default function Event() {
 
       <ModuleHeader />
 
-      <div className="p-2 md:p-5">
+      <div className="  p-2 md:p-5     my-10 lg:mt-2">
         {" "}
         <div className=" md:mt-10 ">
           {userData?.token && (
@@ -555,7 +569,7 @@ export default function Event() {
                         </span>
                         <span style={{ fontSize: "14px", color: "black" }}>
                           {moment(row.eventDate).format(
-                            "MMMM Do, YYYY, h:mm:ss A"
+                            "MMMM D, YYYY, HH:mm:ss"
                           )}
                         </span>
                       </td>
@@ -629,7 +643,7 @@ export default function Event() {
               )}
               {query && searching && searchData.length > 0 && (
                 <tbody>
-                  {searchData.map((row, key) => (
+                  {searchData[0].map((row, key) => (
                     <tr
                       key={key}
                       className="   md:hover:bg-gray-100 flex md:table-row  flex-row md:flex-row flex-wrap md:flex-no-wrap my-5 md:mb-0 shadow-md bg-gray-100 shadow-gray-800 md:shadow-none"
@@ -705,7 +719,7 @@ export default function Event() {
                         </span>
                         <span style={{ fontSize: "14px", color: "black" }}>
                           {moment(row.eventDate).format(
-                            "MMMM Do, YYYY, h:mm:ss A"
+                            "MMMM D, YYYY, HH:mm:ss"
                           )}
                         </span>
                       </td>
@@ -826,7 +840,7 @@ export default function Event() {
       </div>
 
       {!userData?.token && !fetching && (
-        <div className="text-center border-2 text-gray-800 mx-0 h-screen flex items-center justify-center">
+        <div className="text-center   text-gray-800 mx-0 h-screen flex items-center justify-center">
           <div className="flex items-center justify-center flex-col">
             <p className="dashboard-mssg">
               You are not logged in! <br />
@@ -844,7 +858,7 @@ export default function Event() {
 
         formModal && (
           <div
-            className="dashboard-main2 py-12 bg-[#01000D]  transition   duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
+            className="dashboard-main2 py-12 bg-[#01000D]  md:my-10 transition   duration-150 ease-in-out z-10 absolute  top-0 right-0 bottom-0 left-0"
             id="modal"
           >
             <p
@@ -866,8 +880,8 @@ export default function Event() {
                         Tag Id
                       </label>
                       <input
-                        title="Assign a unique id to event"
-                        placeholder="Assign a unique id to event"
+                        title="Enter tag id of livestock"
+                        placeholder="Enter tag id of livestock"
                         maxLength={10}
                         required
                         value={formInput.tagId}
@@ -896,7 +910,7 @@ export default function Event() {
                       <input
                         type="datetime-local"
                         id="eventDate"
-                        value={formInput.eventDate}
+                        value={formatDateString(formInput.eventDate)}
                         onChange={handleChange}
                         name="eventDate"
                         className="mb-5 mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-10 flex items-center pl-1 text-sm border-gray-400 rounded border"
@@ -993,8 +1007,8 @@ export default function Event() {
                         Tag Id
                       </label>
                       <input
-                        title="Assign a unique id to event"
-                        placeholder="Assign a unique id to event"
+                        title="Enter tag id of livestock"
+                        placeholder="Enter tag id of livestock"
                         maxLength={10}
                         value={editformInput.tagId}
                         onChange={handleChange}
@@ -1124,7 +1138,7 @@ export default function Event() {
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Event Date & Time</p>
                 <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {moment(selected.eventDate).format("MMM Do, YYYY, h:mm:ss A")}
+                  {moment(selected.eventDate).format("MMM D, YYYY, HH:mm:ss")}
                 </p>
               </div>
 
@@ -1144,7 +1158,7 @@ export default function Event() {
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Created</p>
                 <p className="text-base font-medium text-navy-700  dark:text-green-700">
-                  {moment(selected.createdAt).format("MMM Do, YYYY, h:mm:ss A")}
+                  {moment(selected.createdAt).format("MMM D, YYYY, HH:mm:ss")}
                 </p>
               </div>
 
