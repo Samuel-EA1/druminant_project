@@ -888,7 +888,7 @@ export default function Livestock() {
                         <div className=" flex items-center justify-center ">
                           <button
                             title="Edit"
-                            onClick={() => editBtnFn(row.tagId)}
+                            onClick={() => editBtnFn(row._id)}
                             className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
                           >
                             {/* Edit */}
