@@ -29,7 +29,7 @@ export default function AddSearchComponent({
           <div className="flex items-center max-w-md mx-auto bg-white rounded-lg">
             <div className="w-full">
               <input
-                type="search"
+ 
                 className="w-full px-4 py-1 text-gray-800 rounded-full focus:outline-none"
                 placeholder="search"
                 value={query}
