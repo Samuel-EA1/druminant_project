@@ -139,8 +139,9 @@ export default function PregnancyTracker() {
         if (res.data) {
           setFetching(false);
           setpregnancyData(res.data.message.reverse());
-          if (query && res.data.message.find((e) => e.tagId === query)) {
+          if (query) {
             handleSearch();
+          } else {
           }
         }
       } else {

@@ -164,8 +164,9 @@ export default function Livestock() {
         if (res.data) {
           setFetching(false);
           setLivestockData(res.data.message.reverse());
-          if (query && res.data.message.find((e) => e.tagId === query)) {
+          if (query) {
             handleSearch();
+          } else {
           }
         }
       } else {
@@ -716,7 +717,7 @@ export default function Livestock() {
                         <div className=" flex items-center justify-center ">
                           <button
                             title="Edit"
-                              onClick={() => editBtnFn(row._id)}
+                            onClick={() => editBtnFn(row._id)}
                             className=" px-3 py-1 hover:bg-blue-600 text-white bg-blue-500 rounded-md"
                           >
                             {/* Edit */}
