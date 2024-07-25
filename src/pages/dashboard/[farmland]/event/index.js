@@ -33,17 +33,17 @@ function LivestockSelection() {
         {userData && (
           <div className="dashboard-main  mx-auto">
             <h1
-              className=" text-white mt-5 text-center md:mt-16"
+              className=" text-white mt-14 text-center md:mt-16"
               style={{
                 fontFamily: "verdana",
                 fontWeight: "bold",
                 fontSize: "17px",
               }}
             >
-              Event Tracker
+             Event Tracker
             </h1>
             <p
-              className="text-white mt-2 text-xs text-center md:text-sm"
+              className="text-white mt-2 text-xs  mx-2 text-center md:text-sm"
               style={{ fontFamily: "verdana" }}
             >
               Select livestock to monitor and record event details

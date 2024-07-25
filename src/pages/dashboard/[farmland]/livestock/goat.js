@@ -15,7 +15,7 @@ import {
   button,
 } from "@nextui-org/react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FaAddressBook,
   FaEdit,
@@ -47,11 +47,15 @@ import {
   fetchAllRecords,
   viewRecord,
 } from "@/helperFunctions/handleRecord";
-import { formatDateString, formatDateTimeLocal } from "@/helperFunctions/formatTime";
+import {
+  formatDateString,
+  formatDateTimeLocal,
+} from "@/helperFunctions/formatTime";
 import { GiStorkDelivery } from "react-icons/gi";
 import { fail } from "assert";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { BsSearch } from "react-icons/bs";
+import AddSearchComponent from "@/components/searchbtn";
 
 // import 'react-smart-data-table/dist/react-smart-data-table.css';
 
@@ -140,6 +144,7 @@ export default function Livestock() {
 
   const [livestockData, setLivestockData] = useState([]);
   const [idCounter, setIdCounter] = useState("");
+  const tableRef = useRef(null);
 
   // fetch livestock
   // fetch livestock
@@ -158,6 +163,9 @@ export default function Livestock() {
         if (res.data) {
           setFetching(false);
           setLivestockData(res.data.message.reverse());
+          if (query && res.data.message.find((e) => e.tagId === query)) {
+            handleSearch();
+          }
         }
       } else {
         setFetching(false);
@@ -295,7 +303,9 @@ export default function Livestock() {
   };
 
   async function handleSearch(e) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     if (!query.trim()) {
       return toast.error("Please, enter a search query!");
     }
@@ -306,7 +316,7 @@ export default function Livestock() {
         userData.farmland,
         "livestock",
         "goat",
-        query
+        query.toLowerCase()
       );
       setSearchData([selectedRecord.data.message]);
     } catch (error) {
@@ -383,6 +393,10 @@ export default function Livestock() {
         setFormModal(false);
         setformInput({});
       }
+
+      if (tableRef.current) {
+        tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     } catch (error) {
       setCreating(false);
       if (error.code === "ERR_NETWORK") {
@@ -429,6 +443,10 @@ export default function Livestock() {
         });
       }
       toast.success("Record updated!");
+
+      if (tableRef.current) {
+        tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     } catch (error) {
       if (error.code === "ERR_NETWORK") {
         toast.error("Please check your internet connection!");
@@ -490,9 +508,9 @@ export default function Livestock() {
   };
 
   return (
-    <div className="livestock">
+    <div className="livestock" ref={tableRef}>
       <Head>
-        <title>Druminant - Livestock Profile (goat)</title>
+        <title>Druminant - Livestock Profile (Goat)</title>
         <meta name="description" content="Druminant Livestock goat" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
@@ -512,42 +530,16 @@ export default function Livestock() {
             <div className="  ">
               <div>
                 <h1 className="text-lg md:text-2xl head font-bold">
-                  Livestock Profile (goat)
+                  Livestock Profile (Goat)
                 </h1>
                 <p className=" mt-1">Keep track of your livestock profile</p>
               </div>
-              <div className="flex items-center  space-x-5 mt-3 ">
-                <div
-                  className="text-white w-fit cursor-pointer bg-[#008000] flex items-center p-2 space-x-2 justify-center"
-                  onClick={addProfile}
-                >
-                  <div>
-                    {" "}
-                    <IoMdAdd />
-                  </div>
-                  <p>Add profile {/*  */}</p>
-                </div>
-
-                <form onSubmit={handleSearch}>
-                  <div className="relative w-36 sm:w-40 md:w-full  ">
-                    <input
-                      type="text"
-                      name="search"
-                      placeholder="Tag Id..."
-                      className="w-full px-4 py-2 border-2 rounded-lg bg-input text-primary placeholder-primary-foreground focus:outline-none focus:ring ring-primary"
-                      value={query}
-                      onChange={handleSearchChange}
-                    />
-                    <button
-                      type="submit"
-                      className="absolute right-0 top-0 h-full px-4 bg-[#008000]  text-white rounded-r-lg flex items-center justify-center"
-                      onClick={handleSearch}
-                    >
-                      <BsSearch />
-                    </button>
-                  </div>
-                </form>
-              </div>
+              <AddSearchComponent
+                handleSearch={handleSearch}
+                handleSearchChange={handleSearchChange}
+                query={query}
+                addProfile={addProfile}
+              />
             </div>
           )}
         </div>
@@ -1219,7 +1211,7 @@ export default function Livestock() {
               className="form-header pt-10 pb:0 md:pt-10 "
               style={{ color: "white" }}
             >
-              Edit livetock
+              Edit Livestock
             </p>
 
             <div
@@ -1531,36 +1523,38 @@ export default function Livestock() {
             <div className="grid grid-cols-2 gap-4 px-1 w-full">
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Breed</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                <p className="text-base font-medium text-navy-700 dark:text-green-700 first-letter:capitalize">
                   {selected.breed}
                 </p>
               </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Tag ID</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                <p className="text-base font-medium text-navy-700 dark:text-green-700 first-letter:capitalize">
                   {selected.tagId}
                 </p>
               </div>
 
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Tag Location</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                <p className="text-base font-medium text-navy-700 dark:text-green-700 first-letter:capitalize">
                   {selected.tagLocation}
                 </p>
               </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Sex</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                <p className="text-base font-medium text-navy-700 dark:text-green-700 first-letter:capitalize">
                   {selected.sex}
                 </p>
               </div>
 
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Birth Date</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
-                  {moment(selected.birthDate).format("MMM D, YYYY, HH:mm:ss")}
+                <p className="text-base font-medium text-navy-700 dark:text-green-700 ">
+                  {moment(selected.birthDate)
+                    .local()
+                    .format("MMM D, YYYY, HH:mm:ss")}
                 </p>
               </div>
 
@@ -1573,21 +1567,21 @@ export default function Livestock() {
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Status</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                <p className="text-base font-medium text-navy-700 dark:text-green-700 first-letter:capitalize">
                   {selected.status}
                 </p>
               </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Origin</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                <p className="text-base font-medium text-navy-700 dark:text-green-700 first-letter:capitalize">
                   {selected.origin}
                 </p>
               </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p class="text-sm text-gray-600">User In charge</p>
-                <p className="text-base font-medium text-navy-700  dark:text-green-700">
+                <p className="text-base font-medium text-navy-700  dark:text-green-700 first-letter:capitalize">
                   {selected.inCharge}
                 </p>
               </div>
@@ -1599,10 +1593,10 @@ export default function Livestock() {
                 </p>
               </div>
 
-              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+              <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none ">
                 <p className="text-sm text-gray-600">Remark</p>
                 <p
-                  className="text-base font-medium text-navy-700  dark:text-green-700"
+                  className="text-base font-medium text-navy-700  dark:text-green-700  first-letter:capitalize"
                   style={{ width: "100%", overflow: "auto" }}
                 >
                   {selected.remark}
