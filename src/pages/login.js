@@ -118,13 +118,13 @@ export default function Login() {
                 <div className="mb-4">
                   <label
                     htmlFor="password"
-                    className="text-base text-white md:text-black"
+                    className="text-base  md:text-black"
                   >
                     Password
                   </label>
                   <div className="flex items-center border rounded mt-1">
                     <span className="pl-3">
-                      <GoKey className="md:text-[#008000]" />
+                      <GoKey className="text-[#008000]" />
                     </span>
                     <input
                       type={showPassword ? "text" : "password"}
