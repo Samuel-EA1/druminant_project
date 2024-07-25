@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 
 import { useRecoilValue } from "recoil";
 
-function LivestockSelection() {
+function QuarantineSelection() {
   const userData = useRecoilValue(userState);
   const router = useRouter();
 
@@ -30,7 +30,7 @@ function LivestockSelection() {
       </Head>
       <div>
         <ModuleHeader />
-        {!userData && (
+        {userData && (
           <div className="dashboard-main  mx-auto">
             <h1
               className=" text-white mt-14 text-center md:mt-16"
@@ -168,4 +168,4 @@ function LivestockSelection() {
   );
 }
 
-export default LivestockSelection;
+export default QuarantineSelection;
