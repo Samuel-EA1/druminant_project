@@ -43,6 +43,15 @@ export default function SignUp() {
   };
 
   async function signUp(e) {
+    if (
+      !formData.username ||
+      !formData.email ||
+      !formData.password ||
+      !formData.farmland ||
+      !formData.role
+    ) {
+      return toast.error("Please, ensure that all field are filled");
+    }
     setLoading(true);
     e.preventDefault();
     try {
@@ -66,7 +75,9 @@ export default function SignUp() {
     } catch (error) {
       setLoading(false);
 
-      console.log(error);
+      if (error.code === "ERR_NETWORK") {
+        toast.error(error.message);
+      }
       if (error.response) {
         toast.error(error.response.data.message);
       }
@@ -115,7 +126,7 @@ export default function SignUp() {
                           name="username"
                           className="w-full py-2 px-2 outline-none h-10 t  md:text-black bg-transparent  "
                           placeholder="Enter your username"
-                          required
+                          required={true}
                           maxLength={12}
                           value={formData.username}
                           onChange={(e) => handleChange(e)}
@@ -200,10 +211,7 @@ export default function SignUp() {
                     </div>
 
                     <div className="mb-4">
-                      <label
-                        htmlFor=""
-                        className="text-base   md:text-black"
-                      >
+                      <label htmlFor="" className="text-base   md:text-black">
                         Role
                       </label>
                       <div className="flex items-center border rounded mt-1">
