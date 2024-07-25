@@ -156,12 +156,8 @@ export default function Quarantine() {
         if (res.data) {
           setFetching(false);
           setquarantineData(res.data.message.reverse());
-           if (query && res.data.message.find((e) => e.tagId === query)) {
+          if (query && res.data.message.find((e) => e.tagId === query)) {
             handleSearch();
-          } else {
-            setSearching(false);
-            setQuery("");
-            setSearchData([]);
           }
         }
       } else {

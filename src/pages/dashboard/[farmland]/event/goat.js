@@ -134,12 +134,8 @@ export default function Event() {
         if (res.data) {
           setFetching(false);
           seteventData(res.data.message.reverse());
-           if (query && res.data.message.find((e) => e.tagId === query)) {
+          if (query && res.data.message.find((e) => e.tagId === query)) {
             handleSearch();
-          } else {
-            setSearching(false);
-            setQuery("");
-            setSearchData([]);
           }
         }
       } else {
