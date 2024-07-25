@@ -164,9 +164,10 @@ export default function Livestock() {
         if (res.data) {
           setFetching(false);
           setLivestockData(res.data.message.reverse());
-          if (query) {
+          if (query && res.data.message.find((e) => e.tagId === query)) {
             handleSearch();
           } else {
+            setQuery("");
           }
         }
       } else {

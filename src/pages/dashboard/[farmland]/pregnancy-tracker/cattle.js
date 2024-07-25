@@ -142,6 +142,7 @@ export default function PregnancyTracker() {
           if (query) {
             handleSearch();
           } else {
+            setQuery("");
           }
         }
       } else {
