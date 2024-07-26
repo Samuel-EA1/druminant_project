@@ -527,7 +527,7 @@ export default function Event() {
                           style={{ fontSize: "14px", color: "black" }}
                         >
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                          <p className=" text-ellipsis overflow-hidden ...">
+                          <p className="first-letter:capitalize  text-ellipsis overflow-hidden ...">
                             {row.tagId}
                           </p>
                         </div>
@@ -548,7 +548,7 @@ export default function Event() {
                           style={{ fontSize: "14px", color: "black" }}
                         >
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                          <p className=" text-ellipsis overflow-hidden ...">
+                          <p className=" first-letter:capitalize text-ellipsis overflow-hidden ...">
                             {row.eventType}
                           </p>
                         </div>
@@ -1122,19 +1122,19 @@ export default function Event() {
             <div className="grid grid-cols-2 grid-rows-4  md:gap-4 px-1 w-full">
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">TagId</p>
-                <p className="text-base font-medium text-navy-700 overflow-auto  dark:text-green-700">
+                <p className="text-base font-medium first-letter:capitalize  text-navy-700 overflow-auto  dark:text-green-700">
                   {selected.tagId}
                 </p>
               </div>
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Event Type</p>
-                <p className="text-base font-medium text-navy-700 overflow-auto  dark:text-green-700">
+                <p className="text-base font-medium first-letter:capitalize  text-navy-700 overflow-auto  dark:text-green-700">
                   {selected.eventType}
                 </p>
               </div>
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Event Date & Time</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                <p className="text-base font-medium first-letter:capitalize  text-navy-700 dark:text-green-700">
                   {moment(selected.eventDate).format("MMM D, YYYY, HH:mm:ss")}
                 </p>
               </div>
@@ -1147,7 +1147,7 @@ export default function Event() {
               </div>
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">User In Charge</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                <p className="text-base font-medium first-letter:capitalize  text-navy-700 dark:text-green-700">
                   {selected.inCharge}
                 </p>
               </div>

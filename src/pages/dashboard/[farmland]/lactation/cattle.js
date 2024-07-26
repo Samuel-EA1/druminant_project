@@ -554,7 +554,9 @@ export default function Lactation() {
                           </span>
                           <div style={{ fontSize: "14px", color: "black" }}>
                             {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                            <p>{row.tagId}</p>
+                            <p className="first-letter:capitalize">
+                              {row.tagId}
+                            </p>
                           </div>
                         </td>
                         <td className="w-full md:w-auto  justify-between items-center p-3 text-gray-800 text-center border border-b flex md:table-cell relative md:static">
@@ -570,7 +572,9 @@ export default function Lactation() {
                           </span>
                           <div style={{ fontSize: "14px", color: "black" }}>
                             {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                            <p>{row.offspringNumber}</p>
+                            <p className="first-letter:capitalize">
+                              {row.offspringNumber}
+                            </p>
                           </div>
                         </td>
                         <td className="w-full md:w-auto  space-x-2  justify-between items-center p-3 text-gray-800  border border-b text-center flex md:table-cell relative md:static">
@@ -699,7 +703,9 @@ export default function Lactation() {
                           </span>
                           <div style={{ fontSize: "14px", color: "black" }}>
                             {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                            <p>{row.tagId}</p>
+                            <p className="first-letter:capitalize">
+                              {row.tagId}
+                            </p>
                           </div>
                         </td>
                         <td className="w-full md:w-auto  justify-between items-center p-3 text-gray-800 text-center border border-b flex md:table-cell relative md:static">
@@ -715,7 +721,9 @@ export default function Lactation() {
                           </span>
                           <div style={{ fontSize: "14px", color: "black" }}>
                             {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                            <p>{row.offspringNumber}</p>
+                            <p className="first-letter:capitalize">
+                              {row.offspringNumber}
+                            </p>
                           </div>
                         </td>
                         <td className="w-full md:w-auto  space-x-2  justify-between items-center p-3 text-gray-800  border border-b text-center flex md:table-cell relative md:static">
@@ -1419,7 +1427,7 @@ export default function Lactation() {
             <div className="grid grid-cols-2 gap-4 px-1 w-full">
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Tag Id</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700 first-letter:capitalize">
+                <p className="text-base font-medium  text-navy-700 dark:text-green-700 first-letter:capitalize">
                   {selected.tagId}
                 </p>
               </div>
@@ -1458,7 +1466,7 @@ export default function Lactation() {
                 <p className="text-sm text-gray-600">Observation</p>
                 <textarea
                   readOnly
-                  className="text-base font-medium text-navy-700 h-20 dark:text-green-700 first-letter:capitalize border-none focus:outline-none active:outline-none resize-none"
+                  className="text-base   font-medium text-navy-700 h-20 dark:text-green-700 first-letter:capitalize border-none focus:outline-none active:outline-none resize-none"
                   style={{ border: "none", resize: "none", outline: "none" }}
                 >
                   {selected.observation}
@@ -1474,7 +1482,7 @@ export default function Lactation() {
 
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p class="text-sm text-gray-600">User In charge</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700 first-letter:capitalize">
+                <p className="text-base font-medium  first-letter:capitalize text-navy-700 dark:text-green-700 first-letter:capitalize">
                   {selected.inCharge}
                 </p>
               </div>

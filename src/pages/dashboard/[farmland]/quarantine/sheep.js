@@ -527,7 +527,7 @@ export default function Quarantine() {
                   <p className="text-sm text-gray-600">Reason for Quarantine</p>
                   <textarea
                     readOnly
-                    className="text-base font-medium text-navy-700 h-20 dark:text-green-700 first-letter:capitalize border-none focus:outline-none active:outline-none resize-none"
+                    className="text-base   font-medium text-navy-700 h-20 dark:text-green-700 first-letter:capitalize border-none focus:outline-none active:outline-none resize-none"
                     style={{ border: "none", resize: "none", outline: "none" }}
                   >
                     {selected.reason}
@@ -723,7 +723,10 @@ export default function Quarantine() {
                         >
                           Breed
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.breed}
                         </div>
                       </td>
@@ -738,7 +741,10 @@ export default function Quarantine() {
                         >
                           Tag ID
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
                           <p>{row.tagId}</p>
                         </div>
@@ -754,7 +760,10 @@ export default function Quarantine() {
                         >
                           Sex
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.sex}
                         </div>
                       </td>
@@ -786,7 +795,10 @@ export default function Quarantine() {
                         >
                           Weight
                         </span>
-                        <span style={{ fontSize: "14px", color: "black" }}>
+                        <span
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.weight}
                         </span>
                       </td>
@@ -866,7 +878,10 @@ export default function Quarantine() {
                         >
                           Breed
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.breed}
                         </div>
                       </td>
@@ -881,7 +896,10 @@ export default function Quarantine() {
                         >
                           Tag ID
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
                           <p>{row.tagId}</p>
                         </div>
@@ -897,7 +915,10 @@ export default function Quarantine() {
                         >
                           Sex
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.sex}
                         </div>
                       </td>

@@ -561,8 +561,11 @@ function FinanceRecord() {
                         >
                           Description
                         </span>
-                        <div style={{ fontSize: "14px" }} className="desc">
-                          {row.desc}
+                        <div
+                          style={{ fontSize: "14px" }}
+                          className="desc first-letter:capitalize"
+                        >
+                           {row.desc.substring(0, 15)}...
                         </div>
                       </td>
                       <td className="w-full md:w-auto flex justify-between  border-green-200 items-center p-3 text-gray-800 text-center border block md:table-cell relative md:static">
@@ -770,16 +773,21 @@ function FinanceRecord() {
                             <button className="btn" type="submit">
                               Submit
                             </button>
-                            <button className="btn2" onClick={closeFormModal}>
+                            <button
+                              className="btn2"
+                              type="button"
+                              onClick={closeFormModal}
+                            >
                               Cancel
                             </button>
                           </div>
                           <button
+                            type="button"
                             className="cursor-pointer text-xl absolute top-0 right-0 mt-4 mr-5 text-gray-700 hover:text-gray-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
                             aria-label="close modal"
                             role="button"
                           >
-                            <IoMdClose onClick={closeFormModal} />
+                            <IoMdClose type="button" onClick={closeFormModal} />
                           </button>
                         </>
                       )}
@@ -802,7 +810,7 @@ function FinanceRecord() {
                   <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Description</p>
                     <p
-                      class="text-base font-medium text-navy-700 dark:text-green-700"
+                      class="text-base  first-letter:capitalize font-medium text-navy-700 dark:text-green-700"
                       style={{ overflow: "auto", width: "100%" }}
                     >
                       {selected.desc}
@@ -811,14 +819,14 @@ function FinanceRecord() {
 
                   <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Amount</p>
-                    <p class="text-base font-medium text-navy-700 dark:text-green-700">
+                    <p class="text-base first-letter:capitalize  font-medium text-navy-700 dark:text-green-700">
                       N{selected.amount}
                     </p>
                   </div>
 
                   <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Payment Method</p>
-                    <p class="text-base font-medium text-navy-700 dark:text-green-700">
+                    <p class="text-base  first-letter:capitalize font-medium text-navy-700 dark:text-green-700">
                       {selected.paymentmethod}
                     </p>
                   </div>
@@ -841,7 +849,7 @@ function FinanceRecord() {
 
                   <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">User In charge</p>
-                    <p class="text-base font-medium text-navy-700 dark:text-green-700">
+                    <p class="text-base font-medium first-letter:capitalize text-navy-700 dark:text-green-700">
                       {selected.inCharge}
                     </p>
                   </div>
@@ -968,13 +976,18 @@ function FinanceRecord() {
                             <button type="submit" className="btn">
                               Submit
                             </button>
-                            <button className="btn2" onClick={closeeditModal}>
+                            <button
+                              className="btn2"
+                              type="button"
+                              onClick={closeeditModal}
+                            >
                               Cancel
                             </button>
                           </>
                         )}
                       </div>
                       <button
+                        type="button"
                         className="cursor-pointer text-xl absolute top-0 right-0 mt-4 mr-5 text-gray-700 hover:text-gray-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
                         aria-label="close modal"
                         role="button"
