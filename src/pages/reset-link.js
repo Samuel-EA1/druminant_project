@@ -2,6 +2,7 @@ import { Footer } from "@/components/footer";
 import ModuleHeader from "@/components/moduleheader";
 import axios from "axios";
 import React, { useState } from "react";
+import { AiOutlineMail } from "react-icons/ai";
 import { toast } from "react-toastify";
 
 function Reset() {
@@ -31,7 +32,7 @@ function Reset() {
       setMessage(`You will receive a reset link shortly.`);
     } catch (err) {
       setLoading(false);
-      console.log(err)
+      console.log(err);
       if (err.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
@@ -68,16 +69,22 @@ function Reset() {
               <label htmlFor="email" className="block text-primary-foreground">
                 Email Address
               </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={email}
-                onChange={handleEmailChange}
-                placeholder="john.doe@example.com"
-                className="w-full px-3 py-2 rounded-lg text-base border bg-input focus:outline-none focus:ring focus:ring-primary"
-                required
-              />
+
+              <div className="flex items-center border rounded mt-1">
+                <span className="pl-3">
+                  <AiOutlineMail className="text-[#008000] " />
+                </span>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                  placeholder="john.doe@example.com"
+                  className="w-full px-3 py-2 rounded-lg text-base   bg-input focus:outline-none focus:ring focus:ring-primary"
+                  required
+                />
+              </div>
             </div>
             <button
               type="submit"

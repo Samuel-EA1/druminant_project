@@ -43,6 +43,15 @@ export default function SignUp() {
   };
 
   async function signUp(e) {
+    if (
+      !formData.username ||
+      !formData.email ||
+      !formData.password ||
+      !formData.farmland ||
+      !formData.role
+    ) {
+      return toast.error("Please, ensure that all field are filled");
+    }
     setLoading(true);
     e.preventDefault();
     try {
@@ -66,7 +75,9 @@ export default function SignUp() {
     } catch (error) {
       setLoading(false);
 
-      console.log(error);
+      if (error.code === "ERR_NETWORK") {
+        toast.error(error.message);
+      }
       if (error.response) {
         toast.error(error.response.data.message);
       }
@@ -93,7 +104,7 @@ export default function SignUp() {
             <div className="flex justify-center items-center  px-2  ">
               <div className=" bg-white h-full p-8 rounded shadow-md max-w-xl  w-full  ">
                 <h2 className="text-2xl flex items-center space-x-3 font-bold mb-4">
-                  <FaUser className="md:text-[#008000] text-[#24c024]" />
+                  <FaUser className="text-[#008000]  " />
                   <p className="text-green-900  ">Sign Up</p>
                 </h2>
                 <form onSubmit={signUp}>
@@ -101,21 +112,21 @@ export default function SignUp() {
                     <div className="mb-4">
                       <label
                         htmlFor="username"
-                        className="text-s text-white md:text-black"
+                        className="text-s  md:text-black"
                       >
                         Username
                       </label>
                       <div className="flex items-center border rounded mt-1">
                         <span className="pl-3">
-                          <AiOutlineUser className="md:text-[#008000] text-white" />
+                          <AiOutlineUser className="text-[#008000]  " />
                         </span>
                         <input
                           type="text"
                           id="username"
                           name="username"
-                          className="w-full py-2 px-2 outline-none h-10 text-white md:text-black bg-transparent  "
+                          className="w-full py-2 px-2 outline-none h-10 t  md:text-black bg-transparent  "
                           placeholder="Enter your username"
-                          required
+                          required={true}
                           maxLength={12}
                           value={formData.username}
                           onChange={(e) => handleChange(e)}
@@ -125,19 +136,19 @@ export default function SignUp() {
                     <div className="mb-4">
                       <label
                         htmlFor="email"
-                        className="text-base text-white md:text-black"
+                        className="text-base   md:text-black"
                       >
                         Email
                       </label>
                       <div className="flex items-center border rounded mt-1">
                         <span className="pl-3">
-                          <AiOutlineMail className="md:text-[#008000] text-white" />
+                          <AiOutlineMail className="text-[#008000] " />
                         </span>
                         <input
                           type="email"
                           id="email"
                           name="email"
-                          className="w-full py-2 px-2 outline-none text-white md:text-black h-10 bg-transparent"
+                          className="w-full py-2 px-2 outline-none   md:text-black h-10 bg-transparent"
                           placeholder="Enter your email"
                           required
                           value={formData.email}
@@ -149,13 +160,13 @@ export default function SignUp() {
                     <div className="mb-4">
                       <label
                         htmlFor="password"
-                        className="text-base text-white md:text-black"
+                        className="text-base   md:text-black"
                       >
                         Password
                       </label>
                       <div className="flex items-center border rounded mt-1">
                         <span className="pl-3">
-                          <GoKey className="md:text-[#008000]" />
+                          <GoKey className="text-[#008000]" />
                         </span>
                         <input
                           type={showPassword ? "text" : "password"}
@@ -178,19 +189,19 @@ export default function SignUp() {
                     <div className="mb-4">
                       <label
                         htmlFor="ethAddress"
-                        className="text-base text-white md:text-black"
+                        className="text-base text- md:text-black"
                       >
                         Farmland name
                       </label>
                       <div className="flex items-center border rounded mt-1">
                         <span className="pl-3">
-                          <PiPlantLight className="md:text-[#008000] text-white" />
+                          <PiPlantLight className="text-[#008000]  " />
                         </span>
                         <input
                           type="text"
                           id=""
                           name="farmland"
-                          className="w-full py-2 px-2 outline-none text-white md:text-black h-10 bg-transparent"
+                          className="w-full py-2 px-2 outline-none  md:text-black h-10 bg-transparent"
                           placeholder="Enter farmland name"
                           required
                           value={formData.farmland}
@@ -200,21 +211,18 @@ export default function SignUp() {
                     </div>
 
                     <div className="mb-4">
-                      <label
-                        htmlFor="ethAddress"
-                        className="text-base text-white md:text-black"
-                      >
+                      <label htmlFor="" className="text-base   md:text-black">
                         Role
                       </label>
                       <div className="flex items-center border rounded mt-1">
                         <span className="pl-3">
-                          <RiAdminLine className="md:text-[#008000] text-white" />
+                          <RiAdminLine className="text-[#008000]  " />
                         </span>
                         <select
                           type="text"
                           id="role"
                           name="role"
-                          className="w-full py-2 px-2 outline-none h-10  bg-transparent backdrop-blur text-white md:text-black "
+                          className="w-full py-2 px-2 outline-none h-10  bg-transparent backdrop-blur   md:text-black "
                           placeholder="Enter your BNB wallet address"
                           required
                           value={formData.role}
