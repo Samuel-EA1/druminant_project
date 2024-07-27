@@ -245,11 +245,11 @@ function Profile() {
                     className={INPUT_CLASS}
                   />
                 </div>
-                <button type="submit" className={BUTTON_CLASS}>
+                <button type="submit" style={{backgroundColor:"green", marginTop:"20px"}} className={BUTTON_CLASS}>
                   {editing ? (
                     <>
                       {" "}
-                      <AiOutlineLoading3Quarters className="text-white text-2xl animate-spin " />{" "}
+                      <AiOutlineLoading3Quarters className="text-white  text-2xl animate-spin " />{" "}
                       <p> Processing</p>
                     </>
                   ) : (
@@ -298,7 +298,7 @@ function Profile() {
             <div className="text-center mt-16 flex  flex-col sm:flex-row justify-between">
               <Link href={`/dashboard/${profileData?.farmland}`}>
                 <p
-                  className={`bg-purple-600 cursor-pointer py-3 px-3 rounded mb-5 md:mb-0 `}
+                  className={`bg-green-600 hover:bg-green-700 cursor-pointer py-3 px-3 rounded mb-5 md:mb-0 `}
                 >
                   Go to farm
                 </p>
@@ -313,7 +313,7 @@ function Profile() {
                   e.stopPropagation();
                   setEditProfile(true);
                 }}
-                className={`bg-purple-600 py-3 cursor-pointer px-3 rounded mb-5  md:mb-0  ${
+                className={`bg-purple-600 hover:bg-purple-700  py-3 cursor-pointer px-3 rounded mb-5  md:mb-0  ${
                   userData?.username !== profileData?.username &&
                   "bg-gray-500 cursor-not-allowed"
                 }`}
@@ -322,7 +322,7 @@ function Profile() {
               </p>
               <p
                 onClick={logOut}
-                className={`bg-[red] cursor-pointer py-3 px-3 rounded mb-5  md:mb-0  ${
+                className={`bg-[#ff0000ce] hover:bg-[#ff0000d9] cursor-pointer py-3 px-3 rounded mb-5  md:mb-0  ${
                   userData?.username !== profileData?.username &&
                   "bg-gray-500 cursor-not-allowed"
                 }`}

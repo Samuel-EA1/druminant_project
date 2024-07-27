@@ -25,45 +25,70 @@ export default function Help() {
 
       <div className="flex p-2 justify-center  items-start my-2   md:mt-20">
         <div className="w-full sm:w-10/12  my-1 md:max-w-2xl">
-         <h1 className=" help">Help</h1>
-          <p className=" text-justify text-md px-1 text-vnet-blue text-white w-11/12 mx-auto  mb-2">
+         <h1 className=" help">Help Center</h1>
+          <p className=" text-justify text-md mb-5 mt-4  text-vnet-blue text-white w-11/12 mx-auto ">
             D&apos;Ruminant livestock management system&apos;s help page
             provides detailed summaries for essential modules. Each summary
             offers clear instructions on accessing, recording, and managing
-            data, ensuring users can effectively utilize our platform for
+            data, ensuring you can effectively utilize this platform for
             streamlined and efficient livestock management.
           </p>
           <ul className="flex flex-col">
             {[
               {
+                question: "Sign Up",
+                answer:
+                  "The sign up enables you to have access to create an account with D'Ruminant Livestock Management System. To sign up, please follow these steps: Navigate to the home page and click on the 'Launch App' button, which will direct you to the login page. On the login page, click on the 'Sign Up' link located below the login form. This will take you to the sign-up page, where you will need to enter a unique username without spaces, a unique email address that has not been used previously, a strong password with a minimum of six characters, the name of the farmland you work on (ensure that the farmland name exists), and select your role. For a successful sign-up, ensure that the username and email address are unique, the password meets the required strength and length, and the farmland name is valid. By adhering to these guidelines, you will be able to create an account and gain access to D'Ruminant Livestock Management System.",
+              },
+              {
+                question: "Log In",
+                answer:
+                  "To access the dashboard, you must log in with your registered account. First, ensure you have already created an account. Then, navigate to the home page and click on the 'Launch App' button. This will direct you to the login page, which contains the login form. Enter your registered username and password in the appropriate fields and click on the 'Login' button. If you have forgotten your password, click on the 'Forgot Password' link. You will be prompted to enter your email address. After submitting your email address, wait for an email from us. Upon receiving the email, open it and click on the 'Reset Password' link, which will direct you to the reset password page. On this page, enter your new password, confirm it, and click on the 'Reset Password' button. You can then log in with your original username and new password.",
+              },
+              {
                 question: "Livestock Profile Module",
                 answer:
-                  " The Livestock Profile module helps farmers manage detailed records for each animal in their herd. Accessible on the dashboard after login or sign-up, users can click on the module to enter the page. To add a profile, click the Add Profile button, complete the form, and save it. The livestock table displays all profiles with headers and includes action buttons for editing, deleting, viewing details, and quarantining records. Each button is represented by an icon with a hover-over title for clarification.",
+                  " To keep records of your farm animals, navigate to the Livestock Profile Management section on the dashboard. After clicking on it, select the livestock you want to work on. This will direct you to the main page for the selected livestock. To add a new livestock profile, click on the 'Add Profile' button and fill in the form correctly. Please note that all fields, except for 'Remark' are required for successful submission. The table will display and keep all the records you have entered. You can manipulate these records by editing, deleting, or quarantining them. However, it is important to note that only the admin and the creator of the record have the permissions to manipulate it. To understand the function of each icon, hover over them if you are using a desktop or laptop computer. Additionally, for quick access, you can use the search bar to find a record using its unique tag id.",
               },
               {
                 question: "Income/Expense Module",
                 answer:
-                  "The income/expense module helps farmers manage detailed records of livestock-related income and expenses. Accessible from the dashboard upon login or sign-up, the module appears after logging in. Users can select the Income and Expense option and choose the relevant livestock. The page has two sections: Income on the left and Expense on the right. To add entries, click Add Income or Add Expense, complete the form, and submit it. View records by clicking View Income or View Expense. The actions column includes icons for editing, deleting, and viewing records, with hover-over titles for clarification.",
+                  "To record and maintain livestock-related financial records, navigate to the dashboard and select 'Income/Expense'. Choose the livestock to which the income or expense relates. The page will display income cards on the left and expense cards on the right. These cards show the total number of records and the total amount for both income and expenses, updating each time a new record is added or an existing record is edited. To add a new record, click on the 'Add' button and complete the form that appears. You can view either the income table or the expense table by clicking the corresponding 'View' button. Please note that only the admin and the creator of the record have the permissions to manipulate it.",
               },
               {
                 question: "Event Tracker Module",
                 answer:
-                  "The Event Tracker module helps livestock farmers keep track of events throughout their livestock's lifetime. Accessible from the dashboard, users can enter the event tracking page by clicking on the Event Tracker module. After selecting the livestock, click the Add Event button to open a new event form, fill it in, and submit it. The table lists all event records with headers for Table ID, Tag ID, Event Type, Event Date, Entry Date, and Actions. The actions column includes icons for editing, deleting, and viewing records. Each icon has a hover-over title for clarification.",
+                  "To keep and monitor events in your livestock, navigate to the 'Event Tracker' on the dashboard. Select the livestock you want to monitor, which will direct you to the main page for the selected livestock. To add a new event, click on the 'Add Record' button and fill in the form correctly. Please note that all fields, except for 'Remark' are required for successful submission. The table will display and keep all the records you have entered. You can manipulate these records by editing or deleting them. However, it is important to note that only the admin and the creator of the record have the permissions to manipulate it. To understand the function of each icon, hover over them if you are using a desktop or laptop computer. Additionally, for quick access, you can use the search bar to find a record using its tag ID.",
               },
               {
                 question: "Pregnancy Checker Module",
                 answer:
-                  "The Pregnant Checker module helps livestock farmers monitor due dates for delivery by automatically calculating a due date based on the breeding date entered by the farmer. Accessible from the dashboard, users can select the Pregnant Checker module and choose the livestock they want to monitor. o add a new due date record, click the Add Record button on the pregnancy checker page, fill out the form accurately, and submit it. The table lists all due date records with headers for Table ID, Tag ID, Gestation Period, Breeding Date, Expected Delivery Date, and Actions. The actions column includes icons for editing, deleting, and viewing records. Each icon has a hover-over title for clarification.",
+                  "To monitor and record the expected delivery dates in your livestock, select 'Pregnancy Tracker' on the dashboard. Then, choose the livestock you want to track, which will direct you to the main page. To add a new record, click on the 'Add Record' button and completely and correctly fill in the form. The page also contains a table displaying all the records that have been entered, including the approximate delivery date, which is calculated manually based on the gestation period entered. You can manipulate these records by editing or deleting them. However, it is important to note that only the admin and the creator of the record have the permissions to manipulate it. To understand the function of each icon, hover over them if you are using a desktop or laptop computer. Additionally, for quick access, you can use the search bar to find a record using its unique tag ID.",
               },
               {
-                question: "Lactation Tracking Module",
+                question: "Lactation Module",
                 answer:
-                  "The Lactation Tracking module helps livestock farmers monitor parameters such as milk yield and milk composition. Accessible from the dashboard, users can click on the Lactation Tracking module and select the livestock they want to track. To add a new lactation record, click the Add Record button on the lactation tracking page, complete the form accurately, and submit it. The table lists all lactation records with headers for Table ID, Milk Yield, Tag ID, Delivery Date, Weight, and Actions. The actions column includes icons for editing, deleting, viewing records, and viewing milk composition details. Each icon has a hover-over title for clarification.",
+                  "To record and monitor parameters such as milk yield and milk composition, navigate to the dashboard and click on 'Lactation'. Select the livestock you want to monitor, which will direct you to the main page for the selected livestock. To add a new record, click on the Add Record button and fill in the form correctly. The table will display and keep all the records you have entered. You can manipulate these records by editing or deleting them. However, it is important to note that only the admin and the creator of the record have the permissions to manipulate it. To understand the function of each icon, hover over them if you are using a desktop or laptop computer. Additionally, for quick access, you can use the search bar to find a record using its tag ID.",
               },
               {
                 question: "Quarantine Module",
                 answer:
-                  "The Quarantine module helps farmers manage quarantined livestock profiles, providing visibility and control over animals in quarantine. Accessible from the dashboard, users can select the Quarantine module and choose the livestock to check quarantined profiles. The module displays a table of records for livestock profiles moved from the Livestock Profile module to the Quarantine module. The table headers include Table ID, Tag ID, Quarantine Date, Release Date, and Actions. The actions column includes icons for viewing details of the selected quarantined record and releasing the quarantined livestock profile back to the Livestock Profile module. Each icon has a hover-over title for clarification.",
+                  "To view quarantined profiles, head to the dashboard and select 'Quarantine'. Then, select the livestock you want to view, which will direct you to the main page for the selected livestock. This page contains the profiles that have been quarantined from the livestock profile page. On this page, you can either view the details of a quarantined profile or release a quarantined profile, which will then return it to the livestock profile. Additionally, for quick access, you can use the search bar to find a record using its tag ID.",
+              },
+              {
+                question: "Profile",
+                answer:
+                  "To view or update your profile, navigate to the navbar and select 'Profile', which will take you to the profile page. Alternatively, you can access the profile page by heading to the footer and clicking on 'Profile'. To update your profile, click on 'Update Profile', fill in the form that appears correctly, and save the changes.",
+              },
+              {
+                question: "Requests",
+                answer:
+                  "As an admin, you have the ability to view individuals or workers requesting to join your farmland. You can choose to accept or decline these requests. The Requests section is located on the navbar. Upon accepting a request, the individual is automatically added to your staff list and gains access to your farmland dashboard, enabling them to view existing records and add new ones. For security and integrity purposes, their permissions are restricted to manipulating only the records they have created.",
+              },
+              {
+                question: "Staff",
+                answer:
+                  "As an admin, you can also see all the people whose requests you have accepted and who have become your staff. You have the authority to dismiss any staff member. To view the staff list, navigate to the navbar and click on 'Staff'",
               },
             ].map((item, index) => (
               <li key={index} className="bg-white my-2 shadow-neutral-50 rounded w-11/12 mx-auto" >

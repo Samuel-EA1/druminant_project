@@ -242,9 +242,10 @@ function ModuleHeader() {
         <Link href={"/"}>
           <Image
             src="/image/mobilelogo.png"
-            width={40}
+            width={50}
             height={70}
             className="main-imae"
+            style={{marginTop:"1px"}}
           />
         </Link>
         {hamburg && (
