@@ -841,7 +841,7 @@ export default function PregnancyTracker() {
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                          <p>{row.tagId}</p>
+                          <p className="first-letter:capitalize">{row.tagId}</p>
                         </div>
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
@@ -857,7 +857,7 @@ export default function PregnancyTracker() {
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                          <p>{row.breed}</p>
+                          <p className="first-letter:capitalize">{row.breed}</p>
                         </div>
                       </td>
 
@@ -1014,7 +1014,7 @@ export default function PregnancyTracker() {
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                          <p>{row.tagId}</p>
+                          <p className="first-letter:capitalize">{row.tagId}</p>
                         </div>
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
@@ -1030,7 +1030,7 @@ export default function PregnancyTracker() {
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                          <p>{row.breed}</p>
+                          <p className="first-letter:capitalize">{row.breed}</p>
                         </div>
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
@@ -1219,21 +1219,21 @@ export default function PregnancyTracker() {
             style={{ marginTop: "10px" }}
           >
             <div className="mt-2 mb-8 w-full">
-              <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
+              <h4 className="px-2 text-xl font-bold text-navy-700  dark:text-green-700">
                 Pregnancy Details
               </h4>
             </div>
             <div className="grid grid-cols-2 gap-4 px-1 w-full">
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Tag Id</p>
-                <p className="text-base font-medium text-navy-700  truncate ...  sm:w-full  dark:text-green-700">
+                <p className="text-base font-medium first-letter:capitalize text-navy-700  truncate ...  sm:w-full  dark:text-green-700">
                   {selected.tagId}
                 </p>
               </div>
 
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Breed</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700 truncate ... w-32 sm:w-full ">
+                <p className="text-base font-medium text-navy-700 first-letter:capitalize dark:text-green-700 truncate ... w-32 sm:w-full ">
                   {selected.breed}
                 </p>
               </div>
@@ -1246,7 +1246,7 @@ export default function PregnancyTracker() {
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">User in charge</p>
-                <p className="text-base font-medium text-navy-700  dark:text-green-700">
+                <p className="text-base font-medium first-letter:capitalize text-navy-700  dark:text-green-700">
                   {selected.inCharge}
                 </p>
               </div>
@@ -1260,7 +1260,7 @@ export default function PregnancyTracker() {
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Remark</p>
                 <p
-                  className="text-base font-medium text-navy-700  dark:text-green-700"
+                  className="text-base font-medium text-navy-700  first-letter:capitalize dark:text-green-700"
                   style={{ width: "100%", overflow: "auto" }}
                 >
                   {selected.remark}

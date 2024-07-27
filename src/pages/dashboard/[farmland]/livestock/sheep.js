@@ -630,7 +630,7 @@ export default function Livestock() {
                           Breed
                         </span>
                         <div
-                          className=""
+                          className="first-letter:capitalize"
                           style={{ fontSize: "14px", color: "black" }}
                         >
                           {row.breed}
@@ -649,7 +649,7 @@ export default function Livestock() {
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                          <p>{row.tagId}</p>
+                          <p className="first-letter:capitalize">{row.tagId}</p>
                         </div>
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
@@ -663,7 +663,10 @@ export default function Livestock() {
                         >
                           Sex
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.sex}
                         </div>
                       </td>
@@ -807,7 +810,10 @@ export default function Livestock() {
                         >
                           Breed
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.breed}
                         </div>
                       </td>
@@ -824,7 +830,7 @@ export default function Livestock() {
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                          <p>{row.tagId}</p>
+                          <p className="first-letter:capitalize">{row.tagId}</p>
                         </div>
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
@@ -838,7 +844,10 @@ export default function Livestock() {
                         >
                           Sex
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.sex}
                         </div>
                       </td>
@@ -1523,28 +1532,28 @@ export default function Livestock() {
             <div className="grid grid-cols-2 gap-4 px-1 w-full">
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Breed</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                <p className="text-base  first-letter:capitalize font-medium text-navy-700 dark:text-green-700">
                   {selected.breed}
                 </p>
               </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Tag ID</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                <p className="text-base first-letter:capitalize font-medium text-navy-700 dark:text-green-700">
                   {selected.tagId}
                 </p>
               </div>
 
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Tag Location</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                <p className="text-base font-medium first-letter:capitalize text-navy-700 dark:text-green-700">
                   {selected.tagLocation}
                 </p>
               </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Sex</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                <p className="text-base font-medium first-letter:capitalize text-navy-700 dark:text-green-700">
                   {selected.sex}
                 </p>
               </div>
@@ -1565,21 +1574,21 @@ export default function Livestock() {
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Status</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                <p className="text-base font-medium first-letter:capitalize text-navy-700 dark:text-green-700">
                   {selected.status}
                 </p>
               </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Origin</p>
-                <p className="text-base font-medium text-navy-700 dark:text-green-700">
+                <p className="text-base  first-letter:capitalize font-medium text-navy-700 dark:text-green-700">
                   {selected.origin}
                 </p>
               </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p class="text-sm text-gray-600">User In charge</p>
-                <p className="text-base font-medium text-navy-700  dark:text-green-700">
+                <p className="text-base font-medium  first-letter:capitalize text-navy-700  dark:text-green-700">
                   {selected.inCharge}
                 </p>
               </div>
@@ -1594,7 +1603,7 @@ export default function Livestock() {
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Remark</p>
                 <p
-                  className="text-base font-medium text-navy-700  dark:text-green-700"
+                  className="text-base first-letter:capitalize font-medium text-navy-700  dark:text-green-700"
                   style={{ width: "100%", overflow: "auto" }}
                 >
                   {selected.remark}

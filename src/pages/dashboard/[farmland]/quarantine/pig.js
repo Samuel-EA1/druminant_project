@@ -722,7 +722,10 @@ export default function Quarantine() {
                         >
                           Breed
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.breed}
                         </div>
                       </td>
@@ -737,7 +740,10 @@ export default function Quarantine() {
                         >
                           Tag ID
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
                           <p>{row.tagId}</p>
                         </div>
@@ -753,7 +759,10 @@ export default function Quarantine() {
                         >
                           Sex
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.sex}
                         </div>
                       </td>
@@ -865,7 +874,10 @@ export default function Quarantine() {
                         >
                           Breed
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.breed}
                         </div>
                       </td>
@@ -880,7 +892,10 @@ export default function Quarantine() {
                         >
                           Tag ID
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
                           <p>{row.tagId}</p>
                         </div>
@@ -896,7 +911,10 @@ export default function Quarantine() {
                         >
                           Sex
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.sex}
                         </div>
                       </td>

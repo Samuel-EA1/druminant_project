@@ -561,8 +561,11 @@ function FinanceRecord() {
                         >
                           Description
                         </span>
-                        <div style={{ fontSize: "14px" }} className="desc">
-                          {row.desc}
+                        <div
+                          style={{ fontSize: "14px" }}
+                          className="desc first-letter:capitalize"
+                        >
+                           {row.desc.substring(0, 15)}...
                         </div>
                       </td>
                       <td className="w-full md:w-auto flex justify-between  border-green-200 items-center p-3 text-gray-800 text-center border block md:table-cell relative md:static">
@@ -770,11 +773,16 @@ function FinanceRecord() {
                             <button className="btn" type="submit">
                               Submit
                             </button>
-                            <button className="btn2" onClick={closeFormModal}>
+                            <button
+                              type="button"
+                              className="btn2"
+                              onClick={closeFormModal}
+                            >
                               Cancel
                             </button>
                           </div>
                           <button
+                            type="button"
                             className="cursor-pointer text-xl absolute top-0 right-0 mt-4 mr-5 text-gray-700 hover:text-gray-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
                             aria-label="close modal"
                             role="button"
@@ -968,13 +976,18 @@ function FinanceRecord() {
                             <button type="submit" className="btn">
                               Submit
                             </button>
-                            <button className="btn2" onClick={closeeditModal}>
+                            <button
+                              className="btn2"
+                              type="button"
+                              onClick={closeeditModal}
+                            >
                               Cancel
                             </button>
                           </>
                         )}
                       </div>
                       <button
+                        type="button"
                         className="cursor-pointer text-xl absolute top-0 right-0 mt-4 mr-5 text-gray-700 hover:text-gray-400 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
                         aria-label="close modal"
                         role="button"

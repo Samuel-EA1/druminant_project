@@ -560,7 +560,9 @@ export default function Lactation() {
                           </span>
                           <div style={{ fontSize: "14px", color: "black" }}>
                             {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                            <p>{row.tagId}</p>
+                            <p className="first-letter:capitalize">
+                              {row.tagId}
+                            </p>
                           </div>
                         </td>
                         <td className="w-full md:w-auto  justify-between items-center p-3 text-gray-800 text-center border border-b flex md:table-cell relative md:static">
@@ -705,7 +707,9 @@ export default function Lactation() {
                           </span>
                           <div style={{ fontSize: "14px", color: "black" }}>
                             {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                            <p>{row.tagId}</p>
+                            <p className="first-letter:capitalize">
+                              {row.tagId}
+                            </p>
                           </div>
                         </td>
                         <td className="w-full md:w-auto  justify-between items-center p-3 text-gray-800 text-center border border-b flex md:table-cell relative md:static">

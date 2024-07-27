@@ -630,7 +630,7 @@ export default function Livestock() {
                           Breed
                         </span>
                         <div
-                          className=""
+                          className="first-letter:capitalize"
                           style={{ fontSize: "14px", color: "black" }}
                         >
                           {row.breed}
@@ -649,7 +649,7 @@ export default function Livestock() {
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                          <p>{row.tagId}</p>
+                          <p className="first-letter:capitalize">{row.tagId}</p>
                         </div>
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
@@ -663,7 +663,10 @@ export default function Livestock() {
                         >
                           Sex
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.sex}
                         </div>
                       </td>
@@ -807,7 +810,10 @@ export default function Livestock() {
                         >
                           Breed
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.breed}
                         </div>
                       </td>
@@ -824,7 +830,7 @@ export default function Livestock() {
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                          <p>{row.tagId}</p>
+                          <p className="first-letter:capitalize">{row.tagId}</p>
                         </div>
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b text-center block md:table-cell relative md:static">
@@ -838,7 +844,10 @@ export default function Livestock() {
                         >
                           Sex
                         </span>
-                        <div style={{ fontSize: "14px", color: "black" }}>
+                        <div
+                          className="first-letter:capitalize"
+                          style={{ fontSize: "14px", color: "black" }}
+                        >
                           {row.sex}
                         </div>
                       </td>
