@@ -23,7 +23,7 @@ function Body() {
         height={100}
         style={{marginTop:"150px"}}
       /> */}
-      <h1 className="main-name">D'Ruminant</h1>
+      <h1 className="main-name">D&apos;Ruminant</h1>
       <p className="main-text ">
         Your solution for streamlined ruminant livestock management which
         centralizes all aspects of livestock care, offering tools to enhance
