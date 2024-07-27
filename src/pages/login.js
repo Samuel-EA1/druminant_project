@@ -24,6 +24,7 @@ import { useRecoilValue } from "recoil";
 export default function Login() {
   const BASE_URL =
     process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api/v1";
+    console.log(process.env.NEXT_PUBLIC_API_BASE_URL)
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

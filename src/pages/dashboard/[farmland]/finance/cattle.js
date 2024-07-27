@@ -381,7 +381,7 @@ function FinanceRecord() {
         <div
           className={`${
             !financeForm && !editModal && "livestock"
-          } p-2 md:p-5  border-2  my-10 lg:mt-2`}
+          } p-2 md:p-5  my-10 lg:mt-2`}
         >
           <div>
             <h1 className="text-lg md:text-2xl head2 px-1 md:px-0 font-bold">
@@ -702,7 +702,6 @@ function FinanceRecord() {
                         </label>
                         <input
                           title="A brief description of transaction"
-                          maxLength={30}
                           placeholder="E.g. Sales of livestock"
                           value={formInput.desc}
                           onChange={handleChange}
@@ -732,7 +731,6 @@ function FinanceRecord() {
                           title="Amount"
                           type="number"
                           pat
-                          max={999999999999999}
                           value={formInput.amount}
                           onChange={handleChange}
                           name="amount"
@@ -907,7 +905,6 @@ function FinanceRecord() {
                         </label>
                         <input
                           title="A brief description of transaction"
-                          maxLength={30}
                           value={editform.desc}
                           onChange={handleEditChange}
                           name="desc"
@@ -934,7 +931,6 @@ function FinanceRecord() {
                           Amount
                         </label>
                         <input
-                          max={999999999999999}
                           title="Amount"
                           type="number"
                           value={editform.amount}

@@ -538,6 +538,7 @@ export default function Livestock() {
                 handleSearchChange={handleSearchChange}
                 query={query}
                 addProfile={addProfile}
+                profile="Profile"
               />
             </div>
           )}
@@ -632,7 +633,7 @@ export default function Livestock() {
                           className="first-letter:capitalize"
                           style={{ fontSize: "14px", color: "black" }}
                         >
-                          {row.breed}
+                          {row.breed.substring(0, 15)}{row.breed.length>15 && "..."}
                         </div>
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">
@@ -1033,7 +1034,6 @@ export default function Livestock() {
                       <input
                         title="Enter the breed of the livestock here."
                         placeholder="E.g. Holstein Friesian"
-                        maxLength={17}
                         required
                         value={formInput.breed}
                         onChange={handleChange}
@@ -1239,7 +1239,6 @@ export default function Livestock() {
                       <input
                         title="Enter the breed of the livestock here."
                         placeholder="E.g. Holstein Friesian"
-                        maxLength={17}
                         value={editformInput.breed}
                         onChange={handleChange}
                         name="breed"
@@ -1429,7 +1428,7 @@ export default function Livestock() {
           >
             <p
               className="form-header pt-10 pb:0 md:pt-10  text-lg"
-              style={{ color: "white" }}
+              style={{ color: "white", fontFamily:"sans-serif"  }}
             >
               Quarantine Livestock Profile
             </p>
@@ -1466,7 +1465,7 @@ export default function Livestock() {
                         value={quarantinFormData.reason}
                         onChange={handleChange}
                         name="reason"
-                        className="mb-5 md:w-[230%]  mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-20 flex items-center pl-1 text-sm border-gray-400 rounded border"
+                        className="mb-5 md:w-[230%]  mt-2 text-gray-800 focus:outline-none focus:border focus:border-gray-500 font-normal w-full h-20 flex items-center pt-1 px-1  text-sm border-gray-400 rounded border"
                       ></textarea>
                     </div>
                   </div>

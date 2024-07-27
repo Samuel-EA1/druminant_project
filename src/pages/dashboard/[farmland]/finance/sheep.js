@@ -381,7 +381,7 @@ function FinanceRecord() {
         <div
           className={`${
             !financeForm && !editModal && "livestock"
-          } p-2 md:p-5  border-2  my-10 lg:mt-2`}
+          } p-2 md:p-5 my-10 lg:mt-2`}
         >
           <div>
             <h1 className="text-lg md:text-2xl head2 px-1 md:px-0 font-bold">

@@ -6,6 +6,7 @@ export default function AddSearchComponent({
   handleSearchChange,
   handleSearch,
   addProfile,
+  profile = "",
   showbtn = true,
 }) {
   return (
@@ -15,11 +16,11 @@ export default function AddSearchComponent({
           className="text-white w-fit cursor-pointer rounded-md bg-[#008000] flex items-center p-2 space-x-2 justify-center"
           onClick={addProfile}
         >
-          <div>
+          <div >
             {" "}
             <IoMdAdd />
           </div>
-          <p>Add profile {/*  */}</p>
+          <p className="mr-2">Add {profile} {/*  */}</p>
         </div>
       )}
 
@@ -30,8 +31,12 @@ export default function AddSearchComponent({
             <div className="w-full">
               <input
  
-                className="w-full px-4 py-1 text-gray-800 rounded-full focus:outline-none"
-                placeholder="search"
+                className= {`w-full px-4 py-1 text-gray-800 border-2 border-r-0 h-10 focus:outline-none active:outline-none" ${
+                  query.length > 0
+                    ? "border-[#008000] "
+                    : "border-gray-500"
+                }`}
+                placeholder="tag id"
                 value={query}
                 onChange={handleSearchChange}
               />
@@ -40,10 +45,10 @@ export default function AddSearchComponent({
               <button
                 onClick={handleSearch}
                 type="submit"
-                className={`flex items-center justify-center w-12 h-12 text-white rounded-r-lg ${
+                className={`flex items-center justify-center w-12 h-10 text-white rounded-r-lg ${
                   query.length > 0
                     ? "bg-[#008000] "
-                    : "bg-gray-400 cursor-not-allowed"
+                    : "bg-gray-500 cursor-not-allowed"
                 }`}
                 disabled={query.length === 0}
               >

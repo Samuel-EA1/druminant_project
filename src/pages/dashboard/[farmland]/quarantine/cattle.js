@@ -510,11 +510,11 @@ export default function Quarantine() {
           <div className="fixed inset-0 flex  items-center justify-center bg-gray-800 bg-opacity-50 z-50">
             <div
               onClick={(e) => e.stopPropagation()}
-              className="absolute  top-0 flex flex-col items-center mt-14 md:mt-20  border-2 border-gray-600   rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3"
+              className="absolute  top-0 flex flex-col items-center mt-14 md:mt-20   border-gray-600   rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3"
             >
               <div className="mt-2 mb-8 w-full flex justify-between">
                 <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
-                  Quarantine Profile
+                  Quarantined Profile Details
                 </h4>
                 <IoMdClose
                   className="text-black cursor-pointer text-2xl"
@@ -527,7 +527,7 @@ export default function Quarantine() {
                   <textarea
                     readOnly
                     className="text-base font-medium text-navy-700 h-20 dark:text-green-700 first-letter:capitalize border-none focus:outline-none active:outline-none resize-none"
-                    style={{ border: "none", resize: "none", outline: "none" }}
+                    style={{ border: "none", resize: "none", outline: "none", width:"100%" }}
                   >
                     {selected.reason}
                   </textarea>

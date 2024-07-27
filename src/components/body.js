@@ -21,6 +21,7 @@ function Body() {
         src={"/image/newlogo.png"}
         width={100}
         height={100}
+        style={{marginTop:"150px"}}
       />
       <p className="main-text ">
         Your solution for streamlined ruminant livestock management which

@@ -431,13 +431,14 @@ export default function Event() {
                 <h1 className="text-lg md:text-2xl head font-bold">
                   Event Tracker (Cattle)
                 </h1>
-                <p className=" mt-1">Keep track of events in livestock</p>
+                <p className=" mt-1">Keep track of events related to your livestock</p>
               </div>
               <AddSearchComponent
                 handleSearch={handleSearch}
                 handleSearchChange={handleSearchChange}
                 query={query}
                 addProfile={addProfile}
+                profile="Event"
               />
             </div>
 
@@ -552,7 +553,8 @@ export default function Event() {
                         >
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
                           <p className=" text-ellipsis first-letter:capitalize overflow-hidden ...">
-                            {row.eventType}
+                          {row.eventType.substring(0, 15)}{row.eventType.length>15 && "..."}
+
                           </p>
                         </div>
                       </td>
@@ -885,7 +887,6 @@ export default function Event() {
                       <input
                         title="Enter tag id of livestock"
                         placeholder="Enter tag id of livestock"
-                        maxLength={10}
                         required
                         value={formInput.tagId}
                         onChange={handleChange}
@@ -899,7 +900,6 @@ export default function Event() {
                       <input
                         title="Brief description of event"
                         placeholder="E.g Vaccination"
-                        maxLength={20}
                         required
                         value={formInput.eventType}
                         onChange={handleChange}
@@ -1012,7 +1012,6 @@ export default function Event() {
                       <input
                         title="Enter tag id of livestock"
                         placeholder="Enter tag id of livestock"
-                        maxLength={10}
                         value={editformInput.tagId}
                         onChange={handleChange}
                         name="tagId"
@@ -1026,7 +1025,6 @@ export default function Event() {
                       <input
                         title="Brief description of event"
                         placeholder="E.g Vaccination"
-                        maxLength={20}
                         value={editformInput.eventType}
                         onChange={handleChange}
                         id="eventType"

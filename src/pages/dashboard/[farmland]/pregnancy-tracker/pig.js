@@ -423,7 +423,7 @@ export default function PregnancyTracker() {
           formModal && (
             <div className="form-backdrop py-12 bg-[#01000D]  transition duration-150 ease-in-out  z-50 absolute right-0 left-0">
               <p
-                className="form-header   mt-5  pb:0 md:pt-5"
+                className="form-header   -mt-8  pb:0 md:pt-5"
                 style={{ color: "white" }}
               >
                 Pregnancy Details
@@ -456,7 +456,6 @@ export default function PregnancyTracker() {
                         </label>
                         <input
                           title="Enter breed of the livestock"
-                          maxLength={17}
                           required
                           value={formInput.breed}
                           onChange={handleChange}
@@ -731,7 +730,7 @@ export default function PregnancyTracker() {
                   Pregnancy Tracker (Pig)
                 </h1>
                 <p className=" mt-1">
-                  Monitor expected farrowing date (ELD ) in livestock
+                  Monitor expected farrowing date (EFD) in your livestock
                 </p>
               </div>
               <AddSearchComponent
@@ -739,6 +738,7 @@ export default function PregnancyTracker() {
                 handleSearchChange={handleSearchChange}
                 query={query}
                 addProfile={addProfile}
+                profile="Record"
               />
             </div>
 
@@ -794,7 +794,7 @@ export default function PregnancyTracker() {
                     className="p-3 pt-2 pb-2 font-bold uppercase text-white border border-gray-300 hidden md:table-cell"
                     style={{ backgroundColor: "green" }}
                   >
-                    ELD
+                    EFD
                   </th>
 
                   <th
@@ -857,7 +857,7 @@ export default function PregnancyTracker() {
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                          <p className="first-letter:capitalize">{row.breed}</p>
+                          <p className="first-letter:capitalize">{row.breed.substring(0, 15)}{row.breed.length>15 && "..."}</p>
                         </div>
                       </td>
 
@@ -904,7 +904,7 @@ export default function PregnancyTracker() {
                             fontSize: "11px",
                           }}
                         >
-                          ELD
+                          EFD
                         </span>
                         <span style={{ fontSize: "14px", color: "black" }}>
                           {moment(row.ecd).format("MMM Do, YYYY")}
@@ -1226,14 +1226,15 @@ export default function PregnancyTracker() {
             <div className="grid grid-cols-2 gap-4 px-1 w-full">
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Tag Id</p>
-                <p className="text-base font-medium first-letter:capitalize text-navy-700  truncate ...  sm:w-full  dark:text-green-700">
+                <p className="text-base font-medium first-letter:capitalize text-navy-700  sm:w-full  dark:text-green-700" style={{overflow:"auto", width:"100%"}}>
                   {selected.tagId}
                 </p>
               </div>
 
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Breed</p>
-                <p className="text-base font-medium text-navy-700 first-letter:capitalize dark:text-green-700 truncate ... w-32 sm:w-full ">
+                <p className="text-base font-medium text-navy-700 first-letter:capitalize dark:text-green-700  w-32 sm:w-full "
+                style={{overflow:"auto"}}>
                   {selected.breed}
                 </p>
               </div>
@@ -1254,7 +1255,7 @@ export default function PregnancyTracker() {
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Entry Date</p>
                 <p className="text-base font-medium text-navy-700  dark:text-green-700">
-                  {moment(selected.createdAt).format("MM Do, YYYY, h:mm:ss A")}
+                {moment(selected.createdAt).format("MMM D, YYYY, HH:mm:ss")}
                 </p>
               </div>
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">

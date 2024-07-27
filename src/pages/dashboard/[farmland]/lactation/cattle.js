@@ -472,6 +472,7 @@ export default function Lactation() {
                   handleSearchChange={handleSearchChange}
                   query={query}
                   addProfile={addProfile}
+                  profile="Record"
                 />
               </div>
             )}
@@ -1125,15 +1126,20 @@ export default function Lactation() {
                     ) : (
                       "    Submit"
                     )}
+                    
                   </button>
+                  
+                  
                   {!creating && (
                     <button className="btn2" onClick={closeFormModal}>
                       Cancel
                     </button>
                   )}
+                  
                 </div>
+                
               </div>
-              {/* <button className="close-btn" onClick={show()}>hsh</button> */}
+             
             </div>
           </div>
         )
@@ -1421,7 +1427,7 @@ export default function Lactation() {
           >
             <div className="mt-2 mb-8 w-full">
               <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-green-700">
-                Lactation Profile
+                Lactation Details
               </h4>
             </div>
             <div className="grid grid-cols-2 gap-4 px-1 w-full">
@@ -1464,13 +1470,13 @@ export default function Lactation() {
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p className="text-sm text-gray-600">Observation</p>
-                <textarea
-                  readOnly
-                  className="text-base   font-medium text-navy-700 h-20 dark:text-green-700 first-letter:capitalize border-none focus:outline-none active:outline-none resize-none"
-                  style={{ border: "none", resize: "none", outline: "none" }}
-                >
+               <p
+               readOnly
+               className="text-base first-letter:capitalize font-medium text-navy-700 h-20 dark:text-green-700 border-none focus:outline-none active:outline-none resize-none"
+               style={{ border: "none", resize: "none", outline: "none", overflow:"auto", width:"100%" }}
+               >
                   {selected.observation}
-                </textarea>
+                </p>
               </div>
 
               <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
@@ -1482,7 +1488,7 @@ export default function Lactation() {
 
               <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                 <p class="text-sm text-gray-600">User In charge</p>
-                <p className="text-base font-medium  first-letter:capitalize text-navy-700 dark:text-green-700 first-letter:capitalize">
+                <p className="text-base font-medium text-navy-700 dark:text-green-700 first-letter:capitalize">
                   {selected.inCharge}
                 </p>
               </div>

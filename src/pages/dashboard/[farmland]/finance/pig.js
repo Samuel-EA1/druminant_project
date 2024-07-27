@@ -381,7 +381,7 @@ function FinanceRecord() {
         <div
           className={`${
             !financeForm && !editModal && "livestock"
-          } p-2 md:p-5  border-2  my-10 lg:mt-2`}
+          } p-2 md:p-5  my-10 lg:mt-2`}
         >
           <div>
             <h1 className="text-lg md:text-2xl head2 px-1 md:px-0 font-bold">
@@ -702,7 +702,6 @@ function FinanceRecord() {
                         </label>
                         <input
                           title="A brief description of transaction"
-                          maxLength={30}
                           placeholder="E.g. Sales of livestock"
                           value={formInput.desc}
                           onChange={handleChange}
@@ -810,7 +809,7 @@ function FinanceRecord() {
                   <div class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">Description</p>
                     <p
-                      class="text-base font-medium text-navy-700 dark:text-green-700"
+                      class="text-base font-medium text-navy-700 dark:text-green-700 first-letter:capitalize"
                       style={{ overflow: "auto", width: "100%" }}
                     >
                       {selected.desc}
@@ -849,7 +848,7 @@ function FinanceRecord() {
 
                   <div class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                     <p class="text-sm text-gray-600">User In charge</p>
-                    <p class="text-base font-medium text-navy-700 dark:text-green-700">
+                    <p class="text-base font-medium first-letter:capitalize text-navy-700 dark:text-green-700">
                       {selected.inCharge}
                     </p>
                   </div>
@@ -907,7 +906,6 @@ function FinanceRecord() {
                         </label>
                         <input
                           title="A brief description of transaction"
-                          maxLength={30}
                           value={editform.desc}
                           onChange={handleEditChange}
                           name="desc"
