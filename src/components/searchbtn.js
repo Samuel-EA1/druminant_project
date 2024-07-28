@@ -26,7 +26,7 @@ export default function AddSearchComponent({
 
       {/* search */}
       <form onSubmit={handleSearch}>
-        <div className={`relative w-36 sm:w-40 md:w-full ${!showbtn && "  max-sm:w-full border-2"} `}>
+        <div className={`relative w-36 sm:w-40 md:w-full ${!showbtn && "  max-sm:w-60 "} `}>
           <div className="flex items-center max-w-md mx-auto bg-white rounded-lg">
             <div className="w-full">
               <input

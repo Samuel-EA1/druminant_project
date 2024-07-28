@@ -597,6 +597,7 @@ export default function Quarantine() {
                   <button
                     className="close-btn"
                     onClick={() => setviewquarantine(false)}
+                    style={{float:"right"}}
                   >
                     Close
                   </button>
@@ -617,7 +618,7 @@ export default function Quarantine() {
                 </h1>
                 <p className=" mt-1">Keep track of quarantined profiles</p>
               </div>
-              <div className="flex flex-end md:justify-end">
+              
                 <AddSearchComponent
                   handleSearch={handleSearch}
                   handleSearchChange={handleSearchChange}
@@ -626,7 +627,7 @@ export default function Quarantine() {
                   showbtn={false}
                 />
               </div>
-            </div>
+
 
             //   {/* <input
             //   type="text"
