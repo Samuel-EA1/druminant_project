@@ -700,7 +700,7 @@ export default function Event() {
                         >
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
                           <p className=" text-ellipsis overflow-hidden ...">
-                            {row.eventType}
+                          {row.eventType.substring(0, 15)}{row.eventType.length>15 && "..."}
                           </p>
                         </div>
                       </td>

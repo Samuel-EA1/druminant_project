@@ -817,7 +817,7 @@ export default function Livestock() {
                           className="first-letter:capitalize"
                           style={{ fontSize: "14px", color: "black" }}
                         >
-                          {row.breed}
+                          {row.breed.substring(0, 15)}{row.breed.length>15 && "..."}
                         </div>
                       </td>
                       <td className="w-full md:w-auto flex justify-between items-center p-3 text-gray-800 text-center border border-b block md:table-cell relative md:static">

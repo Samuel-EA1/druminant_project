@@ -1032,7 +1032,7 @@ export default function PregnancyTracker() {
                         </span>
                         <div style={{ fontSize: "14px", color: "black" }}>
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                          <p className="first-letter:capitalize">{row.breed}</p>
+                          <p className="first-letter:capitalize">{row.breed.substring(0, 15)}{row.breed.length>15 && "..."}</p>
                         </div>
                       </td>
 
@@ -1080,7 +1080,7 @@ export default function PregnancyTracker() {
                             fontSize: "11px",
                           }}
                         >
-                          Breeding Date
+                          ELD
                         </span>
                         <span style={{ fontSize: "14px", color: "black" }}>
                           {moment(row.ecd).format("MMMM Do, YYY")}
