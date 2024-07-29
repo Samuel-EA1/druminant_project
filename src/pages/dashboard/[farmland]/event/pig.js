@@ -699,7 +699,7 @@ export default function Event() {
                           style={{ fontSize: "14px", color: "black" }}
                         >
                           {/* <HiHashtag className="text-xs font-extrabold text-black" /> */}
-                          <p className=" text-ellipsis overflow-hidden ...">
+                          <p className=" text-ellipsis first-letter:capitalize overflow-hidden ...">
                           {row.eventType.substring(0, 15)}{row.eventType.length>15 && "..."}
                           </p>
                         </div>
