@@ -565,7 +565,7 @@ function FinanceRecord() {
                           style={{ fontSize: "14px" }}
                           className="desc first-letter:capitalize"
                         >
-                           {row.desc.substring(0, 15)}...
+                           {row.desc.substring(0, 15)}{row.desc.length>15 && "..."}
                         </div>
                       </td>
                       <td className="w-full md:w-auto flex justify-between  border-green-200 items-center p-3 text-gray-800 text-center border block md:table-cell relative md:static">
