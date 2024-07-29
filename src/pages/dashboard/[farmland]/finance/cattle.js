@@ -444,7 +444,7 @@ function FinanceRecord() {
                 <Image
                   width={100}
                   height={100}
-                  src="/image/financeexpense.png"
+                  src="/image/financeExpense.png"
                 />
                 <p className="flex items-center">
                   Expense
